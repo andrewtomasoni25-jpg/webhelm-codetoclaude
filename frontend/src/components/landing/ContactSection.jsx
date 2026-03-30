@@ -15,6 +15,7 @@ import { Send, Mail, MapPin, Phone } from "lucide-react";
 import axios from "axios";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png";
 
 const projectTypes = [
   "Website Design",
@@ -259,6 +260,15 @@ export default function ContactSection() {
           {/* Contact Info */}
           <div className="lg:col-span-2">
             <div className="p-8 rounded-2xl bg-[#121212] border border-white/5 h-full">
+              {/* Logo */}
+              <div className="mb-8">
+                <img
+                  src={LOGO_URL}
+                  alt="WebHelm Logo"
+                  className="h-16 w-auto"
+                />
+              </div>
+              
               <h3 className="text-xl font-medium text-white mb-6">
                 Contact Information
               </h3>
@@ -270,10 +280,10 @@ export default function ContactSection() {
                   <div>
                     <p className="text-sm text-white/60 mb-1">Email</p>
                     <a
-                      href="mailto:hello@webhelm.co.uk"
+                      href="mailto:content@webhelm.co"
                       className="text-white hover:text-[#007bff] transition-colors"
                     >
-                      hello@webhelm.co.uk
+                      content@webhelm.co
                     </a>
                   </div>
                 </div>
@@ -284,10 +294,10 @@ export default function ContactSection() {
                   <div>
                     <p className="text-sm text-white/60 mb-1">Phone</p>
                     <a
-                      href="tel:+447123456789"
+                      href="tel:+4475099715"
                       className="text-white hover:text-[#007bff] transition-colors"
                     >
-                      +44 7123 456789
+                      +44 75099715
                     </a>
                   </div>
                 </div>
@@ -297,15 +307,9 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-sm text-white/60 mb-1">Location</p>
-                    <p className="text-white">United Kingdom</p>
+                    <p className="text-white">Remote</p>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-8 pt-8 border-t border-white/10">
-                <p className="text-sm text-white/60 mb-4">Working Hours</p>
-                <p className="text-white">Monday – Friday</p>
-                <p className="text-white/70">9:00 AM – 6:00 PM (GMT)</p>
               </div>
             </div>
           </div>

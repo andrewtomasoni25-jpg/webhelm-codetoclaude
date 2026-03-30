@@ -38,13 +38,26 @@ export default function Footer() {
             <img
               src={LOGO_URL}
               alt="WebHelm Logo"
-              className="h-10 w-auto mb-4"
+              className="h-14 w-auto mb-4"
             />
             <p className="text-white/60 text-sm leading-relaxed max-w-md mb-6">
               Steering your business toward online success. We design
               high-performance websites that help businesses grow and thrive in
               the digital landscape.
             </p>
+            <div className="text-sm text-white/60">
+              <p className="mb-1">
+                <a href="mailto:content@webhelm.co" className="hover:text-white transition-colors">
+                  content@webhelm.co
+                </a>
+              </p>
+              <p className="mb-1">
+                <a href="tel:+4475099715" className="hover:text-white transition-colors">
+                  +44 75099715
+                </a>
+              </p>
+              <p>Remote</p>
+            </div>
           </div>
 
           {/* Services */}

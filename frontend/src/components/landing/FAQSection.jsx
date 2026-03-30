@@ -16,7 +16,7 @@ const faqs = [
     id: "faq-2",
     question: "What's included in the website design service?",
     answer:
-      "Our website design service includes custom design mockups, responsive development, basic SEO optimization, contact form integration, and a content management system. We also provide training on how to update your site.",
+      "Our website design service includes custom design mockups, responsive development, basic SEO optimization, contact form integration, and a content management system. We also ensure your site is optimized for performance and mobile devices.",
   },
   {
     id: "faq-3",
@@ -28,19 +28,13 @@ const faqs = [
     id: "faq-4",
     question: "Can I update the website myself after launch?",
     answer:
-      "Absolutely! All our websites come with a user-friendly content management system (CMS). We'll provide comprehensive training so you can easily update text, images, and other content.",
+      "Absolutely! All our websites come with a user-friendly content management system (CMS). You'll be able to easily update text, images, and other content on your own.",
   },
   {
     id: "faq-5",
     question: "What do you need from me to get started?",
     answer:
       "To get started, we'll need your logo, brand guidelines (if available), content for the pages, and any images you'd like to use. During our discovery call, we'll discuss your goals and vision in detail.",
-  },
-  {
-    id: "faq-6",
-    question: "Do you offer payment plans?",
-    answer:
-      "Yes, we offer flexible payment options. Typically, we require 50% upfront and 50% upon completion. For larger projects, we can arrange milestone-based payments.",
   },
 ];
 

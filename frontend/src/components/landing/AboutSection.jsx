@@ -1,5 +1,7 @@
 import { Users, Lightbulb, Award } from "lucide-react";
 
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png";
+
 const stats = [
   { id: "projects", value: "50+", label: "Projects Delivered" },
   { id: "clients", value: "40+", label: "Happy Clients" },
@@ -20,10 +22,14 @@ export default function AboutSection() {
             <div className="absolute inset-0 bg-[#007bff]/10 blur-3xl rounded-full" />
             <img
               data-testid="about-image"
-              src="https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg?auto=compress&cs=tinysrgb&w=800"
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
               alt="WebHelm team workspace"
               className="relative rounded-2xl shadow-2xl border border-white/10 w-full"
             />
+            {/* Floating Logo Badge */}
+            <div className="absolute -bottom-6 -right-6 bg-[#121212] p-4 rounded-2xl border border-white/10 shadow-xl">
+              <img src={LOGO_URL} alt="WebHelm" className="h-12 w-auto" />
+            </div>
           </div>
 
           {/* Content */}
