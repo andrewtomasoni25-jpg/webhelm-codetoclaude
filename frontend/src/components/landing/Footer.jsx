@@ -38,7 +38,7 @@ export default function Footer() {
             <img
               src={LOGO_URL}
               alt="WebHelm Logo"
-              className="h-14 w-auto mb-4"
+              className="h-20 w-auto mb-4"
             />
             <p className="text-white/60 text-sm leading-relaxed max-w-md mb-6">
               Steering your business toward online success. We design
@@ -52,8 +52,8 @@ export default function Footer() {
                 </a>
               </p>
               <p className="mb-1">
-                <a href="tel:+4475099715" className="hover:text-white transition-colors">
-                  +44 75099715
+                <a href="tel:+447508997157" className="hover:text-white transition-colors">
+                  +44 7508997157
                 </a>
               </p>
               <p>Remote</p>

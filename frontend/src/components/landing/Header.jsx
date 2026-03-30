@@ -40,7 +40,7 @@ export default function Header() {
           <img
             src={LOGO_URL}
             alt="WebHelm Logo"
-            className="h-10 w-auto"
+            className="h-14 w-auto"
           />
         </a>
 

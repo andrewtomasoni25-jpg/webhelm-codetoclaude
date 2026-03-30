@@ -26,12 +26,6 @@ const faqs = [
   },
   {
     id: "faq-4",
-    question: "Can I update the website myself after launch?",
-    answer:
-      "Absolutely! All our websites come with a user-friendly content management system (CMS). You'll be able to easily update text, images, and other content on your own.",
-  },
-  {
-    id: "faq-5",
     question: "What do you need from me to get started?",
     answer:
       "To get started, we'll need your logo, brand guidelines (if available), content for the pages, and any images you'd like to use. During our discovery call, we'll discuss your goals and vision in detail.",

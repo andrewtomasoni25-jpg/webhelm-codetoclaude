@@ -27,8 +27,8 @@ export default function AboutSection() {
               className="relative rounded-2xl shadow-2xl border border-white/10 w-full"
             />
             {/* Floating Logo Badge */}
-            <div className="absolute -bottom-6 -right-6 bg-[#121212] p-4 rounded-2xl border border-white/10 shadow-xl">
-              <img src={LOGO_URL} alt="WebHelm" className="h-12 w-auto" />
+            <div className="absolute -bottom-6 -right-6 bg-[#121212] p-6 rounded-2xl border border-white/10 shadow-xl">
+              <img src={LOGO_URL} alt="WebHelm" className="h-16 w-auto" />
             </div>
           </div>
 

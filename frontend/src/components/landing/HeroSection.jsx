@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { BeamsBackground } from "@/components/ui/beams-background";
+import { ShaderAnimation } from "@/components/ui/shader-animation";
 import VaporizeTextCycle, { Tag } from "@/components/ui/vapour-text-effect";
 
 const LOGO_URL = "https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png";
@@ -19,11 +19,13 @@ export default function HeroSection() {
       data-testid="hero-section"
       className="relative min-h-screen overflow-hidden"
     >
-      {/* Beams Background */}
-      <BeamsBackground className="absolute inset-0" intensity="medium">
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#0b0b0b]/20 via-[#0b0b0b]/40 to-[#0b0b0b] pointer-events-none" />
-      </BeamsBackground>
+      {/* Shader Animation Background */}
+      <div className="absolute inset-0 z-0">
+        <ShaderAnimation />
+      </div>
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#0b0b0b]/30 via-[#0b0b0b]/50 to-[#0b0b0b] pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-20 min-h-screen flex items-center pt-20">
@@ -36,7 +38,7 @@ export default function HeroSection() {
                 <img
                   src={LOGO_URL}
                   alt="WebHelm Logo"
-                  className="h-20 md:h-24 w-auto"
+                  className="h-28 md:h-36 w-auto"
                   data-testid="hero-logo"
                 />
               </div>

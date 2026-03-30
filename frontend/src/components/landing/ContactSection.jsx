@@ -265,7 +265,7 @@ export default function ContactSection() {
                 <img
                   src={LOGO_URL}
                   alt="WebHelm Logo"
-                  className="h-16 w-auto"
+                  className="h-24 w-auto"
                 />
               </div>
               
@@ -294,10 +294,10 @@ export default function ContactSection() {
                   <div>
                     <p className="text-sm text-white/60 mb-1">Phone</p>
                     <a
-                      href="tel:+4475099715"
+                      href="tel:+447508997157"
                       className="text-white hover:text-[#007bff] transition-colors"
                     >
-                      +44 75099715
+                      +44 7508997157
                     </a>
                   </div>
                 </div>
