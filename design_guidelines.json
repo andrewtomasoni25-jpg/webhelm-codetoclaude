@@ -1,0 +1,119 @@
+{
+  "theme": "dark",
+  "archetype": "Archetype 4 (Swiss & High-Contrast) with Archetype 5 (Luxury) elements",
+  "design_philosophy": "Authoritative, sleek, and high-contrast. Fusing the clinical precision of Swiss design with moody, cinematic luxury. The tension lies in the sterile dark background (#0b0b0b) clashing with electric blue (#007bff) and organic warm beige (#f5f5dc) accents.",
+  "colors": {
+    "background": "#0b0b0b",
+    "foreground": "#ffffff",
+    "primary": "#007bff",
+    "primary_foreground": "#ffffff",
+    "secondary": "#f5f5dc",
+    "secondary_foreground": "#0b0b0b",
+    "muted": "#1a1a1a",
+    "muted_foreground": "#a1a1aa",
+    "border": "rgba(255, 255, 255, 0.1)",
+    "card": "#121212",
+    "card_hover": "#161616"
+  },
+  "typography": {
+    "heading_font": "Outfit",
+    "body_font": "Manrope",
+    "scale": {
+      "h1": "text-5xl sm:text-6xl tracking-tight font-light",
+      "h2": "text-3xl sm:text-4xl tracking-tight font-medium",
+      "h3": "text-xl sm:text-2xl font-medium",
+      "body": "text-base leading-relaxed text-muted-foreground",
+      "overline": "text-xs tracking-[0.2em] uppercase font-bold text-secondary"
+    }
+  },
+  "spacing_and_layout": {
+    "section_padding": "py-24 md:py-32",
+    "container": "max-w-7xl mx-auto px-6 md:px-12",
+    "card_padding": "p-8 md:p-10",
+    "grid_gap": "gap-8 md:gap-12",
+    "border_radius": "rounded-2xl"
+  },
+  "surfaces": {
+    "glass": "backdrop-blur-xl bg-black/60 border border-white/10 shadow-[0_8px_32px_rgba(0,123,255,0.05)]",
+    "flat": "bg-[#121212] border border-white/5",
+    "button_primary": "bg-[#007bff] hover:bg-[#0056b3] text-white transition-all duration-300",
+    "button_secondary": "bg-[#f5f5dc] hover:bg-[#e5e5cc] text-[#0b0b0b] transition-all duration-300"
+  },
+  "media": {
+    "hero_mockup": {
+      "url": "https://images.unsplash.com/photo-1604611714877-a8108b03132f",
+      "description": "Creative agency workspace monitor, moody lighting, modern mockup canvas."
+    },
+    "portfolio_ironfit": {
+      "url": "https://images.pexels.com/photos/136404/pexels-photo-136404.jpeg",
+      "description": "IronFit Gym - High-contrast workout imagery for fitness portfolio item."
+    },
+    "portfolio_elitecuts": {
+      "url": "https://images.pexels.com/photos/19664875/pexels-photo-19664875.jpeg",
+      "description": "Elite Cuts - Premium barbershop styling."
+    },
+    "portfolio_urbanbites": {
+      "url": "https://images.pexels.com/photos/29106106/pexels-photo-29106106.jpeg",
+      "description": "Urban Bites - Elegant restaurant dining setup."
+    },
+    "avatars": [
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
+      "https://images.pexels.com/photos/30004315/pexels-photo-30004315.jpeg"
+    ],
+    "about_workspace": {
+      "url": "https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg",
+      "description": "Modern agency workspace showing the team in action."
+    }
+  },
+  "sections": {
+    "header": {
+      "layout": "Fixed top-0 w-full z-50 glassmorphism",
+      "elements": ["Logo (WebHelm)", "Navigation (Home, Pricing, Contact)", "CTA Button"],
+      "styling": "backdrop-blur-xl bg-[#0b0b0b]/70 border-b border-white/10 h-20 flex items-center"
+    },
+    "hero": {
+      "layout": "min-h-screen relative flex items-center pt-20 overflow-hidden",
+      "background": "Three.js ShaderAnimation canvas spanning full absolute background",
+      "overlay": "bg-gradient-to-b from-[#0b0b0b]/40 via-[#0b0b0b]/60 to-[#0b0b0b] pointer-events-none",
+      "content": "Headline ('Steering your business toward online success'), secondary beige accent text. 2 Buttons. Mockup image tilted in 3D perspective using framer-motion."
+    },
+    "services": {
+      "layout": "Bento Grid: grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+      "items": ["Website Design & Development", "Landing Pages", "Website Redesign", "Logo Design"],
+      "styling": "Cards use the 'flat' surface style. Hover: -translate-y-1, border glows primary blue. Icons use Phosphor Icons (duotone, primary blue)."
+    },
+    "pricing": {
+      "layout": "grid-cols-1 md:grid-cols-2 xl:grid-cols-4",
+      "styling": "Generous p-10 padding. Highlighted card uses primary blue border. The 'Tracing Beam' concept on hover. Beige text for price values to warm up the dark aesthetic."
+    },
+    "portfolio": {
+      "layout": "Asymmetric Grid: MODE A 'Tetris Grid'. Mix of col-span-8 and col-span-4.",
+      "items": ["IronFit Gym", "Elite Cuts", "Urban Bites"],
+      "styling": "Large image cards with dark gradient overlays. Text appears on hover. Use image urls from media section."
+    },
+    "testimonials": {
+      "layout": "Embla Carousel",
+      "styling": "Cards with glassmorphism surface. Avatar on left, quote in beige text, name in white."
+    },
+    "about_process": {
+      "layout": "Two column grid (text left, image right). Timeline visualization for process.",
+      "styling": "Use about_workspace image. Process steps connected by a subtle primary blue dashed line."
+    },
+    "contact_faq": {
+      "layout": "Grid split: Contact Form (Left 7 cols), FAQ Accordion (Right 5 cols)",
+      "styling": "Form inputs use bg-transparent border-white/20 focus:border-[#007bff]. FAQ uses Shadcn Accordion, minimalist borders."
+    },
+    "cta": {
+      "layout": "Full width, heavy padding py-32 text-center",
+      "content": "Ready to steer your business in the right direction?",
+      "styling": "Radial gradient background (blue glow in center fading to #0b0b0b)."
+    }
+  },
+  "technical_requirements": {
+    "animations": "framer-motion for scroll-triggered staggers, Three.js (@react-three/fiber & @react-three/drei) for Hero Shader. Lenis for smooth scrolling.",
+    "testing": "All interactive elements MUST have data-testid attributes (e.g., data-testid='hero-cta-button').",
+    "icons": "lucide-react or @phosphor-icons/react",
+    "components": "shadcn/ui for Form, Accordion, Carousel, Buttons, Inputs. Custom HTML/Tailwind for bento grids."
+  }
+}
