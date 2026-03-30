@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ShaderAnimation } from "@/components/ui/shader-animation";
 
 const pricingPlans = [
   {
@@ -75,9 +76,17 @@ export default function PricingSection() {
     <section
       id="pricing"
       data-testid="pricing-section"
-      className="py-24 md:py-32 relative"
+      className="py-24 md:py-32 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      {/* Shader Animation Background */}
+      <div className="absolute inset-0 z-0 opacity-30">
+        <ShaderAnimation />
+      </div>
+      
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 z-5 bg-gradient-to-b from-[#0b0b0b] via-transparent to-[#0b0b0b] pointer-events-none" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
@@ -97,10 +106,10 @@ export default function PricingSection() {
             <div
               key={plan.id}
               data-testid={`pricing-card-${plan.id}`}
-              className={`p-8 md:p-10 rounded-2xl transition-all duration-300 hover:-translate-y-1 ${
+              className={`p-8 md:p-10 rounded-2xl transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm ${
                 plan.highlighted
-                  ? "bg-[#121212] border-2 border-[#007bff] shadow-lg shadow-[#007bff]/10"
-                  : "bg-[#121212] border border-white/5 hover:border-white/10"
+                  ? "bg-[#121212]/90 border-2 border-[#007bff] shadow-lg shadow-[#007bff]/10"
+                  : "bg-[#121212]/80 border border-white/10 hover:border-white/20"
               }`}
             >
               {plan.highlighted && (

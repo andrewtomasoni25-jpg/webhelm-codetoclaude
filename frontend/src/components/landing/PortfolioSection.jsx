@@ -2,46 +2,39 @@ import { ExternalLink } from "lucide-react";
 
 const portfolioItems = [
   {
-    id: "ironfit",
-    title: "IronFit Gym",
-    description: "Responsive fitness website with membership management and class scheduling",
+    id: "ironpulse",
+    title: "IronPulse Fitness",
+    description: "Premium fitness club website with membership management and class scheduling",
     category: "Fitness",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+    image: "https://customer-assets.emergentagent.com/job_navigate-web-1/artifacts/wycqgjfu_IMG_0303.jpeg",
   },
   {
     id: "elitecuts",
     title: "Elite Cuts",
-    description: "Modern barber shop website with online booking system",
+    description: "Luxury gentlemen's grooming barbershop with online booking system",
     category: "Beauty",
-    image: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=800&q=80",
+    image: "https://customer-assets.emergentagent.com/job_navigate-web-1/artifacts/z329hpf3_IMG_0304.jpeg",
   },
   {
     id: "urbanbites",
     title: "Urban Bites",
-    description: "Restaurant website with online ordering and menu management",
+    description: "Elegant restaurant website with reservations and menu showcase",
     category: "Food & Dining",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: "techflow",
-    title: "TechFlow Agency",
-    description: "SaaS landing page with interactive features and lead generation",
-    category: "Technology",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+    image: "https://customer-assets.emergentagent.com/job_navigate-web-1/artifacts/97pl27sf_IMG_0305.jpeg",
   },
   {
     id: "luxehome",
     title: "LuxeHome Interiors",
-    description: "Interior design portfolio with gallery showcase",
+    description: "Interior design studio portfolio with project gallery showcase",
     category: "Design",
-    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
+    image: "https://customer-assets.emergentagent.com/job_navigate-web-1/artifacts/u8vf0966_IMG_0307.jpeg",
   },
   {
     id: "greenleaf",
     title: "GreenLeaf Wellness",
-    description: "Health & wellness e-commerce with appointment booking",
+    description: "Wellness & mindfulness platform with yoga and meditation classes",
     category: "Health",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80",
+    image: "https://customer-assets.emergentagent.com/job_navigate-web-1/artifacts/qyf4u8uv_IMG_0308.jpeg",
   },
 ];
 
@@ -68,7 +61,7 @@ export default function PortfolioSection() {
 
         {/* Portfolio Grid - Bento Style Layout */}
         <div className="grid grid-cols-12 gap-4 md:gap-6">
-          {/* Large Featured Item */}
+          {/* Large Featured Item - IronPulse */}
           <div
             data-testid={`portfolio-item-${portfolioItems[0].id}`}
             className="col-span-12 lg:col-span-8 relative group overflow-hidden rounded-2xl cursor-pointer"
@@ -77,7 +70,7 @@ export default function PortfolioSection() {
               <img
                 src={portfolioItems[0].image}
                 alt={portfolioItems[0].title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
               <div className="absolute inset-0 p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -98,7 +91,7 @@ export default function PortfolioSection() {
             </div>
           </div>
 
-          {/* Side Stack */}
+          {/* Side Stack - Elite Cuts & Urban Bites */}
           <div className="col-span-12 md:col-span-6 lg:col-span-4 grid gap-4 md:gap-6">
             {portfolioItems.slice(1, 3).map((item) => (
               <div
@@ -109,7 +102,7 @@ export default function PortfolioSection() {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
                 <div className="absolute inset-0 p-6 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
@@ -127,18 +120,18 @@ export default function PortfolioSection() {
             ))}
           </div>
 
-          {/* Bottom Row */}
+          {/* Bottom Row - LuxeHome & GreenLeaf */}
           {portfolioItems.slice(3).map((item) => (
             <div
               key={item.id}
               data-testid={`portfolio-item-${item.id}`}
-              className="col-span-12 md:col-span-6 lg:col-span-4 relative group overflow-hidden rounded-2xl cursor-pointer"
+              className="col-span-12 md:col-span-6 relative group overflow-hidden rounded-2xl cursor-pointer"
             >
-              <div className="relative h-[280px] md:h-[320px]">
+              <div className="relative h-[280px] md:h-[350px]">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
                 <div className="absolute inset-0 p-6 flex flex-col justify-end transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
