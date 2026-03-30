@@ -17,11 +17,11 @@ export default function WebHelmLanding() {
       <Header />
       <main>
         <HeroSection />
+        <AboutSection />
         <ServicesSection />
         <PricingSection />
         <PortfolioSection />
         <TestimonialsSection />
-        <AboutSection />
         <ProcessSection />
         <CTASection />
         <ContactSection />
