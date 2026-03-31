@@ -47,8 +47,8 @@ export default function Footer() {
             </p>
             <div className="text-sm text-white/60">
               <p className="mb-1">
-                <a href="mailto:content@webhelm.co" className="hover:text-white transition-colors">
-                  content@webhelm.co
+                <a href="mailto:contact@webhelm.co" className="hover:text-white transition-colors">
+                  contact@webhelm.co
                 </a>
               </p>
               <p className="mb-1">

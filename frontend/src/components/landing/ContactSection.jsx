@@ -280,10 +280,10 @@ export default function ContactSection() {
                   <div>
                     <p className="text-sm text-white/60 mb-1">Email</p>
                     <a
-                      href="mailto:content@webhelm.co"
+                      href="mailto:contact@webhelm.co"
                       className="text-white hover:text-[#007bff] transition-colors"
                     >
-                      content@webhelm.co
+                      contact@webhelm.co
                     </a>
                   </div>
                 </div>
