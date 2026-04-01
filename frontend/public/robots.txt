@@ -1,0 +1,9 @@
+# robots.txt for WebHelm
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.webhelm.co/sitemap.xml
+
+# Disallow admin/api paths from indexing
+Disallow: /api/
