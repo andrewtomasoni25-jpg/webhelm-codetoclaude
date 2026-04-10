@@ -1,57 +1,38 @@
-# WebHelm Landing Page - PRD
+# WebHelm - Product Requirements Document
 
 ## Original Problem Statement
-Build a WebHelm website based on provided HTML template and logo. Web design agency landing page with dark theme (#0b0b0b), blue primary (#007bff), beige secondary (#f5f5dc).
-
-## User Personas
-1. **Small Business Owners** - Looking for professional web design services
-2. **Startups** - Need landing pages and full websites
-3. **Established Businesses** - Seeking website redesign
-
-## Core Requirements
-- Header with logo and navigation (Home, Services, Pricing, Portfolio, Contact)
-- Hero section with Three.js ShaderAnimation background
-- Services section (4 cards): Website Design, Landing Pages, Redesign, Logo Design
-- Pricing section with transparent pricing (£50-£2400)
-- Portfolio section showcasing 3 projects
-- Client testimonials carousel
-- About section with company stats
-- Process section (Discovery, Design, Development, Launch)
-- CTA section
-- Contact form with email notification capability
-- FAQ accordion section
-- Footer with links
-
-## What's Been Implemented (December 2025)
-- ✅ Full landing page with all 11 sections
-- ✅ Responsive design (mobile/desktop)
-- ✅ Three.js ShaderAnimation hero background
-- ✅ User-provided logo integrated
-- ✅ Contact form with MongoDB storage
-- ✅ Resend email integration (ready when API key provided)
-- ✅ FAQ accordion using shadcn
-- ✅ Testimonials carousel using embla
-- ✅ Smooth scroll navigation
-- ✅ Mobile hamburger menu
+Build a full-stack website for "WebHelm" (a web design agency) based on a provided HTML/CSS mockup and uploaded logo assets. The site needs advanced UI animations via custom React components (ShaderAnimation, VapourTextEffect, BeamsBackground, LiquidGlassButton, BackgroundPaths), a functional contact form with email notifications, and basic SEO setup.
 
 ## Tech Stack
-- Frontend: React 19, Tailwind CSS, shadcn/ui, Three.js, Lucide React icons
-- Backend: FastAPI, MongoDB
-- Fonts: Outfit (headings), Manrope (body)
+- **Frontend:** React 19, Tailwind CSS 3, shadcn/ui (New York), Framer Motion, Three.js, Craco
+- **Backend:** FastAPI, MongoDB (Motor), Resend API
+- **Fonts:** Outfit (headings) + Manrope (body)
+- **Color Scheme:** Dark (#0b0b0b), Blue accent (#007bff), Cream (#f5f5dc)
 
-## Backlog (P0/P1/P2)
-### P1 - High Priority
-- Add actual portfolio project links
-- Configure Resend API for email notifications
+## Architecture
+```
+backend/server.py → FastAPI with /api prefix, MongoDB, Resend email
+frontend/src/pages/WebHelmLanding.jsx → Main page composing all sections
+frontend/src/components/landing/* → 12 section components
+frontend/src/components/ui/* → 5 custom + shadcn UI components
+```
 
-### P2 - Nice to Have
-- Blog section
-- Case studies page
-- Live chat integration
-- Google Analytics integration
+## What's Been Implemented (All Complete)
+1. Full React frontend with sections: Hero, About, Services, Pricing, Portfolio, Testimonials, Process, CTA, Contact, FAQ, Footer
+2. Custom animated components: ShaderAnimation (Three.js WebGL), VapourTextEffect (canvas particles), BeamsBackground, LiquidGlassButton, BackgroundPaths (SVG)
+3. FastAPI backend: contact form submission → MongoDB + Resend email to contact@webhelm.co
+4. SEO: sitemap.xml, robots.txt, manifest.json, structured data, Open Graph, Twitter cards
+5. Complete code export provided to user for handoff to Claude
 
-## Next Tasks
-1. Add Resend API key to enable email notifications
-2. Update contact info (email, phone) with real details
-3. Add real portfolio project images and links
-4. Consider adding a blog section for SEO
+## API Endpoints
+- `POST /api/contact` — Contact form submission (saves to DB, sends email)
+- `GET /api/contact/submissions` — Admin: list all submissions
+
+## DB Schema
+- `contact_submissions`: {id, name, email, businessName, projectType, budget, message, timestamp}
+
+## 3rd Party Integrations
+- Resend (Email): API key in backend/.env
+
+## Status: COMPLETE
+Project fully built, tested, and code exported to user.
