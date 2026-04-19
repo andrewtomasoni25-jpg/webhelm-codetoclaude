@@ -1,13 +1,18 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ShaderLinesAnimation } from "@/components/ui/shader-lines";
 import { StarsBackground } from "@/components/ui/stars-background";
 import StaticVortex from "@/components/ui/static-vortex";
 import VaporizeTextCycle, { Tag } from "@/components/ui/vapour-text-effect";
 import MagneticButton from "@/components/MagneticButton";
 import useHeavyGraphics from "@/hooks/use-heavy-graphics";
 
-// Sparkles stay desktop-only — dense particles spike TBT on phones.
+// Desktop-only animations — lazy-loaded so mobile doesn't even
+// download three.js or the sparkles particle system.
+const ShaderLinesAnimation = lazy(() =>
+  import("@/components/ui/shader-lines").then((m) => ({
+    default: m.ShaderLinesAnimation,
+  }))
+);
 const SparklesCore = lazy(() =>
   import("@/components/ui/sparkles").then((m) => ({ default: m.SparklesCore }))
 );
@@ -16,6 +21,26 @@ const LOGO_URL = "https://customer-assets.emergentagent.com/job_69c425dc-8d9f-43
 
 export default function HeroSection() {
   const heavyGraphics = useHeavyGraphics();
+
+  // Pick a font size the vaporize canvas can fit on any viewport.
+  // The text "Building Brands" at 56px needs ~430px of width — that
+  // overflows any phone. Scales fluidly across breakpoints.
+  const [vaporFontSize, setVaporFontSize] = useState("56px");
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const pick = () => {
+      const w = window.innerWidth;
+      if (w < 380) return "30px";
+      if (w < 500) return "36px";
+      if (w < 768) return "42px";
+      if (w < 1024) return "48px";
+      return "56px";
+    };
+    setVaporFontSize(pick());
+    const onResize = () => setVaporFontSize(pick());
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   const scrollToSection = (e, href) => {
     e.preventDefault();
@@ -38,12 +63,17 @@ export default function HeroSection() {
         <StaticVortex withVignette={false} />
       </div>
 
-      {/* Shader lines — the animated three.js layer. Sits above the
-          static vortex so the lines trace over the glow rather than
-          against flat black. Already pauses its rAF when off-screen. */}
-      <div className="absolute inset-0 z-[1]">
-        <ShaderLinesAnimation />
-      </div>
+      {/* Shader lines — the animated three.js layer. DESKTOP ONLY.
+          On mobile it costs ~15-19s of TBT on mid-range phones, which
+          tanks the Lighthouse score. The static faux-vortex behind
+          carries the mood on phones without the CPU cost. */}
+      {heavyGraphics && (
+        <div className="absolute inset-0 z-[1]">
+          <Suspense fallback={null}>
+            <ShaderLinesAnimation />
+          </Suspense>
+        </div>
+      )}
 
       {/* Twinkling stars layer — pure CSS animation, sits above the
           shader lines so the starfield reads through. Count is tuned
@@ -103,13 +133,15 @@ export default function HeroSection() {
               Web Design Agency
             </span>
 
-            {/* Vaporize Text Effect — centered */}
-            <div className="h-24 md:h-32 mb-6 w-full flex items-center justify-center">
+            {/* Vaporize Text Effect — centered. Height scales with the
+                fluid font size so short phones don't leave a big gap. */}
+            <div className="h-16 sm:h-20 md:h-32 mb-6 w-full flex items-center justify-center">
               <VaporizeTextCycle
+                key={vaporFontSize /* force re-mount so canvas re-measures at the new size */}
                 texts={["Steering Success", "Building Brands", "Creating Impact"]}
                 font={{
                   fontFamily: "Outfit, sans-serif",
-                  fontSize: "56px",
+                  fontSize: vaporFontSize,
                   fontWeight: 300,
                 }}
                 color="rgb(255,255,255)"
