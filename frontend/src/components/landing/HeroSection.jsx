@@ -1,12 +1,22 @@
+import { lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { ShaderLinesAnimation } from "@/components/ui/shader-lines";
-import { SparklesCore } from "@/components/ui/sparkles";
+import { StarsBackground } from "@/components/ui/stars-background";
+import StaticVortex from "@/components/ui/static-vortex";
 import VaporizeTextCycle, { Tag } from "@/components/ui/vapour-text-effect";
 import MagneticButton from "@/components/MagneticButton";
+import useHeavyGraphics from "@/hooks/use-heavy-graphics";
+
+// Sparkles stay desktop-only — dense particles spike TBT on phones.
+const SparklesCore = lazy(() =>
+  import("@/components/ui/sparkles").then((m) => ({ default: m.SparklesCore }))
+);
 
 const LOGO_URL = "https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png";
 
 export default function HeroSection() {
+  const heavyGraphics = useHeavyGraphics();
+
   const scrollToSection = (e, href) => {
     e.preventDefault();
     const element = document.querySelector(href);
@@ -21,24 +31,48 @@ export default function HeroSection() {
       data-testid="hero-section"
       className="relative min-h-screen overflow-hidden bg-[#0b0b0b]"
     >
-      {/* Shader Lines Background */}
+      {/* Static faux-vortex — paint-once CSS/SVG layer. Renders on every
+          device as the base atmosphere. Zero runtime cost so it sits
+          safely behind the shader lines without affecting performance. */}
       <div className="absolute inset-0 z-0">
+        <StaticVortex withVignette={false} />
+      </div>
+
+      {/* Shader lines — the animated three.js layer. Sits above the
+          static vortex so the lines trace over the glow rather than
+          against flat black. Already pauses its rAF when off-screen. */}
+      <div className="absolute inset-0 z-[1]">
         <ShaderLinesAnimation />
       </div>
 
-      {/* Sparkles overlay — drifting particles for depth */}
-      <div className="absolute inset-0 z-[5] pointer-events-none">
-        <SparklesCore
-          id="hero-sparkles"
-          background="transparent"
-          minSize={0.6}
-          maxSize={1.4}
-          particleDensity={45}
-          particleColor="#ffffff"
-          speed={1}
-          className="w-full h-full"
+      {/* Twinkling stars layer — pure CSS animation, sits above the
+          shader lines so the starfield reads through. Count is tuned
+          lighter than the global one so the hero doesn't feel busy. */}
+      <div className="absolute inset-0 z-[2] pointer-events-none">
+        <StarsBackground
+          count={heavyGraphics ? 140 : 80}
+          className="relative w-full h-full"
         />
       </div>
+
+      {/* Sparkles overlay — desktop only. On phones a particle field
+          this dense fights the vaporize text and spikes TBT. */}
+      {heavyGraphics && (
+        <div className="absolute inset-0 z-[5] pointer-events-none">
+          <Suspense fallback={null}>
+            <SparklesCore
+              id="hero-sparkles"
+              background="transparent"
+              minSize={0.6}
+              maxSize={1.4}
+              particleDensity={45}
+              particleColor="#ffffff"
+              speed={1}
+              className="w-full h-full"
+            />
+          </Suspense>
+        </div>
+      )}
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#0b0b0b]/20 via-[#0b0b0b]/40 to-[#0b0b0b] pointer-events-none" />
@@ -55,6 +89,10 @@ export default function HeroSection() {
                 alt="WebHelm Logo"
                 className="relative h-44 md:h-56 lg:h-64 w-auto drop-shadow-[0_0_40px_rgba(0,123,255,0.5)]"
                 data-testid="hero-logo"
+                fetchpriority="high"
+                decoding="async"
+                width="512"
+                height="512"
               />
             </div>
 

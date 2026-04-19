@@ -260,88 +260,94 @@ export default function PricingSection() {
             </p>
           </div>
 
-          {/* Seamless grid — cells share borders so there are no visible
-              gaps between rows. Text is white at higher contrast & a step
-              larger than the previous /75 grey so it reads cleanly against
-              the vortex. */}
-          <div className="rounded-2xl border border-white/10 bg-[#0d0d0d]/90 overflow-hidden divide-y divide-white/10">
-            {/* Column headers — plan name + price only live here.
-                Top-left cell shows the WebHelm logo + "Features" so it doubles
-                as a branding anchor instead of being dead space. */}
-            <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10">
-              <div className="p-5 md:p-7 flex items-center gap-3 md:gap-4">
-                <img
-                  src="https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png"
-                  alt="WebHelm"
-                  className="h-10 md:h-12 w-auto shrink-0"
-                />
-                <span className="text-lg md:text-2xl font-medium text-white leading-none">
-                  Features
-                </span>
-              </div>
-              {comparisonColumns.map((col) => (
-                <div
-                  key={col.title}
-                  className={`p-5 md:p-7 text-center ${
-                    col.highlighted ? "bg-[#007bff]/10" : ""
-                  }`}
-                >
-                  {col.highlighted && (
-                    <span className="inline-block text-[10px] md:text-[11px] tracking-[0.15em] uppercase font-semibold text-[#007bff] mb-2">
-                      Most Popular
-                    </span>
-                  )}
-                  <h4 className="text-lg md:text-2xl font-medium text-white">
-                    {col.title}
-                  </h4>
-                  <p className="text-2xl md:text-3xl font-light text-white mt-1.5">
-                    {col.price}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Grouped feature rows — wrapped so divide-y gives us clean
-                section separators without extra margin gaps */}
-            {comparisonGroups.map((group) => (
-              <div key={group.title} className="divide-y divide-white/10">
-                {/* Group label — full-width band, flush with rows below */}
-                <div className="bg-white/[0.04] px-5 md:px-7 py-3 md:py-4">
-                  <span className="text-xs md:text-sm tracking-[0.2em] uppercase font-semibold text-white">
-                    {group.title}
+          {/* Horizontal-scroll wrapper — on mobile the 4 columns can't fit,
+              so the table swipes sideways (Cloudflare/Stripe pattern). On
+              md+ it's the full width and the scroll never activates. A
+              min-w on the inner grid guarantees each tier stays legible. */}
+          <div className="rounded-2xl border border-white/10 bg-[#0d0d0d]/90 overflow-x-auto">
+            <div className="min-w-[640px] md:min-w-0 divide-y divide-white/10">
+              {/* Column headers — plan name + price only live here.
+                  Top-left cell shows the WebHelm logo + "Features" so it
+                  doubles as a branding anchor instead of being dead space. */}
+              <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10">
+                <div className="p-4 md:p-7 flex items-center gap-2 md:gap-4">
+                  <img
+                    src="https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png"
+                    alt="WebHelm"
+                    className="h-8 md:h-12 w-auto shrink-0"
+                  />
+                  <span className="text-base md:text-2xl font-medium text-white leading-none">
+                    Features
                   </span>
                 </div>
-                {group.rows.map((row) => (
+                {comparisonColumns.map((col) => (
                   <div
-                    key={row.label}
-                    className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10"
+                    key={col.title}
+                    className={`p-4 md:p-7 text-center ${
+                      col.highlighted ? "bg-[#007bff]/10" : ""
+                    }`}
                   >
-                    <div className="px-5 md:px-7 py-3.5 md:py-4 text-sm md:text-base text-white leading-snug">
-                      {row.label}
-                    </div>
-                    {row.tiers.map((val, ti) => (
-                      <div
-                        key={ti}
-                        className={`py-3.5 md:py-4 flex items-center justify-center ${
-                          comparisonColumns[ti].highlighted ? "bg-[#007bff]/10" : ""
-                        }`}
-                      >
-                        {val === true ? (
-                          <Check className="w-5 h-5 md:w-6 md:h-6 text-[#007bff]" strokeWidth={2.5} />
-                        ) : val === "opt" ? (
-                          <span className="text-[11px] md:text-xs tracking-wide uppercase font-medium text-white">
-                            Optional
-                          </span>
-                        ) : (
-                          <X className="w-4 h-4 md:w-5 md:h-5 text-white/40" strokeWidth={2.5} />
-                        )}
-                      </div>
-                    ))}
+                    {col.highlighted && (
+                      <span className="inline-block text-[10px] md:text-[11px] tracking-[0.15em] uppercase font-semibold text-[#007bff] mb-2">
+                        Most Popular
+                      </span>
+                    )}
+                    <h4 className="text-base md:text-2xl font-medium text-white leading-tight">
+                      {col.title}
+                    </h4>
+                    <p className="text-xl md:text-3xl font-light text-white mt-1.5 whitespace-nowrap">
+                      {col.price}
+                    </p>
                   </div>
                 ))}
               </div>
-            ))}
+
+              {/* Grouped feature rows — wrapped so divide-y gives us clean
+                  section separators without extra margin gaps */}
+              {comparisonGroups.map((group) => (
+                <div key={group.title} className="divide-y divide-white/10">
+                  {/* Group label — full-width band, flush with rows below */}
+                  <div className="bg-white/[0.04] px-4 md:px-7 py-3 md:py-4">
+                    <span className="text-xs md:text-sm tracking-[0.2em] uppercase font-semibold text-white">
+                      {group.title}
+                    </span>
+                  </div>
+                  {group.rows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10"
+                    >
+                      <div className="px-4 md:px-7 py-3.5 md:py-4 text-sm md:text-base text-white leading-snug">
+                        {row.label}
+                      </div>
+                      {row.tiers.map((val, ti) => (
+                        <div
+                          key={ti}
+                          className={`py-3.5 md:py-4 flex items-center justify-center ${
+                            comparisonColumns[ti].highlighted ? "bg-[#007bff]/10" : ""
+                          }`}
+                        >
+                          {val === true ? (
+                            <Check className="w-5 h-5 md:w-6 md:h-6 text-[#007bff]" strokeWidth={2.5} />
+                          ) : val === "opt" ? (
+                            <span className="text-[11px] md:text-xs tracking-wide uppercase font-medium text-white">
+                              Optional
+                            </span>
+                          ) : (
+                            <X className="w-4 h-4 md:w-5 md:h-5 text-white/40" strokeWidth={2.5} />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
+          {/* Subtle hint that the table scrolls horizontally on small screens */}
+          <p className="md:hidden text-center text-xs text-white/40 mt-3">
+            Swipe the table sideways to see all plans →
+          </p>
         </div>
 
         {/* Popular Upgrades — roomier cards so prices are easy to scan.
