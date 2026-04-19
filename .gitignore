@@ -90,3 +90,11 @@ frontend/node_modules/.cache/default-development/2.pack
 # Environment files
 *.env
 *.env.*
+# BUT allow the template so the repo still documents required vars
+!*.env.example
+
+# Local-dev submission log — may contain real form submissions, stay local
+backend/submissions.log
+
+# Claude Code local settings
+.claude/

@@ -4,13 +4,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import SplitTextReveal from "@/components/SplitTextReveal";
 
 const faqs = [
   {
     id: "faq-1",
     question: "How long does it take to build a website?",
     answer:
-      "Timeline depends on the project scope. A landing page typically takes 1-2 weeks, while a full website can take 3-6 weeks. We'll provide a detailed timeline after understanding your requirements.",
+      "Most websites are ready in 3-7 days on average, thanks to our AI-enhanced workflow. Larger, more complex projects may take longer, but we'll always give you a clear timeline upfront so you know exactly what to expect.",
   },
   {
     id: "faq-2",
@@ -37,20 +38,21 @@ export default function FAQSection() {
     <section
       id="faq"
       data-testid="faq-section"
-      className="py-24 md:py-32 relative"
+      className="py-24 md:py-32 relative overflow-hidden"
     >
-      <div className="max-w-3xl mx-auto px-6 md:px-12">
+      <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
             FAQ
           </span>
-          <h2
+          <SplitTextReveal
+            as="h2"
             data-testid="faq-title"
             className="text-3xl sm:text-4xl tracking-tight font-medium text-white"
           >
             Frequently Asked Questions
-          </h2>
+          </SplitTextReveal>
         </div>
 
         {/* FAQ Accordion */}

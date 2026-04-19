@@ -13,8 +13,13 @@ import {
 import { toast } from "sonner";
 import { Send, Mail, MapPin, Phone } from "lucide-react";
 import axios from "axios";
+import SplitTextReveal from "@/components/SplitTextReveal";
+import MagneticButton from "@/components/MagneticButton";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// Use REACT_APP_BACKEND_URL if set (dev / self-hosted Python backend),
+// otherwise fall back to a relative path — which on Vercel is served
+// by the serverless function at /api/contact.
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 const LOGO_URL = "https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png";
 
 const projectTypes = [
@@ -26,10 +31,11 @@ const projectTypes = [
 ];
 
 const budgetRanges = [
-  "£50–£300",
-  "£700–£900",
-  "£1000–£2100",
-  "£2100+",
+  "£150 (Logo Design)",
+  "£750 (Landing Page)",
+  "£1,400 (Business)",
+  "£2,200 (Premium)",
+  "£1,300+ (Website Redesign)",
 ];
 
 export default function ContactSection() {
@@ -86,20 +92,21 @@ export default function ContactSection() {
     <section
       id="contact"
       data-testid="contact-section"
-      className="py-24 md:py-32 relative"
+      className="py-24 md:py-32 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
             Get In Touch
           </span>
-          <h2
+          <SplitTextReveal
+            as="h2"
             data-testid="contact-title"
             className="text-3xl sm:text-4xl tracking-tight font-medium text-white mb-4"
           >
             Start Your Project
-          </h2>
+          </SplitTextReveal>
           <p className="text-base text-white/70 max-w-xl mx-auto">
             Tell us about your project and we'll respond within 24 hours.
           </p>
@@ -239,21 +246,23 @@ export default function ContactSection() {
                 />
               </div>
 
-              <Button
-                type="submit"
-                data-testid="contact-submit-button"
-                disabled={isSubmitting}
-                className="w-full bg-[#007bff] hover:bg-[#0056b3] text-white rounded-full py-6 text-base transition-all duration-300"
-              >
-                {isSubmitting ? (
-                  "Sending..."
-                ) : (
-                  <>
-                    Send Message
-                    <Send className="ml-2 w-5 h-5" />
-                  </>
-                )}
-              </Button>
+              <MagneticButton className="w-full block">
+                <Button
+                  type="submit"
+                  data-testid="contact-submit-button"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#007bff] hover:bg-[#0056b3] text-white rounded-full py-6 text-base transition-all duration-300"
+                >
+                  {isSubmitting ? (
+                    "Sending..."
+                  ) : (
+                    <>
+                      Send Message
+                      <Send className="ml-2 w-5 h-5" />
+                    </>
+                  )}
+                </Button>
+              </MagneticButton>
             </form>
           </div>
 

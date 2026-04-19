@@ -1,4 +1,5 @@
 import { MessageSquare, Pencil, Code, Rocket } from "lucide-react";
+import SplitTextReveal from "@/components/SplitTextReveal";
 
 const processSteps = [
   {
@@ -36,20 +37,21 @@ export default function ProcessSection() {
     <section
       id="process"
       data-testid="process-section"
-      className="py-24 md:py-32 relative"
+      className="py-24 md:py-32 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
             How We Work
           </span>
-          <h2
+          <SplitTextReveal
+            as="h2"
             data-testid="process-title"
             className="text-3xl sm:text-4xl tracking-tight font-medium text-white"
           >
             Our Process
-          </h2>
+          </SplitTextReveal>
         </div>
 
         {/* Process Steps */}

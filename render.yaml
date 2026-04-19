@@ -1,0 +1,44 @@
+# Alternative deploy target: keeps the Python FastAPI backend alive on Render.
+# You only need this if you don't want to use the Vercel serverless /api/contact.js.
+#
+# Deploy: https://render.com → New → Blueprint → point at this repo.
+# Free tier notes:
+#   - Web service sleeps after 15 min idle (first request after wakes ~30s).
+#   - MongoDB is NOT included — use MongoDB Atlas free tier and set MONGO_URL.
+
+services:
+  - type: web
+    name: webhelm-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn server:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /api/
+    envVars:
+      - key: MONGO_URL
+        sync: false           # set in Render dashboard
+      - key: DB_NAME
+        value: webhelm
+      - key: RESEND_API_KEY
+        sync: false
+      - key: SENDER_EMAIL
+        value: onboarding@resend.dev
+      - key: RECIPIENT_EMAIL
+        sync: false
+      - key: CORS_ORIGINS
+        value: "https://webhelm.co,https://www.webhelm.co"
+
+  - type: web
+    name: webhelm-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: "yarn install --frozen-lockfile && yarn build"
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        value: "https://webhelm-api.onrender.com"
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
