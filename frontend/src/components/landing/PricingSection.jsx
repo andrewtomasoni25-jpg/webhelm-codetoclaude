@@ -272,7 +272,7 @@ export default function PricingSection() {
               <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10">
                 <div className="p-4 md:p-7 flex items-center gap-2 md:gap-4">
                   <img
-                    src="https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png"
+                    src="/hero-logo.png"
                     alt="WebHelm"
                     className="h-8 md:h-12 w-auto shrink-0"
                   />

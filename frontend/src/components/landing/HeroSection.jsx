@@ -17,7 +17,9 @@ const SparklesCore = lazy(() =>
   import("@/components/ui/sparkles").then((m) => ({ default: m.SparklesCore }))
 );
 
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_69c425dc-8d9f-4328-b10c-3751d17cadfd/artifacts/5z228esd_IMG_0296.png";
+// Self-hosted in /public — lives on the same origin as the site, so
+// no preconnect / CORS overhead and no dependency on a third-party CDN.
+const LOGO_URL = "/hero-logo.png";
 
 export default function HeroSection() {
   const heavyGraphics = useHeavyGraphics();
@@ -121,8 +123,8 @@ export default function HeroSection() {
                 data-testid="hero-logo"
                 fetchpriority="high"
                 decoding="async"
-                width="512"
-                height="512"
+                width="1132"
+                height="788"
               />
             </div>
 
