@@ -18,9 +18,12 @@ import { cn } from "@/lib/utils";
  *  - className: string   wrapper class override
  *  - tileClassName: string  per-tile class override (sizes/aspect)
  *
- * Accessibility:
- *  - Respects `prefers-reduced-motion: reduce` — falls back to a
- *    static wrapped grid (no animation, no drag).
+ * Note on `prefers-reduced-motion`: we intentionally do NOT honour it
+ * here. The auto-drift IS the feature — skipping it leaves a static
+ * gallery that most users mistake for "broken". Users who need reduced
+ * motion can still scroll past the section, and the rest of the site
+ * already ignores the preference (neural vortex, star field, split-
+ * text reveals), so this is consistent with existing behaviour.
  */
 export const ImageAutoSlider = ({
   items,
@@ -38,17 +41,6 @@ export const ImageAutoSlider = ({
     }
     return [];
   }, [items, images]);
-
-  const [reducedMotion, setReducedMotion] = React.useState(false);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined" || !window.matchMedia) return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
 
   // Duplicate the list — one full "cycle" of content = the N original
   // entries; the second N are there so that when the first N scroll
@@ -95,12 +87,10 @@ export const ImageAutoSlider = ({
       ro.disconnect();
       window.removeEventListener("load", measure);
     };
-  }, [reducedMotion, entries.length, duplicated.length]);
+  }, [entries.length, duplicated.length]);
 
   // The animation loop: drift when idle, hold position when dragging,
-  // wrap the offset whenever it crosses a cycle boundary. We run the
-  // rAF loop even under reduced-motion so drag + wrap still work — we
-  // just skip the auto-drift in that branch.
+  // wrap the offset whenever it crosses a cycle boundary.
   React.useEffect(() => {
     const tick = (ts) => {
       if (lastTsRef.current == null) lastTsRef.current = ts;
@@ -109,7 +99,7 @@ export const ImageAutoSlider = ({
 
       const cycle = cycleWidthRef.current;
 
-      if (!isDraggingRef.current && !reducedMotion && cycle > 0) {
+      if (!isDraggingRef.current && cycle > 0) {
         const pxPerSec = cycle / speed;
         offsetRef.current += direction * pxPerSec * dt;
       }
@@ -132,7 +122,7 @@ export const ImageAutoSlider = ({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       lastTsRef.current = null;
     };
-  }, [reducedMotion, speed, direction]);
+  }, [speed, direction]);
 
   // Native touch events for iOS Safari reliability.
   //   - pointerdown/move on iOS fire through `pointer-events-none` children
@@ -202,7 +192,7 @@ export const ImageAutoSlider = ({
       el.removeEventListener("touchend", onTouchEnd);
       el.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [reducedMotion]);
+  }, []);
 
   // Mouse drag for desktop — native touch handler above owns all touch input.
   // We only fire this path for a real mouse so we don't double-process on
@@ -227,12 +217,6 @@ export const ImageAutoSlider = ({
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
   };
-
-  // (Previously rendered a static wrapped grid when reduced-motion was on.
-  //  We dropped that branch — users with Reduce Motion enabled still get
-  //  the swipeable carousel, just without the idle drift. The grid
-  //  fallback was effectively an "opt-out of the feature" surface that
-  //  most iOS users have accidentally enabled, and it gutted the UX.)
 
   return (
     <div
