@@ -9,7 +9,11 @@ import React, { useEffect, useRef } from "react";
  *  - Pauses the render loop when the tab is hidden (visibilitychange)
  *  - Pauses when the canvas is fully off-screen (IntersectionObserver)
  *  - Honours prefers-reduced-motion (static first-frame render, no loop)
- *  - DPR capped at 1.5 to keep fragment shader cost sane on Retina
+ *  - DPR capped at 1.0 — the vortex is rendered at 45% opacity behind
+ *    a radial vignette that darkens the centre to 85% black and the
+ *    edges to 45% black, plus a 2px CSS blur. Under that cascade, 1x
+ *    pixel density is visually indistinguishable from 2x/3x on Retina
+ *    but costs up to 9× less GPU fragment-shader work.
  */
 const InteractiveNeuralVortex = ({ className = "" }) => {
   const canvasRef = useRef(null);
@@ -138,7 +142,7 @@ const InteractiveNeuralVortex = ({ className = "" }) => {
     const uScrollProgress = gl.getUniformLocation(program, "u_scroll_progress");
 
     const resizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio, 1.5);
+      const dpr = Math.min(window.devicePixelRatio, 1.0);
       const w = canvasEl.clientWidth || window.innerWidth;
       const h = canvasEl.clientHeight || window.innerHeight;
       canvasEl.width = w * dpr;

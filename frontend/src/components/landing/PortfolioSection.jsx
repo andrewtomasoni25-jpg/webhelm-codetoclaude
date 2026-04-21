@@ -58,7 +58,7 @@ export default function PortfolioSection() {
         style={{
           background:
             "linear-gradient(to right, #007bff, transparent 40%, transparent 60%, #007bff)",
-          filter: "blur(120px)",
+          filter: "blur(80px)",
           mixBlendMode: "screen",
         }}
       />

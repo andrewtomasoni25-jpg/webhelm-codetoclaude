@@ -8,6 +8,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/*
+ * Below-fold performance optimisation.
+ *
+ * `content-visibility: auto` tells the browser: "while this section
+ * is off-screen, you don't need to lay it out or paint it — just
+ * reserve a placeholder the size of `contain-intrinsic-size` and
+ * skip all the work". When it scrolls into view, the browser paints
+ * it for real.
+ *
+ * `content-visibility: auto` implies `contain: size layout paint
+ * style`, so we get layout/paint isolation for free — a slow paint
+ * inside one section can no longer stall the siblings.
+ *
+ * Typical section here is 600-800px tall on desktop, so 700px is a
+ * good intrinsic estimate that avoids scrollbar jump when sections
+ * reveal.
+ */
+.wh-cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
 body {
   margin: 0;
   font-family: 'Manrope', sans-serif;

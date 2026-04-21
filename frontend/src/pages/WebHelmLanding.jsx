@@ -91,7 +91,7 @@ export default function WebHelmLanding() {
           full 220, mobile gets a lighter 110 to keep the DOM cheap. */}
       <div className="fixed inset-0 z-0 pointer-events-none" data-testid="global-stars">
         <StarsBackground
-          count={heavyGraphics ? 220 : 110}
+          count={heavyGraphics ? 140 : 90}
           className="relative w-full h-full"
         />
       </div>
@@ -106,23 +106,29 @@ export default function WebHelmLanding() {
               Own Suspense boundary so it doesn't wait on the below-fold
               chunk, and won't block it either. */}
           <Suspense fallback={null}>
-            <BuiltWithStrip />
+            <div className="wh-cv-auto">
+              <BuiltWithStrip />
+            </div>
           </Suspense>
 
           {/* Body sections — transparent so the fixed vortex shows through.
               The blur feather that used to live here now sits at the TOP of
-              AboutSection so it belongs to that section's shell. */}
+              AboutSection so it belongs to that section's shell.
+
+              Each section wrapped in .wh-cv-auto so the browser skips
+              layout + paint for off-screen sections. Cuts first-render
+              work substantially and isolates paint between sections. */}
           <div className="relative">
             <Suspense fallback={<SectionFallback />}>
-              <AboutSection />
-              <PortfolioSection />
-              <ServicesSection />
-              <PricingSection />
-              <TestimonialsSection />
-              <ProcessSection />
-              <CTASection />
-              <ContactSection />
-              <FAQSection />
+              <div className="wh-cv-auto"><AboutSection /></div>
+              <div className="wh-cv-auto"><PortfolioSection /></div>
+              <div className="wh-cv-auto"><ServicesSection /></div>
+              <div className="wh-cv-auto"><PricingSection /></div>
+              <div className="wh-cv-auto"><TestimonialsSection /></div>
+              <div className="wh-cv-auto"><ProcessSection /></div>
+              <div className="wh-cv-auto"><CTASection /></div>
+              <div className="wh-cv-auto"><ContactSection /></div>
+              <div className="wh-cv-auto"><FAQSection /></div>
             </Suspense>
           </div>
         </main>
