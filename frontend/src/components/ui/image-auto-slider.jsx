@@ -77,7 +77,7 @@ export const ImageAutoSlider = ({
   // of the duplicate half). This is the only wrap distance that yields
   // a visually seamless loop — scrollWidth/2 is off by half-a-gap.
   React.useEffect(() => {
-    if (!trackRef.current || reducedMotion || entries.length === 0) return;
+    if (!trackRef.current || entries.length === 0) return;
     const el = trackRef.current;
 
     const measure = () => {
@@ -98,10 +98,10 @@ export const ImageAutoSlider = ({
   }, [reducedMotion, entries.length, duplicated.length]);
 
   // The animation loop: drift when idle, hold position when dragging,
-  // wrap the offset whenever it crosses a cycle boundary.
+  // wrap the offset whenever it crosses a cycle boundary. We run the
+  // rAF loop even under reduced-motion so drag + wrap still work — we
+  // just skip the auto-drift in that branch.
   React.useEffect(() => {
-    if (reducedMotion) return;
-
     const tick = (ts) => {
       if (lastTsRef.current == null) lastTsRef.current = ts;
       const dt = (ts - lastTsRef.current) / 1000;
@@ -109,7 +109,7 @@ export const ImageAutoSlider = ({
 
       const cycle = cycleWidthRef.current;
 
-      if (!isDraggingRef.current && cycle > 0) {
+      if (!isDraggingRef.current && !reducedMotion && cycle > 0) {
         const pxPerSec = cycle / speed;
         offsetRef.current += direction * pxPerSec * dt;
       }
@@ -145,7 +145,7 @@ export const ImageAutoSlider = ({
   //     across the slider still scrolls the page naturally.
   React.useEffect(() => {
     const el = trackRef.current;
-    if (!el || reducedMotion) return;
+    if (!el) return;
 
     let touchStartX = 0;
     let touchStartY = 0;
@@ -208,7 +208,6 @@ export const ImageAutoSlider = ({
   // We only fire this path for a real mouse so we don't double-process on
   // devices that synthesise both touch and mouse events (older Android etc).
   const onMouseDown = (e) => {
-    if (reducedMotion) return;
     // Ignore right/middle clicks
     if (e.button !== 0) return;
     isDraggingRef.current = true;
@@ -229,22 +228,11 @@ export const ImageAutoSlider = ({
     window.addEventListener("mouseup", onUp);
   };
 
-  // Reduced-motion fallback: static, wrapping grid (no animation, no drag).
-  if (reducedMotion) {
-    return (
-      <div className={cn("relative w-full overflow-hidden", className)}>
-        <div className="flex flex-wrap justify-center gap-4 px-6 py-6">
-          {entries.map((entry, index) => (
-            <PortfolioTile
-              key={index}
-              entry={entry}
-              tileClassName={tileClassName || defaultTile}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
+  // (Previously rendered a static wrapped grid when reduced-motion was on.
+  //  We dropped that branch — users with Reduce Motion enabled still get
+  //  the swipeable carousel, just without the idle drift. The grid
+  //  fallback was effectively an "opt-out of the feature" surface that
+  //  most iOS users have accidentally enabled, and it gutted the UX.)
 
   return (
     <div
