@@ -1,25 +1,18 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { StarsBackground } from "@/components/ui/stars-background";
-import StaticVortex from "@/components/ui/static-vortex";
 import VaporizeTextCycle, { Tag } from "@/components/ui/vapour-text-effect";
 import MagneticButton from "@/components/MagneticButton";
 import useHeavyGraphics from "@/hooks/use-heavy-graphics";
 
-// Desktop-only animations — lazy-loaded so mobile doesn't even
-// download three.js or the sparkles particle system.
-const ShaderLinesAnimation = lazy(() =>
-  import("@/components/ui/shader-lines").then((m) => ({
-    default: m.ShaderLinesAnimation,
-  }))
-);
-const SparklesCore = lazy(() =>
-  import("@/components/ui/sparkles").then((m) => ({ default: m.SparklesCore }))
-);
-
 // Self-hosted in /public — lives on the same origin as the site, so
 // no preconnect / CORS overhead and no dependency on a third-party CDN.
 const LOGO_URL = "/hero-logo.png";
+// Hero centerpiece — a 3D-rendered ship's helm that slowly rotates.
+// Replaces the old shader-lines + sparkles + static-vortex stack with
+// a single ~80 KB WebP that leans on GPU-composited CSS rotation
+// instead of per-frame JavaScript. Net perf win vs. the old stack.
+const HELM_URL = "/hero-helm.webp";
 
 export default function HeroSection() {
   const heavyGraphics = useHeavyGraphics();
@@ -58,56 +51,71 @@ export default function HeroSection() {
       data-testid="hero-section"
       className="relative min-h-screen overflow-hidden bg-[#0b0b0b]"
     >
-      {/* Static faux-vortex — paint-once CSS/SVG layer. Renders on every
-          device as the base atmosphere. Zero runtime cost so it sits
-          safely behind the shader lines without affecting performance. */}
-      <div className="absolute inset-0 z-0">
-        <StaticVortex withVignette={false} />
-      </div>
+      {/* Local CSS — slow helm rotation. 60s per full turn, linear
+          timing, GPU-composited. Zero main-thread cost: the transform
+          runs entirely on the compositor thread, so the animation
+          survives jank from elsewhere on the page. */}
+      <style>{`
+        @keyframes wh-helm-spin {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .wh-helm {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: min(120vw, 1400px);
+          height: min(120vw, 1400px);
+          max-width: none;
+          object-fit: contain;
+          transform: translate(-50%, -50%);
+          animation: wh-helm-spin 60s linear infinite;
+          will-change: transform;
+          opacity: 0.85;
+          pointer-events: none;
+          user-select: none;
+        }
+        /* Respect reduced-motion: hold the helm static but still show it. */
+        @media (prefers-reduced-motion: reduce) {
+          .wh-helm { animation: none; }
+        }
+      `}</style>
 
-      {/* Shader lines — the animated three.js layer. DESKTOP ONLY.
-          On mobile it costs ~15-19s of TBT on mid-range phones, which
-          tanks the Lighthouse score. The static faux-vortex behind
-          carries the mood on phones without the CPU cost. */}
-      {heavyGraphics && (
-        <div className="absolute inset-0 z-[1]">
-          <Suspense fallback={null}>
-            <ShaderLinesAnimation />
-          </Suspense>
-        </div>
-      )}
+      {/* The helm — hero centerpiece. Sits behind the content layer
+          (z-20) but above the starfield. Rotates slowly via pure CSS. */}
+      <img
+        src={HELM_URL}
+        alt=""
+        aria-hidden="true"
+        className="wh-helm z-[3]"
+        fetchpriority="high"
+        decoding="async"
+        width="1497"
+        height="1449"
+      />
 
-      {/* Twinkling stars layer — pure CSS animation, sits above the
-          shader lines so the starfield reads through. Count is tuned
-          lighter than the global one so the hero doesn't feel busy. */}
+      {/* Twinkling stars layer — sparse, to read as cosmic atmosphere
+          without competing with the helm. */}
       <div className="absolute inset-0 z-[2] pointer-events-none">
         <StarsBackground
-          count={heavyGraphics ? 140 : 80}
+          count={heavyGraphics ? 50 : 35}
           className="relative w-full h-full"
         />
       </div>
 
-      {/* Sparkles overlay — desktop only. On phones a particle field
-          this dense fights the vaporize text and spikes TBT. */}
-      {heavyGraphics && (
-        <div className="absolute inset-0 z-[5] pointer-events-none">
-          <Suspense fallback={null}>
-            <SparklesCore
-              id="hero-sparkles"
-              background="transparent"
-              minSize={0.6}
-              maxSize={1.4}
-              particleDensity={45}
-              particleColor="#ffffff"
-              speed={1}
-              className="w-full h-full"
-            />
-          </Suspense>
-        </div>
-      )}
+      {/* Dark radial vignette over the helm — darkens the exact region
+          where the headline / logo / CTAs sit so text stays crisp
+          while the helm silhouette reads at the edges. */}
+      <div
+        className="absolute inset-0 z-[4] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(11,11,11,0.55) 0%, rgba(11,11,11,0.30) 40%, rgba(11,11,11,0) 75%)",
+        }}
+      />
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-[#0b0b0b]/20 via-[#0b0b0b]/40 to-[#0b0b0b] pointer-events-none" />
+      {/* Bottom gradient fade — blends hero into the next section. */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-[#0b0b0b] pointer-events-none" />
 
       {/* Content — single centered column */}
       <div className="relative z-20 min-h-screen flex items-center justify-center pt-20">
