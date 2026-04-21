@@ -100,6 +100,15 @@ export default function WebHelmLanding() {
         <main>
           <HeroSection />
 
+          {/* Credibility strip sits directly under the Hero — new agency,
+              no client testimonials yet, but a genuinely strong AI-forward
+              stack that reads as "real tools, real stack" on first glance.
+              Own Suspense boundary so it doesn't wait on the below-fold
+              chunk, and won't block it either. */}
+          <Suspense fallback={null}>
+            <BuiltWithStrip />
+          </Suspense>
+
           {/* Body sections — transparent so the fixed vortex shows through.
               The blur feather that used to live here now sits at the TOP of
               AboutSection so it belongs to that section's shell. */}
@@ -110,7 +119,6 @@ export default function WebHelmLanding() {
               <ServicesSection />
               <PricingSection />
               <TestimonialsSection />
-              <BuiltWithStrip />
               <ProcessSection />
               <CTASection />
               <ContactSection />
