@@ -81,7 +81,7 @@ export default function PortfolioSection() {
           </LiquidButton>
         </Link>
         <p className="text-center text-white/30 text-xs mt-6 tracking-wide">
-          Hover to pause · {TOP_ROW.length}+ projects — full index with descriptions on the Our Work page
+          Swipe to explore · {TOP_ROW.length}+ projects — full index with descriptions on the Our Work page
         </p>
       </div>
     </section>
