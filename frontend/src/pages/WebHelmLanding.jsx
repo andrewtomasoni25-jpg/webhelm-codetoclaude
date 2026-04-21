@@ -33,6 +33,9 @@ const PricingSection = lazy(() =>
 const TestimonialsSection = lazy(() =>
   import("@/components/landing/TestimonialsSection")
 );
+const BuiltWithStrip = lazy(() =>
+  import("@/components/landing/BuiltWithStrip")
+);
 const ProcessSection = lazy(() =>
   import("@/components/landing/ProcessSection")
 );
@@ -107,6 +110,7 @@ export default function WebHelmLanding() {
               <ServicesSection />
               <PricingSection />
               <TestimonialsSection />
+              <BuiltWithStrip />
               <ProcessSection />
               <CTASection />
               <ContactSection />
