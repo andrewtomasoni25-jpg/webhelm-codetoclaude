@@ -134,35 +134,99 @@ export const ImageAutoSlider = ({
     };
   }, [reducedMotion, speed, direction]);
 
-  // Pointer handlers — one unified path for mouse, touch, and pen.
-  // `touch-action: pan-y` on the track means the browser still handles
-  // vertical page scroll; only horizontal gestures come to us.
-  const onPointerDown = (e) => {
+  // Native touch events for iOS Safari reliability.
+  //   - pointerdown/move on iOS fire through `pointer-events-none` children
+  //     inconsistently, and iOS cancels pointers the moment it thinks a
+  //     gesture is "vertical scroll" — even when touch-action says otherwise.
+  //   - Native touch events with `{ passive: false }` give us the one thing
+  //     pointer events can't: the ability to preventDefault() the page's
+  //     scroll once we've committed to a horizontal drag.
+  //   - We detect direction after an 8-px threshold so a vertical fling
+  //     across the slider still scrolls the page naturally.
+  React.useEffect(() => {
+    const el = trackRef.current;
+    if (!el || reducedMotion) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartOffset = 0;
+    let touchActive = false;
+    let directionLocked = null; // 'h' | 'v' | null
+
+    const onTouchStart = (e) => {
+      if (e.touches.length !== 1) return;
+      touchActive = true;
+      directionLocked = null;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartOffset = offsetRef.current;
+    };
+
+    const onTouchMove = (e) => {
+      if (!touchActive || e.touches.length !== 1) return;
+      const dx = e.touches[0].clientX - touchStartX;
+      const dy = e.touches[0].clientY - touchStartY;
+
+      if (directionLocked == null) {
+        // Wait until the user has moved at least 8px before committing,
+        // so tiny jitter during a vertical scroll doesn't hijack the page.
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+        directionLocked = Math.abs(dx) > Math.abs(dy) ? "h" : "v";
+        if (directionLocked === "h") {
+          isDraggingRef.current = true;
+        }
+      }
+
+      if (directionLocked === "h") {
+        // Kill the browser's default behaviour — this is our gesture now.
+        // Must be `{ passive: false }` listener for preventDefault to work.
+        e.preventDefault();
+        offsetRef.current = touchStartOffset + dx;
+      }
+      // directionLocked === 'v' → do nothing, browser scrolls the page.
+    };
+
+    const onTouchEnd = () => {
+      touchActive = false;
+      directionLocked = null;
+      isDraggingRef.current = false;
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    el.addEventListener("touchcancel", onTouchEnd);
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, [reducedMotion]);
+
+  // Mouse drag for desktop — native touch handler above owns all touch input.
+  // We only fire this path for a real mouse so we don't double-process on
+  // devices that synthesise both touch and mouse events (older Android etc).
+  const onMouseDown = (e) => {
     if (reducedMotion) return;
+    // Ignore right/middle clicks
+    if (e.button !== 0) return;
     isDraggingRef.current = true;
     dragStartXRef.current = e.clientX;
     dragStartOffsetRef.current = offsetRef.current;
-    try {
-      e.currentTarget.setPointerCapture?.(e.pointerId);
-    } catch {
-      /* older browsers */
-    }
-  };
 
-  const onPointerMove = (e) => {
-    if (!isDraggingRef.current) return;
-    const dx = e.clientX - dragStartXRef.current;
-    offsetRef.current = dragStartOffsetRef.current + dx;
-  };
-
-  const endDrag = (e) => {
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
-    try {
-      e.currentTarget.releasePointerCapture?.(e.pointerId);
-    } catch {
-      /* already released */
-    }
+    const onMove = (ev) => {
+      if (!isDraggingRef.current) return;
+      const dx = ev.clientX - dragStartXRef.current;
+      offsetRef.current = dragStartOffsetRef.current + dx;
+    };
+    const onUp = () => {
+      isDraggingRef.current = false;
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
   };
 
   // Reduced-motion fallback: static, wrapping grid (no animation, no drag).
@@ -206,10 +270,22 @@ export const ImageAutoSlider = ({
             transparent 100%
           );
         }
-        .webhelm-track {
+        /* touch-action: pan-y lets the browser keep handling vertical
+           page scroll; any horizontal gesture falls through to our
+           native touchmove handler (which calls preventDefault).
+           Applying it to every descendant is critical on iOS Safari:
+           otherwise a touch that starts on a tile (not the track
+           itself) inherits the default touch-action and iOS routes
+           the gesture unpredictably. */
+        .webhelm-track,
+        .webhelm-track * {
           touch-action: pan-y;
-          cursor: grab;
+          -webkit-user-select: none;
           user-select: none;
+          -webkit-touch-callout: none;
+        }
+        .webhelm-track {
+          cursor: grab;
         }
         .webhelm-track:active {
           cursor: grabbing;
@@ -221,11 +297,7 @@ export const ImageAutoSlider = ({
           <div
             ref={trackRef}
             className="webhelm-track flex gap-6 w-max will-change-transform"
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={endDrag}
-            onPointerCancel={endDrag}
-            onPointerLeave={endDrag}
+            onMouseDown={onMouseDown}
           >
             {duplicated.map((entry, index) => (
               <PortfolioTile
