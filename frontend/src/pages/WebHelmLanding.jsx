@@ -99,7 +99,7 @@ export default function WebHelmLanding() {
           full 220, mobile gets a lighter 110 to keep the DOM cheap. */}
       <div className="fixed inset-0 z-0 pointer-events-none" data-testid="global-stars">
         <StarsBackground
-          count={heavyGraphics ? 140 : 90}
+          count={heavyGraphics ? 140 : 40}
           className="relative w-full h-full"
         />
       </div>
