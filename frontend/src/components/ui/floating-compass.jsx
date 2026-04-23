@@ -44,11 +44,14 @@ export default function FloatingCompass({
   targetSelector = "#portfolio",
   rotationSeconds = 240,
   mode = "hide-when-visible",
-  // Default opacity tuning — overridable per instance. Mobile uses
-  // the smaller value so the ornament sits quieter on phones.
-  opacityMobile = 0.07,
+  // Default opacity tuning — overridable per instance. Mobile now
+  // matches desktop so the ornament reads the same on phones; the
+  // earlier split tuning left mobile feeling emptier than desktop,
+  // which is the opposite of what a mobile user notices (smaller
+  // viewport = ornament is a larger share of what they see).
+  opacityMobile = 0.09,
   opacityDesktop = 0.09,
-  sizeMobile = "min(85vw, 640px)",
+  sizeMobile = "min(95vw, 720px)",
   sizeDesktop = "min(55vw, 760px)",
   testId = "floating-compass",
 }) {
