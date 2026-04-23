@@ -154,7 +154,7 @@ export default function WebHelmLanding() {
           <div className="relative">
             <Suspense fallback={<SectionFallback />}>
               <div className="wh-cv-auto"><AboutSection /></div>
-              <div className="wh-cv-auto"><PortfolioSection /></div>
+              <div className="wh-cv-auto wh-cv-tall"><PortfolioSection /></div>
               <div className="wh-cv-auto"><ServicesSection /></div>
               <div className="wh-cv-auto"><PricingSection /></div>
               <div className="wh-cv-auto"><FoundingPartnerSection /></div>
