@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const LOGO_URL = "/hero-logo.png";
+const LOGO_URL = "/hero-logo.webp";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -11,7 +11,7 @@ export default function Header() {
     { href: "#hero", label: "Home" },
     { href: "#services", label: "Services" },
     { href: "#pricing", label: "Pricing" },
-    { href: "#portfolio", label: "Portfolio" },
+    { href: "#portfolio", label: "Anthology" },
     { href: "#contact", label: "Contact" },
   ];
 

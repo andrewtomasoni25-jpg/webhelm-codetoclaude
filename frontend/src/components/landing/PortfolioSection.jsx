@@ -32,21 +32,21 @@ export default function PortfolioSection() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
-            Our Work
+            The Archive
           </span>
           <SplitTextReveal
             as="h2"
             data-testid="portfolio-title"
             className="text-3xl sm:text-4xl md:text-5xl tracking-tight font-medium text-white mb-4"
           >
-            Portfolio
+            The Anthology
           </SplitTextReveal>
           <p className="text-white/60 max-w-2xl mx-auto mb-3">
-            A continuous showcase of our recent projects — custom designs powered by cutting-edge AI tools that drive real results
+            A curated record of the work — custom builds, hand-designed and AI-accelerated, grouped into three series.
           </p>
           <div className="flex items-center justify-center gap-2 text-[#007bff] text-sm">
             <Sparkles className="w-4 h-4" />
-            <span className="font-medium">AI-Enhanced Design & Development</span>
+            <span className="font-medium">Elite human design · Hyper-efficient AI delivery</span>
             <Sparkles className="w-4 h-4" />
           </div>
         </div>
@@ -70,18 +70,18 @@ export default function PortfolioSection() {
       <div className="relative z-10 mt-12 flex flex-col items-center justify-center">
         <Link
           to="/work"
-          aria-label="Open the full WebHelm project archive"
+          aria-label="Open the full WebHelm Anthology"
           data-testid="portfolio-view-all"
         >
           <LiquidButton size="xl" className="text-white text-base font-medium">
             <span className="flex items-center gap-2">
-              Explore all projects
+              Open the Anthology
               <ArrowRight className="w-4 h-4" />
             </span>
           </LiquidButton>
         </Link>
         <p className="text-center text-white/30 text-xs mt-6 tracking-wide">
-          Swipe to explore · {TOP_ROW.length}+ projects — full index with descriptions on the Our Work page
+          Swipe to preview · the full Anthology sits on the next page, grouped into three series
         </p>
       </div>
     </section>

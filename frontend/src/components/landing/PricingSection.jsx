@@ -49,10 +49,23 @@ const comparisonGroups = [
   },
 ];
 
+// Business and Premium both carry the same 30% Founding Partner
+// discount. We show the standing fee struck through next to the
+// founding rate so the saving reads at a glance.
 const comparisonColumns = [
   { title: "Landing Page", price: "£750", highlighted: false },
-  { title: "Business", price: "£1,400", highlighted: true },
-  { title: "Premium", price: "£2,200", highlighted: false },
+  {
+    title: "Business",
+    price: "£980",
+    originalPrice: "£1,400",
+    highlighted: true,
+  },
+  {
+    title: "Premium",
+    price: "£1,540",
+    originalPrice: "£2,200",
+    highlighted: false,
+  },
 ];
 
 const pricingPlans = [
@@ -110,7 +123,8 @@ const pricingPlans = [
   {
     id: "business",
     title: "Business",
-    price: "£1,400",
+    price: "£980",
+    originalPrice: "£1,400",
     category: "Most Popular",
     description: "The best choice for most businesses — designed to bring in customers",
     image: "",
@@ -127,7 +141,8 @@ const pricingPlans = [
   {
     id: "premium",
     title: "Premium",
-    price: "£2,200",
+    price: "£1,540",
+    originalPrice: "£2,200",
     category: "Premium",
     description: "Maximise conversions, leads, and performance for serious growth",
     image: "",
@@ -220,9 +235,23 @@ export default function PricingSection() {
               <h3 className="text-lg font-medium text-white leading-tight mb-1">
                 {plan.title}
               </h3>
-              <p className="text-2xl font-light text-white mb-4 leading-none">
-                {plan.price}
-              </p>
+              <div className="mb-4 leading-none">
+                <div className="flex items-baseline gap-2 flex-wrap">
+                  <span className="text-2xl font-light text-white">
+                    {plan.price}
+                  </span>
+                  {plan.originalPrice && (
+                    <span className="text-sm text-white/40 line-through">
+                      {plan.originalPrice}
+                    </span>
+                  )}
+                </div>
+                {plan.originalPrice && (
+                  <span className="inline-block mt-1.5 text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]">
+                    Founding Partner · 30% off
+                  </span>
+                )}
+              </div>
               <ul className="space-y-2 flex-1 mb-4">
                 {plan.features.slice(0, 4).map((f, i) => (
                   <li key={i} className="flex items-start gap-2">
@@ -272,7 +301,7 @@ export default function PricingSection() {
               <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10">
                 <div className="p-4 md:p-7 flex items-center gap-2 md:gap-4">
                   <img
-                    src="/hero-logo.png"
+                    src="/hero-logo.webp"
                     alt="WebHelm"
                     className="h-8 md:h-12 w-auto shrink-0"
                   />
@@ -295,9 +324,23 @@ export default function PricingSection() {
                     <h4 className="text-base md:text-2xl font-medium text-white leading-tight">
                       {col.title}
                     </h4>
-                    <p className="text-xl md:text-3xl font-light text-white mt-1.5 whitespace-nowrap">
-                      {col.price}
-                    </p>
+                    <div className="mt-1.5 flex flex-col items-center gap-0.5">
+                      <div className="flex items-baseline justify-center gap-2 flex-wrap">
+                        <p className="text-xl md:text-3xl font-light text-white whitespace-nowrap">
+                          {col.price}
+                        </p>
+                        {col.originalPrice && (
+                          <p className="text-xs md:text-sm text-white/40 line-through whitespace-nowrap">
+                            {col.originalPrice}
+                          </p>
+                        )}
+                      </div>
+                      {col.originalPrice && (
+                        <span className="text-[9px] md:text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]">
+                          30% off · Founding rate
+                        </span>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

@@ -19,7 +19,7 @@ const SparklesCore = lazy(() =>
 
 // Self-hosted in /public — lives on the same origin as the site, so
 // no preconnect / CORS overhead and no dependency on a third-party CDN.
-const LOGO_URL = "/hero-logo.png";
+const LOGO_URL = "/hero-logo.webp";
 
 export default function HeroSection() {
   const heavyGraphics = useHeavyGraphics();

@@ -1,6 +1,5 @@
 import { Monitor, Layout, RefreshCw, Palette, Rocket, Bot, LifeBuoy } from "lucide-react";
 import SplitTextReveal from "@/components/SplitTextReveal";
-import { motion } from "framer-motion";
 
 const services = [
   {
@@ -61,6 +60,12 @@ export default function ServicesSection() {
       data-testid="services-section"
       className="py-24 md:py-32 relative overflow-hidden"
     >
+      {/* The helm used to live here as a section-scoped ornament.
+          It has been promoted to a page-level <FloatingCompass />
+          (helm image) in WebHelmLanding, so it now drifts in a
+          fixed position and fades out cleanly as soon as you leave
+          the Services section. */}
+
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="text-center mb-16">

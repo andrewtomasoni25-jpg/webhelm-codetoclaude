@@ -20,7 +20,7 @@ import MagneticButton from "@/components/MagneticButton";
 // otherwise fall back to a relative path — which on Vercel is served
 // by the serverless function at /api/contact.
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
-const LOGO_URL = "/hero-logo.png";
+const LOGO_URL = "/hero-logo.webp";
 
 const projectTypes = [
   "Website Design",

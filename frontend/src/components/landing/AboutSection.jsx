@@ -1,11 +1,44 @@
-import { Users, Lightbulb, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import SplitTextReveal from "@/components/SplitTextReveal";
 
-const stats = [
-  { id: "satisfaction", value: "98%", label: "Client Satisfaction" },
-  { id: "ontime", value: "100%", label: "On-Time Delivery" },
-  { id: "years", value: "2", label: "Years Experience" },
+// Four-part narrative — Problem, Gap, Solution, Result. Rewritten to
+// the tightened copy brief: 1-2 sentences each, clear, business-
+// focused, no abstract or poetic language. Previous version leaned
+// too far into metaphor ("we set the nautical north", "hyper-
+// efficient AI") — swapped for plain, confident outcomes.
+const PILLARS = [
+  {
+    id: "problem",
+    label: "The Problem",
+    body:
+      "Most business websites feel outdated. Slow, generic, and easy to scroll past \u2014 which in a competitive market means fewer enquiries and fewer customers.",
+  },
+  {
+    id: "gap",
+    label: "The Gap",
+    body:
+      "The market splits between cheap and instant, or slow and expensive. Owners are left choosing between poor quality or three-month waits, with no real middle ground.",
+  },
+  {
+    id: "solution",
+    label: "The Solution",
+    body:
+      "We fill that gap. Modern design paired with efficient systems means websites that are fast, clean, and built to convert \u2014 delivered in days, not months.",
+  },
+  {
+    id: "result",
+    label: "The Result",
+    body:
+      "A professional website that reflects your business properly, delivered faster than traditional agencies and built to actually generate enquiries.",
+  },
+];
+
+// Truthful pillars replacing the fake "98% satisfaction / 2 years experience"
+// stats. Each is verifiable from the public offer.
+const FACTS = [
+  { id: "velocity", value: "48\u201372h", label: "Production-ready build" },
+  { id: "rate", value: "30% off", label: "Founding Partner rate" },
+  { id: "slots", value: "4 / 15", label: "Founding slots remaining" },
 ];
 
 export default function AboutSection() {
@@ -15,6 +48,11 @@ export default function AboutSection() {
       data-testid="about-section"
       className="relative overflow-hidden py-20 md:py-28"
     >
+      {/* The compass ornament used to live here as a section-scoped
+          element. It has been promoted to a page-level <FloatingCompass />
+          rendered from WebHelmLanding — it now drifts behind every
+          section except the Anthology, where it fades out of the way. */}
+
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12">
         {/* Section header */}
         <motion.div
@@ -25,12 +63,12 @@ export default function AboutSection() {
           className="text-center mb-10"
         >
           <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
-            About Us
+            Why WebHelm
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium text-white mb-4">
-            Crafting Digital Experiences <br />
+            Elite human design, <br />
             <span className="text-4xl md:text-[4.5rem] font-bold mt-1 leading-none bg-gradient-to-r from-[#007bff] via-[#f5f5dc] to-[#007bff] bg-clip-text text-transparent">
-              That Drive Results
+              hyper-efficient delivery
             </span>
           </h2>
         </motion.div>
@@ -51,7 +89,7 @@ export default function AboutSection() {
           />
         </motion.div>
 
-        {/* Content block */}
+        {/* Problem / Gap / Solution / Result — four-pillar narrative */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -62,56 +100,27 @@ export default function AboutSection() {
           <SplitTextReveal
             as="h3"
             data-testid="about-title"
-            className="text-2xl sm:text-3xl tracking-tight font-medium text-white mb-6"
+            className="text-2xl sm:text-3xl tracking-tight font-medium text-white mb-10"
           >
-            Modern Web Design, Powered by AI
+            A deliberate position in the market
           </SplitTextReveal>
-          <p className="text-base leading-relaxed text-white/70 mb-6">
-            At WebHelm, we combine creative design expertise with cutting-edge
-            AI tools to deliver websites faster and smarter than traditional
-            agencies. Our AI-enhanced workflow means better designs, quicker
-            turnarounds, and results that actually move the needle for your
-            business.
-          </p>
-          <p className="text-base leading-relaxed text-white/70 mb-10">
-            Founded with a simple mission: to make professional web design
-            accessible to businesses of all sizes. What sets us apart is our
-            embrace of AI technology — from intelligent layout generation to
-            automated performance optimisation — giving you an unfair
-            advantage over competitors still doing things the old way.
-          </p>
 
-          {/* Values */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#007bff]/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-[#007bff]" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 text-left mb-12">
+            {PILLARS.map((p) => (
+              <div key={p.id} data-testid={`pillar-${p.id}`}>
+                <span className="text-[11px] tracking-[0.25em] uppercase font-bold text-[#007bff] mb-3 block">
+                  {p.label}
+                </span>
+                <p className="text-[15px] leading-relaxed text-white/75">
+                  {p.body}
+                </p>
               </div>
-              <span className="text-white/80 text-sm font-medium">
-                Client-First
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#007bff]/10 flex items-center justify-center">
-                <Lightbulb className="w-5 h-5 text-[#007bff]" />
-              </div>
-              <span className="text-white/80 text-sm font-medium">
-                Innovative
-              </span>
-            </div>
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#007bff]/10 flex items-center justify-center">
-                <Award className="w-5 h-5 text-[#007bff]" />
-              </div>
-              <span className="text-white/80 text-sm font-medium">
-                Quality-Driven
-              </span>
-            </div>
+            ))}
           </div>
 
-          {/* Stats */}
+          {/* Verifiable facts — no fabricated metrics. */}
           <div className="grid grid-cols-3 gap-6">
-            {stats.map((stat) => (
+            {FACTS.map((stat) => (
               <div key={stat.id} data-testid={`stat-${stat.id}`}>
                 <p className="text-3xl font-light text-[#007bff]">
                   {stat.value}
@@ -121,7 +130,6 @@ export default function AboutSection() {
             ))}
           </div>
         </motion.div>
-
       </div>
     </section>
   );
