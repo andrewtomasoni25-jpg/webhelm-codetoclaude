@@ -52,6 +52,7 @@ export const ImageAutoSlider = ({
 
   // Refs — all the animation state lives outside React so the rAF loop
   // never triggers a re-render.
+  const containerRef = React.useRef(null);
   const trackRef = React.useRef(null);
   const offsetRef = React.useRef(0);           // current translateX (px)
   const cycleWidthRef = React.useRef(0);       // px distance of one full cycle
@@ -60,6 +61,15 @@ export const ImageAutoSlider = ({
   const isDraggingRef = React.useRef(false);
   const dragStartXRef = React.useRef(0);
   const dragStartOffsetRef = React.useRef(0);
+  // Gate the rAF loop: run only when the slider is on-screen AND the
+  // tab is visible. On mobile this is the single biggest source of
+  // Anthology scroll-in lag — without it the loop burns frames at 60fps
+  // even while the user is reading Hero/Services, so the scroll frame
+  // where the section first reveals is already behind on its budget.
+  const isVisibleRef = React.useRef(false);
+  const isPageVisibleRef = React.useRef(
+    typeof document === "undefined" ? true : !document.hidden
+  );
 
   // -1 = drift left (default), +1 = drift right (when reverse=true).
   const direction = reverse ? 1 : -1;
@@ -90,7 +100,9 @@ export const ImageAutoSlider = ({
   }, [entries.length, duplicated.length]);
 
   // The animation loop: drift when idle, hold position when dragging,
-  // wrap the offset whenever it crosses a cycle boundary.
+  // wrap the offset whenever it crosses a cycle boundary. Only runs
+  // while the slider is on-screen and the tab is visible — see
+  // isVisibleRef/isPageVisibleRef setup above.
   React.useEffect(() => {
     const tick = (ts) => {
       if (lastTsRef.current == null) lastTsRef.current = ts;
@@ -117,10 +129,60 @@ export const ImageAutoSlider = ({
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const start = () => {
+      if (rafRef.current != null) return;        // already running
+      lastTsRef.current = null;                   // avoid a huge dt jump
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      if (rafRef.current != null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       lastTsRef.current = null;
+    };
+
+    // Single source of truth: run iff visible in viewport AND page is
+    // foregrounded. Both flags are flipped by the observers below.
+    const sync = () => {
+      if (isVisibleRef.current && isPageVisibleRef.current) start();
+      else stop();
+    };
+
+    // Watch the container — not the track — because the track has
+    // `w-max` and extends far beyond the viewport; IO would consider
+    // it intersecting long before the user can see the section.
+    const containerEl = containerRef.current;
+    let io;
+    if (containerEl && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            isVisibleRef.current = e.isIntersecting;
+          }
+          sync();
+        },
+        // Give the loop a head start ~200px before the section enters
+        // so the first visible frame is already drifting, not static.
+        { rootMargin: "200px 0px" }
+      );
+      io.observe(containerEl);
+    } else {
+      // Fallback: assume visible (desktop without IO support is ancient).
+      isVisibleRef.current = true;
+    }
+
+    const onVis = () => {
+      isPageVisibleRef.current = !document.hidden;
+      sync();
+    };
+    document.addEventListener("visibilitychange", onVis);
+
+    sync();
+    return () => {
+      stop();
+      if (io) io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
     };
   }, [speed, direction]);
 
@@ -220,6 +282,7 @@ export const ImageAutoSlider = ({
 
   return (
     <div
+      ref={containerRef}
       className={cn(
         "relative w-full overflow-hidden flex items-center justify-center",
         className
@@ -310,6 +373,8 @@ const PortfolioTile = ({ entry, tileClassName }) => {
         draggable={false}
         className="w-full h-full object-cover transition-all duration-500 group-hover:brightness-110 pointer-events-none select-none"
         loading="lazy"
+        decoding="async"
+        fetchpriority="low"
       />
       {brand && (
         <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-5 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
