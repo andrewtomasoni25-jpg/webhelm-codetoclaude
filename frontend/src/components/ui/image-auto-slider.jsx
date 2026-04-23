@@ -5,10 +5,32 @@ import { cn } from "@/lib/utils";
  * Portfolio slider with drag-to-swipe + continuous auto-scroll.
  *
  * Behaviour:
- *  - Idle: track drifts slowly to the left (or right, if `reverse`).
- *  - User drags (mouse or touch): auto-scroll pauses, track follows finger.
- *  - Release: auto-scroll resumes from wherever the user left it.
- *  - Infinite loop: content is duplicated; offset wraps seamlessly.
+ *  - Idle: track drifts slowly via a CSS @keyframes animation running
+ *    on the compositor thread — stays buttery even while the main
+ *    thread is busy (scroll, paint, etc).
+ *  - User drags (mouse or touch): animation pauses, track follows
+ *    finger via inline transform.
+ *  - Release: animation resumes from wherever the user left it by
+ *    computing the equivalent `animation-delay` (negative delay =
+ *    "start the animation already X seconds in").
+ *  - Infinite loop: content is duplicated and the keyframe endpoint
+ *    is exactly one cycle width (measured in JS, fed into CSS via a
+ *    custom property), so the duplicate slides into the seam seamlessly.
+ *
+ * ## Why CSS animation + JS drag, not rAF
+ *
+ * Previously the drift ran on a JS rAF loop that wrote `transform`
+ * every frame. That approach can keep 60fps in isolation, but on
+ * mobile the main thread is continually busy during the user's
+ * scroll (scroll handling, paint for the vortex/starfield, layout
+ * for sibling sections via content-visibility). The rAF callback
+ * competes with all of that and you see the result as marquee jank
+ * during scroll-in.
+ *
+ * A CSS @keyframes animation is handled by the browser's compositor
+ * thread — completely independent of main-thread work. The marquee
+ * keeps drifting at device-refresh rate even when JS is backed up.
+ * This is the single biggest smoothness win for this section.
  *
  * Props:
  *  - items: { src, brand, category }[]   list of portfolio entries
@@ -50,34 +72,29 @@ export const ImageAutoSlider = ({
   const defaultTile =
     "w-[22rem] h-[13.5rem] md:w-[30rem] md:h-[18rem] lg:w-[36rem] lg:h-[21.5rem]";
 
-  // Refs — all the animation state lives outside React so the rAF loop
-  // never triggers a re-render.
   const containerRef = React.useRef(null);
   const trackRef = React.useRef(null);
-  const offsetRef = React.useRef(0);           // current translateX (px)
-  const cycleWidthRef = React.useRef(0);       // px distance of one full cycle
-  const rafRef = React.useRef(null);
-  const lastTsRef = React.useRef(null);
+  const cycleWidthRef = React.useRef(0);
   const isDraggingRef = React.useRef(false);
-  const dragStartXRef = React.useRef(0);
-  const dragStartOffsetRef = React.useRef(0);
-  // Gate the rAF loop: run only when the slider is on-screen AND the
-  // tab is visible. On mobile this is the single biggest source of
-  // Anthology scroll-in lag — without it the loop burns frames at 60fps
-  // even while the user is reading Hero/Services, so the scroll frame
-  // where the section first reveals is already behind on its budget.
-  const isVisibleRef = React.useRef(false);
-  const isPageVisibleRef = React.useRef(
-    typeof document === "undefined" ? true : !document.hidden
+
+  // Unique animation name per instance so two sliders on a page never
+  // stomp each other's @keyframes.
+  const uidRef = React.useRef(
+    `wh-marq-${Math.random().toString(36).slice(2, 8)}`
   );
+  const uid = uidRef.current;
 
-  // -1 = drift left (default), +1 = drift right (when reverse=true).
-  const direction = reverse ? 1 : -1;
+  const animDirection = reverse ? 1 : -1;
 
-  // Measure the true cycle width: the distance from the start of the
-  // first tile to the start of the (N+1)-th tile (i.e. the first tile
-  // of the duplicate half). This is the only wrap distance that yields
-  // a visually seamless loop — scrollWidth/2 is off by half-a-gap.
+  // Measure cycle width — distance from the start of the first tile
+  // to the start of the (N+1)-th (first duplicate). This is the only
+  // value that produces a visually seamless wrap: scrollWidth/2 is
+  // off by half a gap.
+  //
+  // We feed the measured value into the stylesheet as a CSS custom
+  // property (`--cycle-width`), which the @keyframes rule references
+  // via calc() — so the animation's wrap distance is always exact,
+  // even as the viewport resizes.
   React.useEffect(() => {
     if (!trackRef.current || entries.length === 0) return;
     const el = trackRef.current;
@@ -86,7 +103,11 @@ export const ImageAutoSlider = ({
       if (el.children.length < entries.length + 1) return;
       const a = el.children[0].getBoundingClientRect();
       const b = el.children[entries.length].getBoundingClientRect();
-      cycleWidthRef.current = b.left - a.left;
+      const width = b.left - a.left;
+      if (width > 0) {
+        cycleWidthRef.current = width;
+        el.style.setProperty("--cycle-width", `${width}px`);
+      }
     };
 
     measure();
@@ -99,109 +120,140 @@ export const ImageAutoSlider = ({
     };
   }, [entries.length, duplicated.length]);
 
-  // The animation loop: drift when idle, hold position when dragging,
-  // wrap the offset whenever it crosses a cycle boundary. Only runs
-  // while the slider is on-screen and the tab is visible — see
-  // isVisibleRef/isPageVisibleRef setup above.
+  // Pause the CSS animation on leave / tab hide. Because the animation
+  // lives on the compositor, this is essentially free — there's no
+  // ticking rAF loop to stop. But it's still polite on battery and
+  // matches the old rAF gate semantics exactly.
   React.useEffect(() => {
-    const tick = (ts) => {
-      if (lastTsRef.current == null) lastTsRef.current = ts;
-      const dt = (ts - lastTsRef.current) / 1000;
-      lastTsRef.current = ts;
+    const el = trackRef.current;
+    const container = containerRef.current;
+    if (!el || !container) return;
 
-      const cycle = cycleWidthRef.current;
+    let inView = false;
+    let pageVisible =
+      typeof document === "undefined" ? true : !document.hidden;
 
-      if (!isDraggingRef.current && cycle > 0) {
-        const pxPerSec = cycle / speed;
-        offsetRef.current += direction * pxPerSec * dt;
-      }
-
-      // Wrap — handle both directions and any overshoot from a
-      // fast drag-and-release.
-      if (cycle > 0) {
-        while (offsetRef.current <= -cycle) offsetRef.current += cycle;
-        while (offsetRef.current > 0) offsetRef.current -= cycle;
-      }
-
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
-      }
-      rafRef.current = requestAnimationFrame(tick);
+    const apply = () => {
+      if (isDraggingRef.current) return; // drag owns play-state during swipe
+      el.style.animationPlayState =
+        inView && pageVisible ? "running" : "paused";
     };
 
-    const start = () => {
-      if (rafRef.current != null) return;        // already running
-      lastTsRef.current = null;                   // avoid a huge dt jump
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    const stop = () => {
-      if (rafRef.current != null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-      lastTsRef.current = null;
-    };
-
-    // Single source of truth: run iff visible in viewport AND page is
-    // foregrounded. Both flags are flipped by the observers below.
-    const sync = () => {
-      if (isVisibleRef.current && isPageVisibleRef.current) start();
-      else stop();
-    };
-
-    // Watch the container — not the track — because the track has
-    // `w-max` and extends far beyond the viewport; IO would consider
-    // it intersecting long before the user can see the section.
-    const containerEl = containerRef.current;
-    let io;
-    if (containerEl && typeof IntersectionObserver !== "undefined") {
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            isVisibleRef.current = e.isIntersecting;
-          }
-          sync();
-        },
-        // Give the loop a head start ~200px before the section enters
-        // so the first visible frame is already drifting, not static.
-        { rootMargin: "200px 0px" }
-      );
-      io.observe(containerEl);
-    } else {
-      // Fallback: assume visible (desktop without IO support is ancient).
-      isVisibleRef.current = true;
-    }
+    const io =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(
+            (entries) => {
+              for (const e of entries) inView = e.isIntersecting;
+              apply();
+            },
+            { rootMargin: "200px 0px" }
+          )
+        : null;
+    if (io) io.observe(container);
+    else inView = true;
 
     const onVis = () => {
-      isPageVisibleRef.current = !document.hidden;
-      sync();
+      pageVisible = !document.hidden;
+      apply();
     };
     document.addEventListener("visibilitychange", onVis);
 
-    sync();
+    apply();
     return () => {
-      stop();
       if (io) io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, [speed, direction]);
+  }, []);
 
-  // Native touch events for iOS Safari reliability.
-  //   - pointerdown/move on iOS fire through `pointer-events-none` children
-  //     inconsistently, and iOS cancels pointers the moment it thinks a
-  //     gesture is "vertical scroll" — even when touch-action says otherwise.
-  //   - Native touch events with `{ passive: false }` give us the one thing
-  //     pointer events can't: the ability to preventDefault() the page's
-  //     scroll once we've committed to a horizontal drag.
-  //   - We detect direction after an 8-px threshold so a vertical fling
-  //     across the slider still scrolls the page naturally.
+  // Parse the current computed translateX off the track. Used at drag
+  // start to snapshot where the compositor animation has drifted to,
+  // and at drag end to compute the resume position.
+  const readTranslateX = (el) => {
+    const t = window.getComputedStyle(el).transform;
+    if (!t || t === "none") return 0;
+    const match = t.match(/matrix\(([^)]+)\)/);
+    if (!match) {
+      const match3d = t.match(/matrix3d\(([^)]+)\)/);
+      if (!match3d) return 0;
+      const parts3d = match3d[1].split(",").map((s) => parseFloat(s));
+      return parts3d[12] || 0;
+    }
+    const parts = match[1].split(",").map((s) => parseFloat(s));
+    return parts[4] || 0;
+  };
+
+  // Swap the track into "user-driven" mode: pause the CSS animation,
+  // freeze visually at the current translateX via inline transform,
+  // return that translateX so the caller can accumulate drag deltas.
+  const beginDrag = () => {
+    const el = trackRef.current;
+    if (!el) return 0;
+    const tx = readTranslateX(el);
+    isDraggingRef.current = true;
+    el.style.animationPlayState = "paused";
+    el.style.transform = `translate3d(${tx}px, 0, 0)`;
+    return tx;
+  };
+
+  const updateDrag = (tx) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.style.transform = `translate3d(${tx}px, 0, 0)`;
+  };
+
+  // Swap the track back into "compositor-driven" mode by computing
+  // where the animation would already be at this visual position,
+  // setting that as a negative animation-delay, and un-pausing.
+  //
+  // The animation-name flush (`none` + forced reflow + restore) is
+  // necessary because browsers don't re-evaluate animation-delay on
+  // an already-running animation — you have to restart it.
+  const endDrag = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    isDraggingRef.current = false;
+
+    const cycle = cycleWidthRef.current;
+    if (cycle <= 0) {
+      el.style.transform = "";
+      el.style.animationPlayState = "running";
+      return;
+    }
+
+    let finalTx = readTranslateX(el);
+    // Normalise into [-cycle, 0] so the progress value is always in
+    // [0, 1] regardless of how far the user dragged.
+    while (finalTx <= -cycle) finalTx += cycle;
+    while (finalTx > 0) finalTx -= cycle;
+
+    // Progress = how far through one loop we are visually.
+    // For a leftward (direction = -1) animation, translateX goes
+    // 0 → -cycle over `speed` seconds, so progress = -finalTx / cycle.
+    // For a rightward (direction = +1) animation, it's the inverse.
+    const progressLeftward = -finalTx / cycle;
+    const progress =
+      animDirection === -1 ? progressLeftward : 1 - progressLeftward;
+    const delay = -(progress * speed);
+
+    el.style.transform = "";
+    el.style.animationName = "none";
+    // Force a reflow so the "animation: none" actually lands before we
+    // re-assign the real name — otherwise the delay change is ignored.
+    // eslint-disable-next-line no-unused-expressions
+    el.offsetWidth;
+    el.style.animationName = `${uid}-scroll`;
+    el.style.animationDelay = `${delay}s`;
+    el.style.animationPlayState = "running";
+  };
+
+  // --- Touch (iOS Safari) ---
   React.useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
 
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchStartOffset = 0;
+    let startX = 0;
+    let startY = 0;
+    let startOffset = 0;
     let touchActive = false;
     let directionLocked = null; // 'h' | 'v' | null
 
@@ -209,39 +261,38 @@ export const ImageAutoSlider = ({
       if (e.touches.length !== 1) return;
       touchActive = true;
       directionLocked = null;
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      touchStartOffset = offsetRef.current;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      // Snapshot the visual offset so drag deltas accumulate correctly.
+      startOffset = beginDrag();
     };
 
     const onTouchMove = (e) => {
       if (!touchActive || e.touches.length !== 1) return;
-      const dx = e.touches[0].clientX - touchStartX;
-      const dy = e.touches[0].clientY - touchStartY;
+      const dx = e.touches[0].clientX - startX;
+      const dy = e.touches[0].clientY - startY;
 
       if (directionLocked == null) {
-        // Wait until the user has moved at least 8px before committing,
-        // so tiny jitter during a vertical scroll doesn't hijack the page.
         if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
         directionLocked = Math.abs(dx) > Math.abs(dy) ? "h" : "v";
-        if (directionLocked === "h") {
-          isDraggingRef.current = true;
+        if (directionLocked === "v") {
+          // User wants to scroll the page vertically — hand control
+          // back to the browser and resume the marquee.
+          endDrag();
         }
       }
 
       if (directionLocked === "h") {
-        // Kill the browser's default behaviour — this is our gesture now.
-        // Must be `{ passive: false }` listener for preventDefault to work.
         e.preventDefault();
-        offsetRef.current = touchStartOffset + dx;
+        updateDrag(startOffset + dx);
       }
-      // directionLocked === 'v' → do nothing, browser scrolls the page.
     };
 
     const onTouchEnd = () => {
+      if (!touchActive) return;
       touchActive = false;
+      if (directionLocked === "h") endDrag();
       directionLocked = null;
-      isDraggingRef.current = false;
     };
 
     el.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -254,25 +305,20 @@ export const ImageAutoSlider = ({
       el.removeEventListener("touchend", onTouchEnd);
       el.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [speed, animDirection]);
 
-  // Mouse drag for desktop — native touch handler above owns all touch input.
-  // We only fire this path for a real mouse so we don't double-process on
-  // devices that synthesise both touch and mouse events (older Android etc).
+  // --- Mouse drag (desktop) ---
   const onMouseDown = (e) => {
-    // Ignore right/middle clicks
     if (e.button !== 0) return;
-    isDraggingRef.current = true;
-    dragStartXRef.current = e.clientX;
-    dragStartOffsetRef.current = offsetRef.current;
+    const startX = e.clientX;
+    const startOffset = beginDrag();
 
     const onMove = (ev) => {
-      if (!isDraggingRef.current) return;
-      const dx = ev.clientX - dragStartXRef.current;
-      offsetRef.current = dragStartOffsetRef.current + dx;
+      updateDrag(startOffset + (ev.clientX - startX));
     };
     const onUp = () => {
-      isDraggingRef.current = false;
+      endDrag();
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
     };
@@ -289,13 +335,30 @@ export const ImageAutoSlider = ({
       )}
     >
       <style>{`
+        /* Per-instance @keyframes so multiple sliders on one page
+           can't clash. Endpoint is read from the --cycle-width custom
+           property that JS sets after measuring. */
+        @keyframes ${uid}-scroll {
+          from { transform: translate3d(0, 0, 0); }
+          to   { transform: translate3d(calc(${animDirection} * var(--cycle-width, 0px)), 0, 0); }
+        }
+        .${uid}-track {
+          animation: ${uid}-scroll ${speed}s linear infinite;
+          /* contain: layout paint isolates the big track from the rest
+             of the page's paint work — when the track's frame updates,
+             the browser doesn't need to re-examine the section around
+             it. Meaningful on mobile where paint is the bottleneck. */
+          contain: layout paint;
+          will-change: transform;
+          backface-visibility: hidden;
+        }
         /* Mask gradient forces a full raster layer on mobile Safari
            and repaints it on every scroll frame — one of the biggest
            contributors to reveal lag here. On desktop the mask gives
            a cleaner edge fade, so we keep it; on mobile we drop it
-           entirely (no visible fade — the overflow crop is enough). */
+           entirely (the overflow crop is enough). */
         @media (min-width: 768px) {
-          .webhelm-scroll-container {
+          .${uid}-mask {
             mask: linear-gradient(
               90deg,
               transparent 0%,
@@ -319,26 +382,22 @@ export const ImageAutoSlider = ({
            otherwise a touch that starts on a tile (not the track
            itself) inherits the default touch-action and iOS routes
            the gesture unpredictably. */
-        .webhelm-track,
-        .webhelm-track * {
+        .${uid}-track,
+        .${uid}-track * {
           touch-action: pan-y;
           -webkit-user-select: none;
           user-select: none;
           -webkit-touch-callout: none;
         }
-        .webhelm-track {
-          cursor: grab;
-        }
-        .webhelm-track:active {
-          cursor: grabbing;
-        }
+        .${uid}-track { cursor: grab; }
+        .${uid}-track:active { cursor: grabbing; }
       `}</style>
 
       <div className="relative z-10 w-full flex items-center justify-center py-6">
-        <div className="webhelm-scroll-container w-full">
+        <div className={`${uid}-mask w-full`}>
           <div
             ref={trackRef}
-            className="webhelm-track flex gap-6 w-max will-change-transform"
+            className={`${uid}-track flex gap-6 w-max`}
             onMouseDown={onMouseDown}
           >
             {duplicated.map((entry, index) => (
