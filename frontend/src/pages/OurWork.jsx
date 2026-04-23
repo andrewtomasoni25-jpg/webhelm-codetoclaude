@@ -177,6 +177,90 @@ const PROJECTS = [
   },
 ];
 
+// Series assignment for the Anthology view. Three columns of
+// positioning: Artisan (craft, heritage, hospitality, fashion),
+// Professional (premium commerce, research, consulting), Tech (SaaS,
+// consumer-tech, product launches). Keyed by brand so the mapping
+// stays next to the labelling rather than inside each project entry.
+const SERIES_MAP = {
+  // Artisan
+  "Aurelius": "artisan",
+  "Heritage Cuts": "artisan",
+  "Bean & Brew": "artisan",
+  "Foxtail": "artisan",
+  "IX Designs": "artisan",
+  "Pink Fashion": "artisan",
+  "Furniture Co.": "artisan",
+  "Green": "artisan",
+  // Professional
+  "BlueSeal": "professional",
+  "AuraMax Audio": "professional",
+  "Vibram": "professional",
+  "Veloretti": "professional",
+  "MDH Lab": "professional",
+  "Thunder Energy": "professional",
+  "Black Level": "professional",
+  "Infinity": "professional",
+  // Tech
+  "Cyphrr": "tech",
+  "Wavebit": "tech",
+  "Cally": "tech",
+  "Slim.vu": "tech",
+  "Flip": "tech",
+  "OppoEnco": "tech",
+  "Realme": "tech",
+};
+
+// AI + tooling stack per project, shown on each card. Kept short and
+// keyed by brand so the array above stays tidy.
+const SPECS_MAP = {
+  "Aurelius": "Claude · Midjourney · Figma · Next.js",
+  "Heritage Cuts": "Claude · Midjourney · Figma · Framer · Cal.com",
+  "Bean & Brew": "Claude · Midjourney · Figma · Astro",
+  "Foxtail": "Claude · Midjourney · Figma · Shopify",
+  "IX Designs": "Claude · Midjourney · Figma · Next.js · Sanity",
+  "Pink Fashion": "Claude · Midjourney · Figma · Shopify",
+  "Furniture Co.": "Claude · Midjourney · Figma · Next.js · Shopify",
+  "Green": "Claude · Midjourney · Figma · Next.js",
+  "BlueSeal": "Claude · Figma · Next.js · HubSpot",
+  "AuraMax Audio": "Claude · Midjourney · Figma · Next.js · Stripe",
+  "Vibram": "Claude · Midjourney · Figma · Shopify · Algolia",
+  "Veloretti": "Claude · Midjourney · Figma · Next.js · Stripe",
+  "MDH Lab": "Claude · Figma · Astro · Sanity",
+  "Thunder Energy": "Claude · Midjourney · Figma · Shopify",
+  "Black Level": "Claude · Midjourney · Figma · Shopify",
+  "Infinity": "Claude · Midjourney · Figma · Framer",
+  "Cyphrr": "Claude · Figma · Next.js · Cursor · Vercel",
+  "Wavebit": "Claude · Figma · Next.js · Cursor · Mintlify",
+  "Cally": "Claude · Figma · Framer",
+  "Slim.vu": "Claude · Figma · Next.js",
+  "Flip": "Claude · Figma · Framer",
+  "OppoEnco": "Claude · Figma · Next.js · Cursor",
+  "Realme": "Claude · Figma · Next.js · Cursor",
+};
+
+// Display order and labelling for each series block.
+const SERIES = [
+  {
+    id: "artisan",
+    label: "Artisan Series",
+    subtitle:
+      "Craft, heritage, hospitality and fashion — brands whose value is authored in the making.",
+  },
+  {
+    id: "professional",
+    label: "Professional Series",
+    subtitle:
+      "Premium commerce, consulting and research — brands that trade on precision and authority.",
+  },
+  {
+    id: "tech",
+    label: "Tech Series",
+    subtitle:
+      "SaaS, consumer-tech and product launches — brands operating at developer-grade velocity.",
+  },
+];
+
 const HERO_CENTER = "/work/hero-boat.webp";
 
 // Dark, moody picks from the existing top/bottom portfolio sets — reused here
@@ -230,12 +314,12 @@ export default function OurWork() {
       <div className="relative z-10">
         {/* Cinematic scroll-driven hero */}
         <SmoothScrollHero
-          eyebrow="Our Work"
-          title="Every project, up close."
-          description="A curated index of recent builds — landing pages, full websites and brand systems. Every project shipped to a real client, measured on real outcomes."
+          eyebrow="The Anthology"
+          title="The work, on the record."
+          description="A curated archive of the builds — custom, hand-designed and AI-accelerated. Grouped into three series: Artisan, Professional, Tech. Every piece production-ready in 48 to 72 hours."
           centerImage={HERO_CENTER}
           parallaxImages={HERO_PARALLAX}
-          ctaLabel="See the full index"
+          ctaLabel="Open the Anthology"
           ctaTargetId="work-index"
         />
 
@@ -266,29 +350,59 @@ export default function OurWork() {
           >
             <div className="text-center mb-16">
               <span className="text-xs tracking-[0.25em] uppercase font-bold text-[#f5f5dc] mb-4 block">
-                Project Index
+                The Anthology
               </span>
               <SplitTextReveal
                 as="h2"
                 className="text-3xl sm:text-4xl md:text-5xl tracking-tight font-medium text-white mb-4"
               >
-                Every Project, In One Place
+                {PROJECTS.length} pieces, three series.
               </SplitTextReveal>
               <p className="text-white/60 max-w-2xl mx-auto mb-3">
-                {PROJECTS.length} recent builds — each one crafted custom, enhanced with AI tooling, and polished by hand.
+                Each piece is a custom build — hand-designed, AI-accelerated, production-ready in 48 to 72 hours.
               </p>
               <div className="flex items-center justify-center gap-2 text-[#007bff] text-sm">
                 <Sparkles className="w-4 h-4" />
-                <span className="font-medium">AI-Enhanced Design & Development</span>
+                <span className="font-medium">Elite human design · Hyper-efficient AI delivery</span>
                 <Sparkles className="w-4 h-4" />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {PROJECTS.map((p, i) => (
-                <ProjectCard key={p.src} project={p} index={i} />
-              ))}
-            </div>
+            {/* Grouped into three series. Each series has its own header
+                row + grid, so the narrative reads top-to-bottom rather
+                than as one flat dump of 23 tiles. */}
+            {SERIES.map((series) => {
+              const items = PROJECTS.filter(
+                (p) => SERIES_MAP[p.brand] === series.id
+              );
+              if (items.length === 0) return null;
+              return (
+                <div
+                  key={series.id}
+                  data-testid={`series-${series.id}`}
+                  className="mb-20 last:mb-0"
+                >
+                  <div className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-3 border-b border-white/10 pb-6">
+                    <div>
+                      <span className="text-[11px] tracking-[0.3em] uppercase font-bold text-[#007bff] mb-2 block">
+                        {series.label}
+                      </span>
+                      <h3 className="text-2xl md:text-3xl font-medium text-white">
+                        {items.length} pieces
+                      </h3>
+                    </div>
+                    <p className="text-sm md:text-[15px] text-white/55 max-w-md md:text-right">
+                      {series.subtitle}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {items.map((p, i) => (
+                      <ProjectCard key={p.src} project={p} index={i} />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </section>
         </div>
 
@@ -322,9 +436,23 @@ function ProjectCard({ project, index }) {
         <h3 className="text-white text-lg md:text-xl font-medium mb-2 leading-tight">
           {project.brand}
         </h3>
-        <p className="text-white/65 text-sm leading-relaxed">
+        <p className="text-white/65 text-sm leading-relaxed mb-4">
           {project.description}
         </p>
+        {/* Specs row — AI + tooling stack used on the build. */}
+        {SPECS_MAP[project.brand] && (
+          <div className="pt-4 border-t border-white/10">
+            <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-white/40 mb-1.5 block">
+              Specs
+            </span>
+            <p className="text-[12px] leading-snug text-white/55 mb-2">
+              {SPECS_MAP[project.brand]}
+            </p>
+            <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#007bff]">
+              Velocity · 48–72h to production
+            </span>
+          </div>
+        )}
       </div>
     </motion.article>
   );

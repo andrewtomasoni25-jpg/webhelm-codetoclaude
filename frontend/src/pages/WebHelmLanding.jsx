@@ -17,6 +17,10 @@ const InteractiveNeuralVortex = lazy(() =>
 import { StarsBackground } from "@/components/ui/stars-background";
 // Static faux-vortex — the mobile fallback. Shared with HeroSection.
 import StaticVortex from "@/components/ui/static-vortex";
+// Page-wide rotating compass. Self-positioned (fixed), fades out
+// whenever the Anthology (#portfolio) section is in view so it
+// never competes with that section's visual rhythm.
+import FloatingCompass from "@/components/ui/floating-compass";
 
 // Everything below the fold is code-split — the user sees Hero + starfield
 // immediately, and the heavier sections stream in as the browser idles.
@@ -30,8 +34,12 @@ const ServicesSection = lazy(() =>
 const PricingSection = lazy(() =>
   import("@/components/landing/PricingSection")
 );
-const TestimonialsSection = lazy(() =>
-  import("@/components/landing/TestimonialsSection")
+// Swapped in place of TestimonialsSection. Under the UK DMCC Act 2024
+// fabricated reviews are illegal, and we're a new agency with no real
+// client base yet — so instead of synthesising quotes, we run the
+// Founding Partner Programme in the same page slot.
+const FoundingPartnerSection = lazy(() =>
+  import("@/components/landing/FoundingPartnerSection")
 );
 const BuiltWithStrip = lazy(() =>
   import("@/components/landing/BuiltWithStrip")
@@ -95,6 +103,31 @@ export default function WebHelmLanding() {
           className="relative w-full h-full"
         />
       </div>
+      {/* Two fixed-position nautical ornaments, both driven by the
+          same FloatingCompass component in "show-when-visible" mode:
+          the compass behind the Toolkit strip, the hero helm behind
+          the Services grid. Both rotate at 240s clockwise so the
+          nautical motifs feel like one family. The underlying
+          component wires up a MutationObserver so it picks up its
+          target even when the section loads lazily via Suspense. */}
+      <FloatingCompass
+        imageSrc="/about/compass.webp"
+        targetSelector="#toolkit"
+        mode="show-when-visible"
+        rotationSeconds={240}
+        testId="floating-compass"
+      />
+      <FloatingCompass
+        imageSrc="/hero-helm.webp"
+        targetSelector="#services"
+        mode="show-when-visible"
+        rotationSeconds={240}
+        opacityMobile={0.09}
+        opacityDesktop={0.12}
+        sizeMobile="min(90vw, 700px)"
+        sizeDesktop="min(65vw, 880px)"
+        testId="floating-helm"
+      />
       <div className="relative z-10">
         <Header />
         <main>
@@ -124,7 +157,7 @@ export default function WebHelmLanding() {
               <div className="wh-cv-auto"><PortfolioSection /></div>
               <div className="wh-cv-auto"><ServicesSection /></div>
               <div className="wh-cv-auto"><PricingSection /></div>
-              <div className="wh-cv-auto"><TestimonialsSection /></div>
+              <div className="wh-cv-auto"><FoundingPartnerSection /></div>
               <div className="wh-cv-auto"><ProcessSection /></div>
               <div className="wh-cv-auto"><CTASection /></div>
               <div className="wh-cv-auto"><ContactSection /></div>

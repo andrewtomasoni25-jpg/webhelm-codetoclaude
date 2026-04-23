@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap');
+/*
+ * Self-hosted fonts (Outfit + Manrope).
+ *
+ * @font-face rules live in public/index.html inside a <style> tag
+ * instead of here, because webpack's CSS loader would try to
+ * resolve `/fonts/...` URLs as module imports rather than runtime
+ * paths and fail the build. Putting them in index.html means the
+ * browser sees the font-face declarations during HTML parse
+ * (earlier than main.css) AND the URLs remain untouched static
+ * paths. See public/index.html for the declarations; the WOFF2
+ * files themselves live in public/fonts/.
+ */
 
 @tailwind base;
 @tailwind components;
@@ -117,8 +128,11 @@ body {
   }
 }
 
+/* 0.8s was leaving the hero feeling "slow to arrive" on refresh.
+   0.4s is still gentle enough to read as a polished entrance but
+   halves the perceived delay before the hero is fully settled. */
 .animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fadeInUp 0.4s ease-out forwards;
 }
 
 .animation-delay-200 {

@@ -26,6 +26,7 @@ const tools = [
 export default function BuiltWithStrip() {
   return (
     <section
+      id="toolkit"
       data-testid="built-with-strip"
       className="py-16 md:py-20 relative overflow-hidden"
     >
@@ -60,12 +61,12 @@ export default function BuiltWithStrip() {
                 alt={`${tool.name} logo`}
                 loading="lazy"
                 decoding="async"
-                className="h-10 md:h-12 w-auto opacity-70 saturate-[0.85] group-hover:opacity-100 group-hover:saturate-100 group-hover:-translate-y-0.5 transition-all duration-300"
+                className="h-10 md:h-12 w-auto opacity-90 saturate-100 group-hover:opacity-100 group-hover:-translate-y-0.5 transition-all duration-300"
               />
-              <span className="mt-3 text-sm md:text-base font-medium text-white/70 group-hover:text-white transition-colors duration-300 whitespace-nowrap">
+              <span className="mt-3 text-sm md:text-base font-medium text-white/90 group-hover:text-white transition-colors duration-300 whitespace-nowrap">
                 {tool.name}
               </span>
-              <span className="text-[10px] tracking-[0.18em] uppercase text-white/35 mt-1 group-hover:text-white/60 transition-colors duration-300">
+              <span className="text-[10px] tracking-[0.18em] uppercase text-white/60 mt-1 group-hover:text-white/80 transition-colors duration-300">
                 {tool.note}
               </span>
             </div>

@@ -1,4 +1,4 @@
-const LOGO_URL = "/hero-logo.png";
+const LOGO_URL = "/hero-logo.webp";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
