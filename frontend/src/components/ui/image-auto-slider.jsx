@@ -289,21 +289,28 @@ export const ImageAutoSlider = ({
       )}
     >
       <style>{`
-        .webhelm-scroll-container {
-          mask: linear-gradient(
-            90deg,
-            transparent 0%,
-            black 8%,
-            black 92%,
-            transparent 100%
-          );
-          -webkit-mask: linear-gradient(
-            90deg,
-            transparent 0%,
-            black 8%,
-            black 92%,
-            transparent 100%
-          );
+        /* Mask gradient forces a full raster layer on mobile Safari
+           and repaints it on every scroll frame — one of the biggest
+           contributors to reveal lag here. On desktop the mask gives
+           a cleaner edge fade, so we keep it; on mobile we drop it
+           entirely (no visible fade — the overflow crop is enough). */
+        @media (min-width: 768px) {
+          .webhelm-scroll-container {
+            mask: linear-gradient(
+              90deg,
+              transparent 0%,
+              black 8%,
+              black 92%,
+              transparent 100%
+            );
+            -webkit-mask: linear-gradient(
+              90deg,
+              transparent 0%,
+              black 8%,
+              black 92%,
+              transparent 100%
+            );
+          }
         }
         /* touch-action: pan-y lets the browser keep handling vertical
            page scroll; any horizontal gesture falls through to our
@@ -362,8 +369,12 @@ const PortfolioTile = ({ entry, tileClassName }) => {
   return (
     <div
       className={cn(
-        "group relative flex-shrink-0 rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-[#121212]",
-        "transition-transform duration-300 hover:scale-[1.03]",
+        // Mobile: no shadow-2xl (heavy paint), no hover scale (unreachable
+        // on touch, but the transition-transform still primes a compositor
+        // layer per tile — 24 layers adds up on a phone GPU).
+        // Desktop keeps the original look.
+        "group relative flex-shrink-0 rounded-xl overflow-hidden border border-white/10 bg-[#121212]",
+        "md:shadow-2xl md:transition-transform md:duration-300 md:hover:scale-[1.03]",
         tileClassName
       )}
     >
@@ -371,7 +382,7 @@ const PortfolioTile = ({ entry, tileClassName }) => {
         src={src}
         alt={altText}
         draggable={false}
-        className="w-full h-full object-cover transition-all duration-500 group-hover:brightness-110 pointer-events-none select-none"
+        className="w-full h-full object-cover md:transition-all md:duration-500 md:group-hover:brightness-110 pointer-events-none select-none"
         loading="lazy"
         decoding="async"
         fetchpriority="low"

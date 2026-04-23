@@ -52,9 +52,14 @@ export default function PortfolioSection() {
         </div>
       </div>
 
-      {/* Soft glow behind the slider */}
+      {/* Soft glow behind the slider.
+          Desktop only — the original had filter: blur(80px) +
+          mixBlendMode: screen, which together are one of the most
+          expensive CSS effects a mobile GPU can be asked to paint on
+          a scroll frame. On phones it's hidden entirely; on desktop
+          it stays as originally designed. */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-1/3 h-[40vh] opacity-30"
+        className="pointer-events-none absolute inset-x-0 top-1/3 h-[40vh] opacity-30 hidden md:block"
         style={{
           background:
             "linear-gradient(to right, #007bff, transparent 40%, transparent 60%, #007bff)",

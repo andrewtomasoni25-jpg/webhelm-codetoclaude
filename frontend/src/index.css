@@ -41,6 +41,18 @@ html {
   contain-intrinsic-size: auto 700px;
 }
 
+/* The Portfolio / Anthology section is heavier than the others
+   (24 image tiles + slider + glow) so it needs a bigger intrinsic
+   size hint. With a too-small hint the browser has to re-measure
+   when the section scrolls into view, and all the layout+paint
+   work lands on the exact frame where the user is perceiving
+   "reveal" — that's the mobile reveal lag. Giving it a taller
+   placeholder lets the browser budget the work across earlier
+   frames. */
+.wh-cv-auto.wh-cv-tall {
+  contain-intrinsic-size: auto 1100px;
+}
+
 body {
   margin: 0;
   font-family: 'Manrope', sans-serif;
