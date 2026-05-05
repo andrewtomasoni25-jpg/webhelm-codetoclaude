@@ -132,7 +132,7 @@ export default function HeroSection() {
               data-testid="hero-overline"
               className="text-xs md:text-sm tracking-[0.3em] uppercase font-bold text-[#f5f5dc] mb-6 block"
             >
-              Web Design Agency
+              Web Agency
             </span>
 
             {/* Vaporize Text Effect — centered. Height scales with the

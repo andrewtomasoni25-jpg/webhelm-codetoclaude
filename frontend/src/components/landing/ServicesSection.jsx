@@ -1,55 +1,51 @@
-import { Monitor, Layout, RefreshCw, Palette, Rocket, Bot, LifeBuoy } from "lucide-react";
+import { Monitor, Layout, RefreshCw, Palette, Rocket, Bot } from "lucide-react";
 import SplitTextReveal from "@/components/SplitTextReveal";
 
+// Five services in scan order — Refresh as the cheapest entry point, then
+// Landing, then the brand offering, then the two main website tiers. Prices
+// shown here are the standing rates; full Founding Partner discounts live
+// in the PricingSection below.
 const services = [
-  {
-    id: "logo-design",
-    icon: Palette,
-    title: "Logo Design",
-    price: "£150",
-    description:
-      "A professional logo that makes your business look credible and stand out. AI-enhanced concept generation means more creative options, faster.",
-  },
   {
     id: "landing-pages",
     icon: Layout,
     title: "Landing Page",
     price: "£750",
     description:
-      "Get your business online quickly with a clean, professional single-page website. Mobile-friendly with AI-optimised layout and SEO basics.",
-  },
-  {
-    id: "support",
-    icon: LifeBuoy,
-    title: "Ongoing Support",
-    price: "Free",
-    description:
-      "Keep your website running smoothly with free monthly check-ups and updates. Available with all packages so your site stays fast and fresh.",
-    highlighted: true,
+      "A single-page website that gets your business online fast. Clean design, mobile-ready, contact form built in.",
   },
   {
     id: "redesign",
     icon: RefreshCw,
     title: "Website Redesign",
-    price: "From £1,300",
+    price: "£550",
     description:
-      "Transform your outdated website into a modern, high-performing asset. AI-driven UX analysis, content migration, and conversion improvements.",
+      "Modernise your existing website without starting from scratch. Cleaner design, faster pages, ready for mobile.",
+  },
+  {
+    id: "full-brand-build",
+    icon: Palette,
+    title: "Full Brand Build",
+    price: "£750",
+    description:
+      "Everything your brand needs in one go — logo system, colour palette, type pairing, and a brand guidelines PDF.",
   },
   {
     id: "business",
     icon: Monitor,
     title: "Business Website",
-    price: "£1,400",
+    price: "£980",
     description:
-      "Up to 5 custom pages designed for your target customers. AI-powered optimisation, SEO setup, and clear call-to-actions to increase enquiries.",
+      "Up to 5 custom pages built to bring in customers. AI Assistant included free, conversion-focused layout.",
+    highlighted: true,
   },
   {
     id: "premium",
     icon: Rocket,
     title: "Premium Website",
-    price: "£2,200",
+    price: "£1,540",
     description:
-      "Up to 8 pages with conversion-focused layout, speed optimisation, and advanced UX. Built for businesses serious about growth.",
+      "Full custom design from scratch, built for serious growth. AI Assistant included, priority delivery and support.",
   },
 ];
 
@@ -85,7 +81,11 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* Services Grid */}
+        {/* Services Grid — five cards in a 3-col layout. Row 1 holds the
+            three entry products (Landing / Redesign / Brand Build). Row 2
+            holds Business in column 1 with Premium pushed into column 3,
+            leaving the middle cell empty so Premium reads as the
+            standalone top tier rather than just "the next card along". */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <div
@@ -95,7 +95,7 @@ export default function ServicesSection() {
                 service.highlighted
                   ? "border-[#007bff]/40 hover:border-[#007bff]"
                   : "border-white/5 hover:border-[#007bff]/50"
-              }`}
+              } ${service.id === "premium" ? "lg:col-start-3" : ""}`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Prices removed — headline pricing lives in the PricingSection

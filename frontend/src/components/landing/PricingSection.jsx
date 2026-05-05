@@ -3,48 +3,38 @@ import { Button } from "@/components/ui/button";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import { Badge } from "@/components/ui/badge";
 
-// Cloudflare-style feature comparison groups. Each row lists which of the
-// three website tiers (Landing / Business / Premium) includes it. Add-ons
-// show as "Optional" across all tiers — they are available everywhere but
-// billed separately (prices live in the Popular Upgrades section below).
+// Lean comparison table. Only the things a customer actually cares about
+// when picking a tier — no jargon, no plumbing, no marketing fluff. The
+// "Optional Upgrades" group has been removed from this table; one-off
+// upgrades live in their own section below so the comparison stays focused
+// on what the website itself includes.
 const comparisonGroups = [
   {
-    title: "All Websites",
+    title: "Every Website",
     rows: [
-      { label: "Modern, high-quality design tailored to your brand", tiers: [true, true, true] },
-      { label: "Smooth animations & visual effects", tiers: [true, true, true] },
-      { label: "Mobile-optimised across all devices", tiers: [true, true, true] },
-      { label: "Secure website (HTTPS)", tiers: [true, true, true] },
-      { label: "Fast loading with image optimisation", tiers: [true, true, true] },
+      { label: "Custom design tailored to your brand", tiers: [true, true, true] },
+      { label: "Mobile-optimised", tiers: [true, true, true] },
+      { label: "Fast loading", tiers: [true, true, true] },
       { label: "Basic SEO setup", tiers: [true, true, true] },
+      { label: "Contact form included", tiers: [true, true, true] },
+      { label: "30 days of free refinement after launch", tiers: [true, true, true] },
+      { label: "You own everything — code, hosting & domain", tiers: [true, true, true] },
     ],
   },
   {
     title: "Business & Above",
     rows: [
+      { label: "Multi-page structure", tiers: [false, true, true] },
       { label: "Conversion-focused layout", tiers: [false, true, true] },
-      { label: "Clear call-to-actions", tiers: [false, true, true] },
-      { label: "Enhanced performance & speed", tiers: [false, true, true] },
-      { label: "Structured multi-page design", tiers: [false, true, true] },
+      { label: "AI Assistant included free", tiers: [false, true, true] },
     ],
   },
   {
     title: "Premium Only",
     rows: [
-      { label: "Advanced animations & interactive elements", tiers: [false, false, true] },
-      { label: "High-end visual design", tiers: [false, false, true] },
-      { label: "Lead-focused layout strategy", tiers: [false, false, true] },
+      { label: "Full custom design from scratch", tiers: [false, false, true] },
+      { label: "Advanced visual effects", tiers: [false, false, true] },
       { label: "Priority delivery & support", tiers: [false, false, true] },
-    ],
-  },
-  {
-    title: "Optional Upgrades",
-    rows: [
-      { label: "Booking system", tiers: ["opt", "opt", "opt"] },
-      { label: "E-commerce", tiers: ["opt", "opt", "opt"] },
-      { label: "Email capture", tiers: ["opt", "opt", "opt"] },
-      { label: "Automated backups", tiers: ["opt", "opt", "opt"] },
-      { label: "Security protection", tiers: ["opt", "opt", "opt"] },
     ],
   },
 ];
@@ -68,55 +58,53 @@ const comparisonColumns = [
   },
 ];
 
+// Pricing card grid — five cards. Landing leads as the primary entry
+// product; Redesign sits beside it as the alternative for businesses
+// already online. Brand Build matches Landing's price point as a
+// parallel branding entry. Business and Premium close out the grid.
 const pricingPlans = [
-  {
-    id: "logo-design",
-    title: "Logo Design",
-    price: "£150",
-    category: "Branding",
-    description: "A professional logo that makes your business look credible and stand out",
-    image: "",
-    features: [
-      "3 unique logo concepts",
-      "Unlimited revisions",
-      "PNG, JPG, SVG files",
-      "Full ownership rights",
-      "Brand guidelines",
-      "AI-assisted concepts",
-    ],
-    highlighted: false,
-  },
   {
     id: "landing-page",
     title: "Landing Page",
     price: "£750",
     category: "Starter",
-    description: "Get your business online quickly with a clean, professional presence",
+    description: "A clean, professional single-page website that gets you online fast",
     image: "",
     features: [
       "1-page custom website",
-      "Mobile-friendly design",
+      "Mobile responsive",
       "Contact form included",
-      "Basic SEO setup",
-      "Fast turnaround",
-      "AI-optimised layout",
+      "Live in 48 hours",
     ],
     highlighted: false,
   },
   {
     id: "website-redesign",
     title: "Website Redesign",
-    price: "From £1,300",
+    price: "£550",
     category: "Refresh",
-    description: "Transform your current website into something that actually works",
+    description: "Modernise your current website without starting from scratch",
     image: "",
     features: [
       "Complete modern redesign",
       "Content migration",
-      "SEO improvements",
-      "Speed & performance",
-      "Conversion improvements",
-      "AI-driven UX analysis",
+      "Faster, mobile-ready",
+      "Live in 48 hours",
+    ],
+    highlighted: false,
+  },
+  {
+    id: "full-brand-build",
+    title: "Full Brand Build",
+    price: "£750",
+    category: "Branding",
+    description: "Everything your brand needs — logo system, colours, type and brand book",
+    image: "",
+    features: [
+      "Logo system + 3 concepts",
+      "Colour palette + type system",
+      "10 social media templates",
+      "Brand guidelines PDF",
     ],
     highlighted: false,
   },
@@ -130,11 +118,9 @@ const pricingPlans = [
     image: "",
     features: [
       "Up to 5 custom pages",
-      "Designed for your customers",
-      "Fully responsive",
-      "SEO setup included",
-      "Clear call-to-actions",
-      "AI-powered optimisation",
+      "AI Assistant included free",
+      "Conversion-focused layout",
+      "Live in 72 hours",
     ],
     highlighted: true,
   },
@@ -144,30 +130,26 @@ const pricingPlans = [
     price: "£1,540",
     originalPrice: "£2,200",
     category: "Premium",
-    description: "Maximise conversions, leads, and performance for serious growth",
+    description: "Full custom build, designed and coded from scratch for serious growth",
     image: "",
     features: [
       "Up to 8 custom pages",
-      "Conversion-focused layout",
-      "Speed optimisation",
-      "Advanced UX design",
-      "Fully responsive",
-      "Priority delivery",
+      "AI Assistant included free",
+      "Full custom design from scratch",
+      "Priority delivery & support",
     ],
     highlighted: false,
   },
 ];
 
-// Ordered lowest → highest price so clients scan cheapest upgrades first
-// and the bigger-ticket e-comm sits at the end as the natural upsell.
+// One-off upgrades, ordered lowest → highest. Pure add-ons clients can
+// bolt onto any tier. Brand work has been folded into the Full Brand
+// Build pricing card above, so add-ons here stay focused on functional
+// extensions of the website itself.
 const addons = [
-  { name: "Maintenance & hosting", price: "£15/month", note: "Updates, backups & uptime handled" },
-  { name: "Speed optimisation", price: "£100", note: "Keep visitors on your site" },
-  { name: "Extra page", price: "£150", note: "" },
-  { name: "Booking system", price: "£200", note: "Let customers book instantly" },
-  { name: "Advanced SEO", price: "£250", note: "Get found on Google" },
-  { name: "Contact form", price: "£250", note: "Capture enquiries easily" },
-  { name: "E-commerce", price: "£500–£800", note: "Sell products online" },
+  { name: "Booking Integration", price: "£150", note: "Customers can book directly from your site" },
+  { name: "Business Setup", price: "£200", note: "Domain + business email + DNS configured" },
+  { name: "AI Assistant Setup", price: "£250", note: "Free with Business or Premium" },
 ];
 
 export default function PricingSection() {
@@ -432,6 +414,7 @@ export default function PricingSection() {
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );

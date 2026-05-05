@@ -11,25 +11,25 @@ const PILLARS = [
     id: "problem",
     label: "The Problem",
     body:
-      "Most business websites feel outdated. Slow, generic, and easy to scroll past \u2014 which in a competitive market means fewer enquiries and fewer customers.",
+      "Most small businesses end up stitching together a website, a logo, an email address, and a booking system from five different places \u2014 paying too much, getting too little, and ending up with a brand that doesn't pull together.",
   },
   {
     id: "gap",
     label: "The Gap",
     body:
-      "The market splits between cheap and instant, or slow and expensive. Owners are left choosing between poor quality or three-month waits, with no real middle ground.",
+      "The market splits between cheap templates with no soul and £4,000 agencies that take three months. There's no real option for owners who want the full job done properly — brand, website, AI, the lot — at a price small business actually justifies.",
   },
   {
     id: "solution",
     label: "The Solution",
     body:
-      "We fill that gap. Modern design paired with efficient systems means websites that are fast, clean, and built to convert \u2014 delivered in days, not months.",
+      "WebHelm is a full web agency. Websites, brand builds, redesigns, AI assistants \u2014 all delivered in 48 to 72 hours. Premium craft at small-business prices. Yours to own outright. No subscriptions, no platform lock-in, no agency overhead.",
   },
   {
     id: "result",
     label: "The Result",
     body:
-      "A professional website that reflects your business properly, delivered faster than traditional agencies and built to actually generate enquiries.",
+      "A complete digital presence — sharp brand, fast website, lead capture built in — that reflects your business properly and gets your phone ringing. Delivered in days, not months. Owned forever.",
   },
 ];
 
