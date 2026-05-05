@@ -140,7 +140,7 @@ export default function HeroSection() {
             <div className="h-16 sm:h-20 md:h-32 mb-6 w-full flex items-center justify-center">
               <VaporizeTextCycle
                 key={vaporFontSize /* force re-mount so canvas re-measures at the new size */}
-                texts={["Steering Success", "Building Brands", "Creating Impact"]}
+                texts={["Launching Brands", "Building Businesses", "Steering Success"]}
                 font={{
                   fontFamily: "Outfit, sans-serif",
                   fontSize: vaporFontSize,
@@ -164,9 +164,9 @@ export default function HeroSection() {
               data-testid="hero-description"
               className="text-base md:text-lg leading-relaxed text-white/70 mb-10 max-w-2xl mx-auto"
             >
-              We design high-performance websites that guide your business to
-              grow and succeed online. From landing pages to full-scale web
-              solutions.
+              We help small businesses launch online — properly. Logo,
+              website, payments, AI assistant, the lot. One agency, one
+              launch, everything you need to start strong.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center">

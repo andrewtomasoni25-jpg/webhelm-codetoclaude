@@ -41,9 +41,9 @@ export default function Footer() {
               className="h-20 w-auto mb-4"
             />
             <p className="text-white/60 text-sm leading-relaxed max-w-md mb-6">
-              Steering your business toward online success. We design
-              high-performance websites that help businesses grow and thrive in
-              the digital landscape.
+              The full launch agency for small businesses. Logo, website,
+              payments and AI — everything you need to get online properly,
+              all in one place. Yours to own.
             </p>
             <div className="text-sm text-white/60">
               <p className="mb-1">
