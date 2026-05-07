@@ -3,47 +3,48 @@ import { Button } from "@/components/ui/button";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import { Badge } from "@/components/ui/badge";
 
-// Comparison table for the three website tiers (Landing / Business /
-// Premium). Most launchpad components are baked into Business and
-// above; Landing Page stays the lean single-page entry point.
+// Comparison table — written in plain English customers actually
+// understand. Brand Build sits as the leftmost column for people who
+// only need branding; Business and Premium add the website + system on
+// top. Rows are intentionally short so the table reads at a glance.
 const comparisonGroups = [
   {
-    title: "Every Website",
+    title: "What You Get",
     rows: [
-      { label: "Custom design tailored to your brand", tiers: [true, true, true] },
-      { label: "Mobile-optimised + fast loading", tiers: [true, true, true] },
-      { label: "Domain + business email set up", tiers: [true, true, true] },
-      { label: "Contact form included", tiers: [true, true, true] },
-      { label: "30 days of free refinement after launch", tiers: [true, true, true] },
-      { label: "You own everything — code, hosting & domain", tiers: [true, true, true] },
+      { label: "A logo and brand built around your business", tiers: [true, true, true] },
+      { label: "Brand colours and typography that match", tiers: [true, true, true] },
+      { label: "Brand guidelines PDF + 10 social templates", tiers: [true, false, false] },
+      { label: "30 days of free changes after launch", tiers: [true, true, true] },
+      { label: "You own everything — no rented platforms", tiers: [true, true, true] },
     ],
   },
   {
-    title: "Business & Above",
+    title: "Your Website",
     rows: [
-      { label: "Multi-page structure", tiers: [false, true, true] },
-      { label: "Conversion-focused layout", tiers: [false, true, true] },
-      { label: "Google Business Profile set up", tiers: [false, true, true] },
-      { label: "AI Assistant included free", tiers: [false, true, true] },
-      { label: "Booking Integration included free", tiers: [false, true, true] },
+      { label: "A custom website that looks great on every device", tiers: [false, true, true] },
+      { label: "Easy for customers to find you on Google", tiers: [false, true, true] },
+      { label: "Email and domain set up properly", tiers: [false, true, true] },
+      { label: "AI assistant that answers customers 24/7", tiers: [false, true, true] },
+      { label: "Online booking so customers schedule themselves", tiers: [false, true, true] },
+      { label: "Multiple pages, not just one", tiers: [false, true, true] },
     ],
   },
   {
-    title: "Premium Only",
+    title: "Premium Extras",
     rows: [
-      { label: "Full custom design from scratch", tiers: [false, false, true] },
+      { label: "Designed completely from scratch — no templates", tiers: [false, false, true] },
       { label: "Up to 8 custom pages", tiers: [false, false, true] },
-      { label: "Priority delivery & support", tiers: [false, false, true] },
+      { label: "First in line if you need urgent changes", tiers: [false, false, true] },
     ],
   },
 ];
 
-// Three-column comparison — Landing Page as entry, Business as the
-// default (highlighted), Premium as the top tier. Redesign and Brand
-// Build sit on the cards above but don't appear in the comparison
-// because they're side products, not website tiers.
+// Three-column comparison — Full Brand Build as the brand-only entry,
+// Business as the default website (highlighted), Premium as the top
+// tier. Brand Build sits beside the website tiers because customers
+// often choose between "just brand me" and "full website + brand".
 const comparisonColumns = [
-  { title: "Landing Page", price: "£750", highlighted: false },
+  { title: "Full Brand Build", price: "£750", highlighted: false },
   {
     title: "Business",
     price: "£980",
@@ -307,18 +308,18 @@ export default function PricingSection() {
           ))}
         </div>
 
-        {/* Cloudflare-style feature comparison — prices only live at column
-            headers; feature rows are price-free so clients compare on value,
-            not on line-item cost. Sticky header keeps tier names visible
-            while scrolling on mobile. */}
+        {/* Comparison table — friendly plain-English breakdown of what's
+            included in each package. Prices live on the cards above so
+            this section stays focused on value (what you get), not cost.
+            Sticky header keeps tier names visible while scrolling on
+            mobile. */}
         <div className="mt-24">
           <div className="text-center mb-10">
             <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">
               What's Included
             </h3>
             <p className="text-white/55 text-base max-w-2xl mx-auto">
-              Fast, secure, modern websites with high-end design and smooth visuals —
-              built to help your business stand out and get more customers.
+              No jargon, no surprises — here's exactly what each package gets you.
             </p>
           </div>
 
@@ -357,23 +358,6 @@ export default function PricingSection() {
                     <h4 className="text-base md:text-2xl font-medium text-white leading-tight">
                       {col.title}
                     </h4>
-                    <div className="mt-1.5 flex flex-col items-center gap-0.5">
-                      <div className="flex items-baseline justify-center gap-2 flex-wrap">
-                        <p className="text-xl md:text-3xl font-light text-white whitespace-nowrap">
-                          {col.price}
-                        </p>
-                        {col.originalPrice && (
-                          <p className="text-xs md:text-sm text-white/40 line-through whitespace-nowrap">
-                            {col.originalPrice}
-                          </p>
-                        )}
-                      </div>
-                      {col.originalPrice && (
-                        <span className="text-[9px] md:text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]">
-                          30% off · Founding rate
-                        </span>
-                      )}
-                    </div>
                   </div>
                 ))}
               </div>
