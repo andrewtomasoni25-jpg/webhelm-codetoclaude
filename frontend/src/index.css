@@ -159,17 +159,11 @@ body {
   animation-delay: 0.6s;
 }
 
-/* Bespoke Stencil Medium — display typeface for the big section
-   headings (h2's). OTF format, served from /public/fonts. font-display:
-   swap means we render in the fallback (Outfit) until Bespoke loads,
-   then switch — no FOIT, no blank text. */
-@font-face {
-  font-family: 'Bespoke Stencil';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/BespokeStencil-Medium.otf') format('opentype');
-}
+/* Bespoke Stencil Medium — @font-face declaration lives in
+   public/index.html (inlined alongside Outfit + Manrope) because
+   webpack's CSS loader tries to resolve url('/fonts/...') as a
+   module import and fails the build when @font-face is declared
+   here. The font is loaded; this CSS just references it by name. */
 
 /* Default heading font for h1, h4, h5, h6 — Outfit. h2 + h3
    handled separately below so section titles can use the display
