@@ -13,20 +13,27 @@ const SLOTS_LEFT = TOTAL_SLOTS - SLOTS_TAKEN;
 // £2,200 → £1,540. Keeping the two sections in sync means a visitor
 // comparing them sees one consistent offer rather than two competing
 // numbers.
-const STANDING_FEE = "\u00A32,200";
-const FOUNDING_RATE = "\u00A31,540";
-const DISCOUNT_PCT = "30%";
+const PACKAGE_PRICE = "\u00A3750";
+const RETAINER_VALUE = "\u00A3474";
+const RETAINER_MONTHS = "6 months";
+// Backwards-compatible aliases \u2014 JSX below still references these names
+// while the new naming settles. STANDING_FEE now holds the Studio
+// retainer value that's included free; FOUNDING_RATE holds the Launch
+// package price.
+const STANDING_FEE = RETAINER_VALUE;
+const FOUNDING_RATE = PACKAGE_PRICE;
+const DISCOUNT_PCT = "Free";
 
 // What a Founding Partner actually receives. Each line is a deliverable
 // that's contractually verifiable — no vague benefits.
 const INCLUDES = [
-  "A complete, custom website \u2014 design, build, copy, and launch",
-  "Delivered in 48 to 72 hours from brief sign-off",
-  "Full ownership of the code, the copy, and the domain",
-  "Production-grade hosting setup, no lock-in",
-  "Thirty days of post-launch refinement at no extra cost",
+  "The Launch package \u2014 logo, website, email, payments, Google, the lot",
+  "Set up and live in 7 days",
+  "Full ownership of the code, hosting and domain",
+  "AI Assistant included free",
+  "Six months of Studio management (\u00a3474 value) thrown in",
   "A permanent entry in the WebHelm Anthology",
-  "Direct access to the founder for the duration of the engagement",
+  "Direct access to the founder for the entire engagement",
 ];
 
 export default function FoundingPartnerSection() {
@@ -58,10 +65,10 @@ export default function FoundingPartnerSection() {
             as="h2"
             className="text-3xl sm:text-4xl md:text-5xl tracking-tight font-medium text-white mb-6"
           >
-            A public record, authored by the first fifteen.
+            The full launchpad, plus six months of management included.
           </SplitTextReveal>
           <p className="text-base md:text-lg leading-relaxed text-white/70 max-w-3xl mx-auto">
-            Fifteen sites. Fifteen partners. One permanent archive of the work we built first.
+            Fifteen UK businesses get The Launch package at the standing rate, with six months of Studio retainer thrown in free. A £474 saving and a permanent place in the WebHelm Anthology.
           </p>
         </motion.div>
 
@@ -78,9 +85,11 @@ export default function FoundingPartnerSection() {
           <div className="max-w-3xl mx-auto text-center mb-10">
             <p className="text-[15px] md:text-base leading-relaxed text-white/75">
               We&rsquo;ve just launched, so instead of showing past results,
-              we&rsquo;re building them. Fifteen UK businesses get a complete
-              WebHelm website at a reduced founding rate, in exchange for a
-              verified review and a place in our portfolio.
+              we&rsquo;re building them. Fifteen UK businesses get the full
+              Launch package &mdash; logo, website, email, payments, Google,
+              the lot &mdash; with six months of Studio retainer included
+              free. In exchange, a verified review and a place in the
+              Anthology.
             </p>
           </div>
 
@@ -113,15 +122,16 @@ export default function FoundingPartnerSection() {
               </span>
               <div className="flex items-baseline gap-3 mb-2">
                 <span className="text-4xl md:text-5xl font-light text-white">
-                  {FOUNDING_RATE}
+                  {PACKAGE_PRICE}
                 </span>
-                <span className="text-lg text-white/40 line-through">
-                  {STANDING_FEE}
+                <span className="text-sm text-white/50 whitespace-nowrap">
+                  + {RETAINER_VALUE} free
                 </span>
               </div>
               <p className="text-sm text-white/60">
-                {DISCOUNT_PCT} below our standing fee. Offered once, to the
-                Founding Fifteen.
+                The Launch package at standing price, plus {RETAINER_MONTHS} of
+                Studio management thrown in. Offered once, to the Founding
+                Fifteen.
               </p>
             </div>
 
@@ -141,8 +151,9 @@ export default function FoundingPartnerSection() {
                 </span>
               </div>
               <p className="text-sm text-white/60">
-                {SLOTS_TAKEN} places taken. When the final slot is placed, the
-                programme closes and the rate returns to {STANDING_FEE}.
+                {SLOTS_TAKEN} places taken. When the final slot is placed,
+                the programme closes and the {RETAINER_MONTHS} of free
+                Studio retainer disappears with it.
               </p>
               {/* Progress bar — honest visual of remaining slots. */}
               <div className="mt-4 h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
@@ -202,8 +213,8 @@ export default function FoundingPartnerSection() {
             </p>
             <p className="text-white/55 italic">
               Fifteen places. {SLOTS_TAKEN} taken. {SLOTS_LEFT} remain. When
-              they are filled, the programme closes and the rate returns to
-              {" "}{STANDING_FEE}. The archive stays permanent.
+              they are filled, the programme closes and the free {RETAINER_MONTHS}
+              {" "}of Studio retainer goes with it. The archive stays permanent.
             </p>
           </div>
         </motion.div>

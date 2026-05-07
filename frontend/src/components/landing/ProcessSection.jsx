@@ -5,30 +5,30 @@ const processSteps = [
   {
     id: 1,
     icon: MessageSquare,
-    title: "Discovery",
+    title: "The Brief",
     description:
-      "We start by understanding your business, goals, and target audience to create a tailored strategy.",
+      "Tell me what you do, who you serve, and what you'd like it called. 30 minutes on a call — that's the only homework you've got.",
   },
   {
     id: 2,
     icon: Pencil,
-    title: "Design",
+    title: "The Build",
     description:
-      "Our designers create stunning mockups that align with your brand and user expectations.",
+      "Logo, website, email, Google profile, payments, AI assistant — all set up in parallel while you carry on with your day.",
   },
   {
     id: 3,
     icon: Code,
-    title: "Development",
+    title: "The Launch",
     description:
-      "We build your website using modern technologies for optimal performance and scalability.",
+      "You go live. Fully ready to take customers. Site is yours, code is yours, domain is yours — no platform lock-in.",
   },
   {
     id: 4,
     icon: Rocket,
-    title: "Launch",
+    title: "The Run",
     description:
-      "After thorough testing, we launch your site and provide ongoing support to ensure success.",
+      "Optional Studio retainer keeps everything growing — reviews climbing, profile fresh, edits handled. Cancel any time.",
   },
 ];
 

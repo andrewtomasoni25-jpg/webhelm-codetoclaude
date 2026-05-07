@@ -3,138 +3,104 @@ import { Button } from "@/components/ui/button";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import { Badge } from "@/components/ui/badge";
 
-// Lean comparison table. Only the things a customer actually cares about
-// when picking a tier — no jargon, no plumbing, no marketing fluff. The
-// "Optional Upgrades" group has been removed from this table; one-off
-// upgrades live in their own section below so the comparison stays focused
-// on what the website itself includes.
+// Comparison table — what's in each setup package. Most rows are ✓ across
+// all three because the launchpad system is shared. Differences sit in
+// scope (page count) and depth (custom design vs structured templates).
 const comparisonGroups = [
   {
-    title: "Every Website",
+    title: "Every Launchpad",
     rows: [
-      { label: "Custom design tailored to your brand", tiers: [true, true, true] },
-      { label: "Mobile-optimised", tiers: [true, true, true] },
-      { label: "Fast loading", tiers: [true, true, true] },
-      { label: "Basic SEO setup", tiers: [true, true, true] },
-      { label: "Contact form included", tiers: [true, true, true] },
+      { label: "Custom website, mobile-ready", tiers: [true, true, true] },
+      { label: "Domain + business email set up", tiers: [true, true, true] },
+      { label: "Google Business Profile created & verified", tiers: [true, true, true] },
+      { label: "Payment system (Stripe / PayPal) connected", tiers: [true, true, true] },
       { label: "30 days of free refinement after launch", tiers: [true, true, true] },
       { label: "You own everything — code, hosting & domain", tiers: [true, true, true] },
     ],
   },
   {
-    title: "Business & Above",
+    title: "Launch & Pro",
     rows: [
-      { label: "Multi-page structure", tiers: [false, true, true] },
-      { label: "Conversion-focused layout", tiers: [false, true, true] },
+      { label: "Logo + brand identity included", tiers: [false, true, true] },
       { label: "AI Assistant included free", tiers: [false, true, true] },
+      { label: "Multi-page structure", tiers: [false, true, true] },
+      { label: "Booking system integrated", tiers: [false, true, true] },
     ],
   },
   {
-    title: "Premium Only",
+    title: "Pro Only",
     rows: [
       { label: "Full custom design from scratch", tiers: [false, false, true] },
-      { label: "Advanced visual effects", tiers: [false, false, true] },
+      { label: "Up to 8 custom pages", tiers: [false, false, true] },
       { label: "Priority delivery & support", tiers: [false, false, true] },
     ],
   },
 ];
 
-// Business and Premium both carry the same 30% Founding Partner
-// discount. We show the standing fee struck through next to the
-// founding rate so the saving reads at a glance.
+// Three setup packages — Refresh for existing businesses, Launch for new
+// ones (the default), Pro for full-custom premium builds. Pro carries the
+// strikethrough founding price; Refresh and Launch are flat rates.
 const comparisonColumns = [
-  { title: "Landing Page", price: "£750", highlighted: false },
+  { title: "Refresh", price: "£450", highlighted: false },
   {
-    title: "Business",
-    price: "£980",
-    originalPrice: "£1,400",
+    title: "Launch",
+    price: "£750",
     highlighted: true,
   },
   {
-    title: "Premium",
+    title: "Pro",
     price: "£1,540",
     originalPrice: "£2,200",
     highlighted: false,
   },
 ];
 
-// Pricing card grid — five cards. Landing leads as the primary entry
-// product; Redesign sits beside it as the alternative for businesses
-// already online. Brand Build matches Landing's price point as a
-// parallel branding entry. Business and Premium close out the grid.
+// Three setup packages, ordered low → high. Refresh is the entry point
+// for existing businesses with a messy setup; Launch is the default
+// (the full launchpad for new businesses); Pro is the bespoke premium
+// option for those serious about growth.
 const pricingPlans = [
   {
-    id: "landing-page",
-    title: "Landing Page",
+    id: "refresh",
+    title: "The Refresh",
+    price: "£450",
+    category: "Existing Business",
+    description: "Modernise your messy online setup — fresh website, sorted email, professional Google profile",
+    image: "",
+    features: [
+      "Website rebuild + content migrated",
+      "Email + domain sorted properly",
+      "Google Business Profile cleaned up",
+      "Live in 5 days",
+    ],
+    highlighted: false,
+  },
+  {
+    id: "launch",
+    title: "The Launch",
     price: "£750",
-    category: "Starter",
-    description: "A clean, professional single-page website that gets you online fast",
-    image: "",
-    features: [
-      "1-page custom website",
-      "Mobile responsive",
-      "Contact form included",
-      "Live in 48 hours",
-    ],
-    highlighted: false,
-  },
-  {
-    id: "website-redesign",
-    title: "Website Redesign",
-    price: "£550",
-    category: "Refresh",
-    description: "Modernise your current website without starting from scratch",
-    image: "",
-    features: [
-      "Complete modern redesign",
-      "Content migration",
-      "Faster, mobile-ready",
-      "Live in 48 hours",
-    ],
-    highlighted: false,
-  },
-  {
-    id: "full-brand-build",
-    title: "Full Brand Build",
-    price: "£750",
-    category: "Branding",
-    description: "Everything your brand needs — logo system, colours, type and brand book",
-    image: "",
-    features: [
-      "Logo system + 3 concepts",
-      "Colour palette + type system",
-      "10 social media templates",
-      "Brand guidelines PDF",
-    ],
-    highlighted: false,
-  },
-  {
-    id: "business",
-    title: "Business",
-    price: "£980",
-    originalPrice: "£1,400",
     category: "Most Popular",
-    description: "The best choice for most businesses — designed to bring in customers",
+    description: "The full launchpad — logo, website, email, Google, payments, the lot",
     image: "",
     features: [
-      "Up to 5 custom pages",
-      "AI Assistant included free",
-      "Conversion-focused layout",
-      "Live in 72 hours",
+      "Logo + brand identity",
+      "Custom website + email + domain",
+      "Google profile + payments + booking",
+      "AI Assistant included · live in 7 days",
     ],
     highlighted: true,
   },
   {
-    id: "premium",
-    title: "Premium",
+    id: "pro",
+    title: "The Pro",
     price: "£1,540",
     originalPrice: "£2,200",
     category: "Premium",
-    description: "Full custom build, designed and coded from scratch for serious growth",
+    description: "Full custom build for businesses serious about growth — everything bespoke from scratch",
     image: "",
     features: [
+      "Everything in The Launch",
       "Up to 8 custom pages",
-      "AI Assistant included free",
       "Full custom design from scratch",
       "Priority delivery & support",
     ],
@@ -142,14 +108,62 @@ const pricingPlans = [
   },
 ];
 
-// One-off upgrades, ordered lowest → highest. Pure add-ons clients can
-// bolt onto any tier. Brand work has been folded into the Full Brand
-// Build pricing card above, so add-ons here stay focused on functional
-// extensions of the website itself.
+// Three monthly retainer tiers. Helm is the safety net (£29). Studio is
+// the active-management default that 90% of clients pick (£79). Captain
+// is the full part-time-digital-assistant tier (£149). Cancel any time,
+// no contract — clients keep the site whether they retain or not.
+const carePlans = [
+  {
+    id: "helm",
+    title: "Helm",
+    price: "£29/mo",
+    category: "Safety Net",
+    description: "Site monitored, edits when you need them, someone to call when things go wrong",
+    features: [
+      "24/7 site uptime monitoring",
+      "Unlimited small text edits",
+      "Direct line · 48hr response",
+      "Quarterly mini check-up",
+    ],
+    highlighted: false,
+  },
+  {
+    id: "studio",
+    title: "Studio",
+    price: "£79/mo",
+    category: "Most Popular",
+    description: "Active management — your reviews climb, your Google profile stays sharp, your numbers grow",
+    features: [
+      "Everything in Helm",
+      "Monthly Google review campaign",
+      "Google Business Profile managed",
+      "Monthly performance report + quarterly call",
+    ],
+    highlighted: true,
+  },
+  {
+    id: "captain",
+    title: "Captain",
+    price: "£149/mo",
+    category: "Full Service",
+    description: "Like having a part-time digital assistant — social posts, local SEO, full back-office",
+    features: [
+      "Everything in Studio",
+      "10 branded social posts per month",
+      "Local SEO push + customer auto-replies",
+      "Annual rebuild + monthly strategy session",
+    ],
+    highlighted: false,
+  },
+];
+
+// One-off add-ons that sit outside the three setup packages. Kept tight
+// so the pricing page stays scannable — bigger services live inside the
+// main packages.
 const addons = [
-  { name: "Booking Integration", price: "£150", note: "Customers can book directly from your site" },
-  { name: "Business Setup", price: "£200", note: "Domain + business email + DNS configured" },
-  { name: "AI Assistant Setup", price: "£250", note: "Free with Business or Premium" },
+  { name: "Logo only (no website)", price: "£250", note: "If you just need branding sorted" },
+  { name: "AI Assistant for Refresh", price: "£150", note: "Free with Launch and Pro" },
+  { name: "Extra page beyond package", price: "£100", note: "Add as many as you need" },
 ];
 
 export default function PricingSection() {
@@ -375,15 +389,86 @@ export default function PricingSection() {
           </p>
         </div>
 
-        {/* Popular Upgrades — roomier cards so prices are easy to scan.
-            zoom: 0.88 stacks on top of the section's own 0.88 zoom so
-            add-ons read noticeably tighter than the plan cards above. */}
+        {/* Monthly Care plans — three retainer tiers under the setup
+            packages above. Same card layout as pricingPlans so the
+            visual rhythm of the page stays consistent. Studio is the
+            highlighted middle tier — that's the one most clients pick. */}
+        <div className="mt-24">
+          <div className="text-center mb-10">
+            <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-3 block">
+              Optional · Cancel any time
+            </span>
+            <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">
+              Monthly Care
+            </h3>
+            <p className="text-white/55 text-base max-w-2xl mx-auto">
+              Keep your launchpad sharp, secure and growing — your reviews climbing,
+              your Google profile fresh, and someone real to call when things change.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            {carePlans.map((plan) => (
+              <div
+                key={plan.id}
+                data-testid={`care-card-${plan.id}`}
+                className={`flex flex-col p-5 rounded-2xl bg-[#121212] border transition-colors ${
+                  plan.highlighted
+                    ? "border-[#007bff] ring-1 ring-[#007bff]"
+                    : "border-white/10 hover:border-[#007bff]/40"
+                }`}
+              >
+                <Badge
+                  className={`self-start text-[10px] px-2 py-0.5 mb-3 ${
+                    plan.highlighted
+                      ? "bg-[#007bff] text-white border-none"
+                      : "bg-white/10 text-white/80 border-white/10"
+                  }`}
+                >
+                  {plan.category}
+                </Badge>
+                <h3 className="text-lg font-medium text-white leading-tight mb-1">
+                  {plan.title}
+                </h3>
+                <div className="mb-4 leading-none">
+                  <span className="text-2xl font-light text-white">
+                    {plan.price}
+                  </span>
+                </div>
+                <p className="text-sm text-white/60 leading-relaxed mb-4">
+                  {plan.description}
+                </p>
+                <ul className="space-y-2 flex-1 mb-4">
+                  {plan.features.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <Check className="w-3.5 h-3.5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
+                      <span className="text-xs text-white leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  onClick={scrollToContact}
+                  className={`w-full rounded-full text-xs py-2 ${
+                    plan.highlighted
+                      ? "bg-[#007bff] hover:bg-[#0056b3] text-white"
+                      : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                  }`}
+                >
+                  Get Started
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Add-ons — small extras that sit outside the main launchpad
+            packages. Kept tight (3 items) so the page stays scannable.
+            zoom: 0.88 makes them visually lighter than the plan cards. */}
         <div className="mt-20" style={{ zoom: 0.88 }}>
           <h3 className="text-center text-2xl md:text-3xl font-medium text-white mb-3">
-            Popular Upgrades
+            Add-Ons
           </h3>
           <p className="text-center text-white/55 text-base mb-10 max-w-xl mx-auto">
-            Enhance your website with features that bring in more customers and improve performance.
+            Small extras you can bolt onto any launchpad package.
           </p>
           {/* Compact upgrade cards — name + note on the left, price on the
               right. Padding stays tight so cards keep the smaller footprint

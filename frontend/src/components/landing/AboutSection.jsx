@@ -11,25 +11,25 @@ const PILLARS = [
     id: "problem",
     label: "The Problem",
     body:
-      "Most small businesses end up stitching together a website, a logo, an email address, and a booking system from five different places \u2014 paying too much, getting too little, and ending up with a brand that doesn't pull together.",
+      "Most people with an idea \u2014 or an existing small business \u2014 get stuck. Logo, website, email, payments, Google profile: five different platforms, five hidden fees, and weeks of wasted time figuring it out alone.",
   },
   {
     id: "gap",
     label: "The Gap",
     body:
-      "The market splits between cheap templates with no soul and £4,000 agencies that take three months. There's no real option for owners who want the full job done properly — brand, website, AI, the lot — at a price small business actually justifies.",
+      "There's no real option for someone who just wants their whole online setup done properly, in one go, by one person — without paying agency rates or being locked into subscriptions they can't escape.",
   },
   {
     id: "solution",
     label: "The Solution",
     body:
-      "WebHelm is a full web agency. Websites, brand builds, redesigns, AI assistants \u2014 all delivered in 48 to 72 hours. Premium craft at small-business prices. Yours to own outright. No subscriptions, no platform lock-in, no agency overhead.",
+      "WebHelm is a launchpad. Logo, website, email, payments, Google \u2014 all set up properly in 7 days, for one flat fee. Yours to own outright. Optional monthly upkeep with no contract, cancel any time.",
   },
   {
     id: "result",
     label: "The Result",
     body:
-      "A complete digital presence — sharp brand, fast website, lead capture built in — that reflects your business properly and gets your phone ringing. Delivered in days, not months. Owned forever.",
+      "From idea to in-business in a week — or from messy to professional, if you're already trading. Either way, you're fully ready to take customers, and you focus only on the work.",
   },
 ];
 

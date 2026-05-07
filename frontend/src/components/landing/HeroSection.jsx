@@ -164,9 +164,9 @@ export default function HeroSection() {
               data-testid="hero-description"
               className="text-base md:text-lg leading-relaxed text-white/70 mb-10 max-w-2xl mx-auto"
             >
-              We help small businesses launch online — properly. Logo,
-              website, payments, AI assistant, the lot. One agency, one
-              launch, everything you need to start strong.
+              From idea to in-business in 7 days. Logo, website, email,
+              payments, Google — set up properly, all in one launchpad.
+              From £450. Yours forever.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center">
