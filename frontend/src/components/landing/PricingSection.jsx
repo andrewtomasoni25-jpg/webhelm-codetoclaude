@@ -243,139 +243,144 @@ export default function PricingSection() {
           </p>
         </div>
 
-        {/* Pricing grid split into two audience sections so visitors
-            can self-select instead of scanning all five tiers at once.
+        {/* Pricing grid split into two audience sections, laid out side
+            by side on desktop (2:1 ratio so the four "starting" cards
+            sit beside the single "trading" card without either feeling
+            squashed). Stacks vertically on mobile/tablet for legibility.
             "Starting Something New" holds the four packages for new
             businesses (Landing, Brand Build, Business, Premium).
-            "Already Trading" holds the Refresh tier for existing
-            businesses. Same card design across both sections so the
-            visual rhythm of the page stays consistent. */}
-
-        {/* Section 1 — for new businesses */}
-        <div className="text-center mb-8">
-          <span className="text-xs tracking-[0.25em] uppercase font-bold text-[#007bff] mb-2 block">
-            Starting Something New
-          </span>
-          <p className="text-white/50 text-sm">
-            For people launching a business or idea from scratch
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-          {pricingPlans.filter((plan) => plan.audience === "starting").map((plan) => (
-            <div
-              key={plan.id}
-              data-testid={`pricing-card-${plan.id}`}
-              className={`flex flex-col p-5 rounded-2xl bg-[#121212] border transition-colors ${
-                plan.highlighted
-                  ? "border-[#007bff] ring-1 ring-[#007bff]"
-                  : "border-white/10 hover:border-[#007bff]/40"
-              }`}
-            >
-              <Badge
-                className={`self-start text-[10px] px-2 py-0.5 mb-3 ${
-                  plan.highlighted
-                    ? "bg-[#007bff] text-white border-none"
-                    : "bg-white/10 text-white/80 border-white/10"
-                }`}
-              >
-                {plan.category}
-              </Badge>
-              <h3 className="text-lg font-medium text-white leading-tight mb-1">
-                {plan.title}
-              </h3>
-              <div className="mb-4 leading-none">
-                <div className="flex items-baseline gap-2 flex-wrap">
-                  <span className="text-2xl font-light text-white">
-                    {plan.price}
-                  </span>
-                  {plan.originalPrice && (
-                    <span className="text-sm text-white/40 line-through">
-                      {plan.originalPrice}
-                    </span>
-                  )}
-                </div>
-                {plan.originalPrice && (
-                  <span className="inline-block mt-1.5 text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]">
-                    Founding Partner · 30% off
-                  </span>
-                )}
-              </div>
-              <ul className="space-y-2 flex-1 mb-4">
-                {plan.features.slice(0, 4).map((f, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
-                    <span className="text-xs text-white leading-snug">{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                onClick={scrollToContact}
-                className={`w-full rounded-full text-xs py-2 ${
-                  plan.highlighted
-                    ? "bg-[#007bff] hover:bg-[#0056b3] text-white"
-                    : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
-                }`}
-              >
-                Get Started
-              </Button>
-            </div>
-          ))}
-        </div>
-
-        {/* Section 2 — for existing businesses */}
-        <div className="text-center mb-8 mt-16">
-          <span className="text-xs tracking-[0.25em] uppercase font-bold text-[#007bff] mb-2 block">
-            Already Trading
-          </span>
-          <p className="text-white/50 text-sm">
-            For tradespeople and small businesses who need an online refresh
-          </p>
-        </div>
-        <div className="grid grid-cols-1 max-w-sm mx-auto gap-4 md:gap-5">
-          {pricingPlans.filter((plan) => plan.audience === "trading").map((plan) => (
-            <div
-              key={plan.id}
-              data-testid={`pricing-card-${plan.id}`}
-              className={`flex flex-col p-5 rounded-2xl bg-[#121212] border transition-colors ${
-                plan.highlighted
-                  ? "border-[#007bff] ring-1 ring-[#007bff]"
-                  : "border-white/10 hover:border-[#007bff]/40"
-              }`}
-            >
-              <Badge
-                className={`self-start text-[10px] px-2 py-0.5 mb-3 bg-white/10 text-white/80 border-white/10`}
-              >
-                {plan.category}
-              </Badge>
-              <h3 className="text-lg font-medium text-white leading-tight mb-1">
-                {plan.title}
-              </h3>
-              <div className="mb-4 leading-none">
-                <div className="flex items-baseline gap-2 flex-wrap">
-                  <span className="text-2xl font-light text-white">
-                    {plan.price}
-                  </span>
-                </div>
-              </div>
-              <p className="text-xs text-white/60 mb-3 leading-relaxed">
-                {plan.description}
+            "Already Trading" holds the Refresh tier. */}
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8 lg:gap-10">
+          {/* Section 1 — for new businesses */}
+          <div>
+            <div className="mb-6">
+              <span className="text-xs tracking-[0.25em] uppercase font-bold text-[#007bff] mb-2 block">
+                Starting Something New
+              </span>
+              <p className="text-white/50 text-sm">
+                For people launching a business or idea from scratch
               </p>
-              <ul className="space-y-2 flex-1 mb-4">
-                {plan.features.slice(0, 4).map((f, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <Check className="w-3.5 h-3.5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
-                    <span className="text-xs text-white leading-snug">{f}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                onClick={scrollToContact}
-                className="w-full rounded-full text-xs py-2 bg-white/5 hover:bg-white/10 text-white border border-white/10"
-              >
-                Get Started
-              </Button>
             </div>
-          ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+              {pricingPlans.filter((plan) => plan.audience === "starting").map((plan) => (
+                <div
+                  key={plan.id}
+                  data-testid={`pricing-card-${plan.id}`}
+                  className={`flex flex-col p-5 rounded-2xl bg-[#121212] border transition-colors ${
+                    plan.highlighted
+                      ? "border-[#007bff] ring-1 ring-[#007bff]"
+                      : "border-white/10 hover:border-[#007bff]/40"
+                  }`}
+                >
+                  <Badge
+                    className={`self-start text-[10px] px-2 py-0.5 mb-3 ${
+                      plan.highlighted
+                        ? "bg-[#007bff] text-white border-none"
+                        : "bg-white/10 text-white/80 border-white/10"
+                    }`}
+                  >
+                    {plan.category}
+                  </Badge>
+                  <h3 className="text-lg font-medium text-white leading-tight mb-1">
+                    {plan.title}
+                  </h3>
+                  <div className="mb-4 leading-none">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <span className="text-2xl font-light text-white">
+                        {plan.price}
+                      </span>
+                      {plan.originalPrice && (
+                        <span className="text-sm text-white/40 line-through">
+                          {plan.originalPrice}
+                        </span>
+                      )}
+                    </div>
+                    {plan.originalPrice && (
+                      <span className="inline-block mt-1.5 text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]">
+                        Founding Partner · 30% off
+                      </span>
+                    )}
+                  </div>
+                  <ul className="space-y-2 flex-1 mb-4">
+                    {plan.features.slice(0, 4).map((f, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="w-3.5 h-3.5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
+                        <span className="text-xs text-white leading-snug">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    onClick={scrollToContact}
+                    className={`w-full rounded-full text-xs py-2 ${
+                      plan.highlighted
+                        ? "bg-[#007bff] hover:bg-[#0056b3] text-white"
+                        : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                    }`}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 2 — for existing businesses */}
+          <div>
+            <div className="mb-6">
+              <span className="text-xs tracking-[0.25em] uppercase font-bold text-[#007bff] mb-2 block">
+                Already Trading
+              </span>
+              <p className="text-white/50 text-sm">
+                For tradespeople and small businesses who need an online refresh
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:gap-5">
+              {pricingPlans.filter((plan) => plan.audience === "trading").map((plan) => (
+                <div
+                  key={plan.id}
+                  data-testid={`pricing-card-${plan.id}`}
+                  className={`flex flex-col p-5 rounded-2xl bg-[#121212] border transition-colors ${
+                    plan.highlighted
+                      ? "border-[#007bff] ring-1 ring-[#007bff]"
+                      : "border-white/10 hover:border-[#007bff]/40"
+                  }`}
+                >
+                  <Badge
+                    className={`self-start text-[10px] px-2 py-0.5 mb-3 bg-white/10 text-white/80 border-white/10`}
+                  >
+                    {plan.category}
+                  </Badge>
+                  <h3 className="text-lg font-medium text-white leading-tight mb-1">
+                    {plan.title}
+                  </h3>
+                  <div className="mb-4 leading-none">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <span className="text-2xl font-light text-white">
+                        {plan.price}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-white/60 mb-3 leading-relaxed">
+                    {plan.description}
+                  </p>
+                  <ul className="space-y-2 flex-1 mb-4">
+                    {plan.features.slice(0, 4).map((f, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="w-3.5 h-3.5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
+                        <span className="text-xs text-white leading-snug">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    onClick={scrollToContact}
+                    className="w-full rounded-full text-xs py-2 bg-white/5 hover:bg-white/10 text-white border border-white/10"
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Comparison table — friendly plain-English breakdown of what's
