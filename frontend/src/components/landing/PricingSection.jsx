@@ -238,8 +238,8 @@ export default function PricingSection() {
           >
             Transparent Pricing
           </SplitTextReveal>
-          <p className="text-white/50 text-sm max-w-lg mx-auto mb-1">
-            No hidden fees, no surprises — pick the package that fits your business
+          <p className="text-white/50 text-sm max-w-xl mx-auto mb-1">
+            Whether you're starting out or already trading — pick the package that fits. No hidden fees, no surprises.
           </p>
           <p className="text-[#007bff]/70 text-xs flex items-center justify-center gap-1.5">
             <Bot className="w-3.5 h-3.5" />
@@ -318,6 +318,18 @@ export default function PricingSection() {
               </Button>
             </div>
           ))}
+        </div>
+
+        {/* Note for traders — the Starting Something New tiers aren't
+            exclusive to new businesses. Anyone already trading can pick
+            them too; Refresh is just the most popular jumping-off point
+            for existing setups. Small tinted bar so it doesn't crowd
+            the cards but stays visible. */}
+        <div className="mt-6 max-w-2xl mx-auto px-4 py-3 rounded-full bg-[#007bff]/[0.06] border border-[#007bff]/15 text-center">
+          <p className="text-xs md:text-sm text-white/70">
+            <span className="text-[#007bff] font-semibold">Already trading?</span>{" "}
+            Any tier works for you — Website Refresh is just our most popular starting point for existing businesses.
+          </p>
         </div>
 
         {/* Comparison table — friendly plain-English breakdown of what's
