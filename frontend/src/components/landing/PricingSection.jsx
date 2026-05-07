@@ -228,7 +228,7 @@ export default function PricingSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
+          <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block" style={{ fontFamily: "'Outfit', sans-serif" }}>
             Investment
           </span>
           <SplitTextReveal
@@ -264,11 +264,6 @@ export default function PricingSection() {
                   : "border-white/10 hover:border-[#007bff]/40"
               }`}
             >
-              {/* Audience tag — tiny blue uppercase letterspaced label
-                  so customers self-select before reading the card. */}
-              <span className="text-[9px] tracking-[0.25em] uppercase font-bold text-[#007bff]/80 mb-2 block">
-                {plan.audience === "starting" ? "Starting Something New" : "Already Trading"}
-              </span>
               <Badge
                 className={`self-start text-[10px] px-2 py-0.5 mb-3 ${
                   plan.highlighted
@@ -293,7 +288,7 @@ export default function PricingSection() {
                   )}
                 </div>
                 {plan.originalPrice && (
-                  <span className="inline-block mt-1.5 text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]">
+                  <span className="inline-block mt-1.5 text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]" style={{ fontFamily: "'Outfit', sans-serif" }}>
                     Founding Partner · 30% off
                   </span>
                 )}
@@ -320,14 +315,14 @@ export default function PricingSection() {
           ))}
         </div>
 
-        {/* Note for traders — the Starting Something New tiers aren't
-            exclusive to new businesses. Anyone already trading can pick
-            them too; Refresh is just the most popular jumping-off point
-            for existing setups. Small tinted bar so it doesn't crowd
-            the cards but stays visible. */}
+        {/* Note for existing-business owners — the Starting Something
+            New tiers aren't exclusive to new businesses. Anyone already
+            running a business can pick them too; Refresh is just the
+            most popular jumping-off point for existing setups. Small
+            tinted bar so it doesn't crowd the cards but stays visible. */}
         <div className="mt-6 max-w-2xl mx-auto px-4 py-3 rounded-full bg-[#007bff]/[0.06] border border-[#007bff]/15 text-center">
-          <p className="text-xs md:text-sm text-white/70">
-            <span className="text-[#007bff] font-semibold">Already trading?</span>{" "}
+          <p className="text-xs md:text-sm text-white/70" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            <span className="text-[#007bff] font-semibold">Already up &amp; running?</span>{" "}
             Any tier works for you — Website Refresh is just our most popular starting point for existing businesses.
           </p>
         </div>
@@ -376,7 +371,7 @@ export default function PricingSection() {
                     }`}
                   >
                     {col.highlighted && (
-                      <span className="inline-block text-[10px] md:text-[11px] tracking-[0.15em] uppercase font-semibold text-[#007bff] mb-2">
+                      <span className="inline-block text-[10px] md:text-[11px] tracking-[0.15em] uppercase font-semibold text-[#007bff] mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
                         Most Popular
                       </span>
                     )}
@@ -393,7 +388,7 @@ export default function PricingSection() {
               {comparisonGroups.map((group) => (
                 <div key={group.title} className="divide-y divide-white/10">
                   <div className="bg-[#007bff]/[0.06] px-4 md:px-7 py-3.5 md:py-4 border-y border-[#007bff]/15">
-                    <span className="text-xs md:text-sm tracking-[0.25em] uppercase font-bold text-[#007bff]">
+                    <span className="text-xs md:text-sm tracking-[0.25em] uppercase font-bold text-[#007bff]" style={{ fontFamily: "'Outfit', sans-serif" }}>
                       {group.title}
                     </span>
                   </div>
@@ -437,7 +432,7 @@ export default function PricingSection() {
             highlighted middle tier — that's the one most clients pick. */}
         <div className="mt-24">
           <div className="text-center mb-10">
-            <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-3 block">
+            <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-3 block" style={{ fontFamily: "'Outfit', sans-serif" }}>
               Optional · Cancel any time
             </span>
             <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">
