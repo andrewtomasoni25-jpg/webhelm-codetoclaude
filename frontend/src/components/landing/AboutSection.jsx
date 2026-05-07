@@ -100,7 +100,7 @@ export default function AboutSection() {
           <SplitTextReveal
             as="h3"
             data-testid="about-title"
-            className="text-2xl sm:text-3xl tracking-tight font-medium text-white mb-10"
+            className="font-stencil text-2xl sm:text-3xl tracking-tight font-medium text-white mb-10"
           >
             A deliberate position in the market
           </SplitTextReveal>

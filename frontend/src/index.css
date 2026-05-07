@@ -159,9 +159,44 @@ body {
   animation-delay: 0.6s;
 }
 
-/* Heading font */
-h1, h2, h3, h4, h5, h6 {
+/* Bespoke Stencil Medium — display typeface for the big section
+   headings (h2's). OTF format, served from /public/fonts. font-display:
+   swap means we render in the fallback (Outfit) until Bespoke loads,
+   then switch — no FOIT, no blank text. */
+@font-face {
+  font-family: 'Bespoke Stencil';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/BespokeStencil-Medium.otf') format('opentype');
+}
+
+/* Default heading font for h1, h4, h5, h6 — Outfit. h2 + h3
+   handled separately below so section titles can use the display
+   stencil typeface. */
+h1, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
+}
+
+/* h2 — primary section headings (Transparent Pricing, Our Process,
+   Anthology, Premium tier locked at founding rates, etc.). Bespoke
+   Stencil makes these the visual anchor of each section. */
+h2 {
+  font-family: 'Bespoke Stencil', 'Outfit', sans-serif;
+}
+
+/* h3 default — Outfit. Card titles and small sub-labels live here
+   and they'd look unreadable in stencil. Specific h3s that are
+   section sub-headings (e.g. "What's Included") opt in to stencil
+   via the .font-stencil utility class below. */
+h3 {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Utility class — apply to any h3/h4 that should pick up Bespoke
+   Stencil even though the default for that tag is Outfit. */
+.font-stencil {
+  font-family: 'Bespoke Stencil', 'Outfit', sans-serif;
 }
 
 /* Uppercase letterspaced labels — section kickers, badges, mini-tags.

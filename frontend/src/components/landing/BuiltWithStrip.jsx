@@ -38,7 +38,7 @@ export default function BuiltWithStrip() {
           <SplitTextReveal
             as="h3"
             data-testid="built-with-title"
-            className="text-2xl sm:text-3xl mt-3 tracking-tight font-medium text-white/90"
+            className="font-stencil text-2xl sm:text-3xl mt-3 tracking-tight font-medium text-white/90"
           >
             Built with tools that ship
           </SplitTextReveal>

@@ -334,7 +334,7 @@ export default function PricingSection() {
             mobile. */}
         <div className="mt-24">
           <div className="text-center mb-10">
-            <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">
+            <h3 className="font-stencil text-2xl md:text-3xl font-medium text-white mb-3">
               What's Included
             </h3>
             <p className="text-white/55 text-base max-w-2xl mx-auto">
@@ -435,7 +435,7 @@ export default function PricingSection() {
             <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-3 block">
               Optional · Cancel any time
             </span>
-            <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">
+            <h3 className="font-stencil text-2xl md:text-3xl font-medium text-white mb-3">
               Monthly Care
             </h3>
             <p className="text-white/55 text-base max-w-2xl mx-auto">
