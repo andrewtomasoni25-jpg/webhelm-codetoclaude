@@ -41,7 +41,7 @@ const comparisonGroups = [
 // ones (the default), Pro for full-custom premium builds. Pro carries the
 // strikethrough founding price; Refresh and Launch are flat rates.
 const comparisonColumns = [
-  { title: "Refresh", price: "£450", highlighted: false },
+  { title: "Refresh", price: "£500", highlighted: false },
   {
     title: "Launch",
     price: "£750",
@@ -63,7 +63,7 @@ const pricingPlans = [
   {
     id: "refresh",
     title: "The Refresh",
-    price: "£450",
+    price: "£500",
     category: "Existing Business",
     description: "Modernise your messy online setup — fresh website, sorted email, professional Google profile",
     image: "",
@@ -157,12 +157,15 @@ const carePlans = [
   },
 ];
 
-// One-off add-ons that sit outside the three setup packages. Kept tight
-// so the pricing page stays scannable — bigger services live inside the
-// main packages.
+// One-off add-ons. Kept to a blend of the most-asked-for upgrades so
+// the pricing page stays scannable. Booking and Business Setup are the
+// two most popular asks from existing-business clients; AI Assistant
+// is the differentiator; Logo-only and Extra-page handle the edge cases.
 const addons = [
+  { name: "Booking Integration", price: "£150", note: "Customers can book directly from your site" },
+  { name: "Business Setup", price: "£200", note: "Domain + business email + DNS configured" },
+  { name: "AI Assistant Setup", price: "£250", note: "Free with Launch or Pro" },
   { name: "Logo only (no website)", price: "£250", note: "If you just need branding sorted" },
-  { name: "AI Assistant for Refresh", price: "£150", note: "Free with Launch and Pro" },
   { name: "Extra page beyond package", price: "£100", note: "Add as many as you need" },
 ];
 
