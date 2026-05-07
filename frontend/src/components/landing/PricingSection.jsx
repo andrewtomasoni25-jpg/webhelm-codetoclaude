@@ -14,6 +14,9 @@ const comparisonGroups = [
       { label: "A brand that ties everything together so nothing looks mismatched", tiers: [true, true, true] },
       { label: "Polished branding that builds trust at first glance", tiers: [true, true, true] },
       { label: "Marketing materials ready to use the day you launch", tiers: [true, true, true] },
+      { label: "A visual identity built around your business — not a template", tiers: [true, true, true] },
+      { label: "The kind of branding that makes customers think you're more established than you are", tiers: [true, true, true] },
+      { label: "Email signatures and invoice headers that look properly branded", tiers: [true, true, true] },
     ],
   },
   {
