@@ -13,27 +13,31 @@ const SLOTS_LEFT = TOTAL_SLOTS - SLOTS_TAKEN;
 // £2,200 → £1,540. Keeping the two sections in sync means a visitor
 // comparing them sees one consistent offer rather than two competing
 // numbers.
-const PACKAGE_PRICE = "\u00A3750";
-const RETAINER_VALUE = "\u00A3474";
+// Founding Partners receive the full Premium tier at the founding rate
+// of \u00A31,540, locked at that price for the life of the engagement (a
+// 30% saving against the \u00A32,200 standing fee). Aligned with the
+// Premium tier in PricingSection so a visitor comparing the two
+// sections sees one consistent offer.
+const STANDING_FEE = "\u00A32,200";
+const FOUNDING_RATE = "\u00A31,540";
+const DISCOUNT_PCT = "30%";
+// Retained from the launchpad-era version so the JSX scarcity copy
+// can still reference "months of free Studio retainer" if needed
+// elsewhere; default no-op values keep the section rendering cleanly.
+const PACKAGE_PRICE = FOUNDING_RATE;
+const RETAINER_VALUE = STANDING_FEE;
 const RETAINER_MONTHS = "6 months";
-// Backwards-compatible aliases \u2014 JSX below still references these names
-// while the new naming settles. STANDING_FEE now holds the Studio
-// retainer value that's included free; FOUNDING_RATE holds the Launch
-// package price.
-const STANDING_FEE = RETAINER_VALUE;
-const FOUNDING_RATE = PACKAGE_PRICE;
-const DISCOUNT_PCT = "Free";
 
 // What a Founding Partner actually receives. Each line is a deliverable
 // that's contractually verifiable — no vague benefits.
 const INCLUDES = [
-  "The Launch package \u2014 logo, website, email, payments, Google, the lot",
-  "Set up and live in 7 days",
-  "Full ownership of the code, hosting and domain",
-  "AI Assistant included free",
-  "Six months of Studio management (\u00a3474 value) thrown in",
+  "The Premium package \u2014 full custom website, designed and built from scratch",
+  "AI Assistant + Booking Integration included free",
+  "Domain + business email + Google Business Profile set up",
+  "Delivered in 48 to 72 hours from brief sign-off",
+  "Full ownership of the code, copy, hosting and domain",
+  "30 days of post-launch refinement at no extra cost",
   "A permanent entry in the WebHelm Anthology",
-  "Direct access to the founder for the entire engagement",
 ];
 
 export default function FoundingPartnerSection() {
@@ -65,10 +69,10 @@ export default function FoundingPartnerSection() {
             as="h2"
             className="text-3xl sm:text-4xl md:text-5xl tracking-tight font-medium text-white mb-6"
           >
-            The full launchpad, plus six months of management included.
+            The Premium tier, locked at the founding rate.
           </SplitTextReveal>
           <p className="text-base md:text-lg leading-relaxed text-white/70 max-w-3xl mx-auto">
-            Fifteen UK businesses get The Launch package at the standing rate, with six months of Studio retainer thrown in free. A £474 saving and a permanent place in the WebHelm Anthology.
+            Fifteen UK businesses get the full Premium build &mdash; AI Assistant and Booking included &mdash; at £1,540, the founding rate locked for the life of their business.
           </p>
         </motion.div>
 
@@ -86,9 +90,9 @@ export default function FoundingPartnerSection() {
             <p className="text-[15px] md:text-base leading-relaxed text-white/75">
               We&rsquo;ve just launched, so instead of showing past results,
               we&rsquo;re building them. Fifteen UK businesses get the full
-              Launch package &mdash; logo, website, email, payments, Google,
-              the lot &mdash; with six months of Studio retainer included
-              free. In exchange, a verified review and a place in the
+              Premium build &mdash; AI Assistant and Booking included
+              &mdash; at the founding rate, locked for the life of their
+              business. In exchange, a verified review and a place in the
               Anthology.
             </p>
           </div>
@@ -122,16 +126,15 @@ export default function FoundingPartnerSection() {
               </span>
               <div className="flex items-baseline gap-3 mb-2">
                 <span className="text-4xl md:text-5xl font-light text-white">
-                  {PACKAGE_PRICE}
+                  {FOUNDING_RATE}
                 </span>
-                <span className="text-sm text-white/50 whitespace-nowrap">
-                  + {RETAINER_VALUE} free
+                <span className="text-lg text-white/40 line-through">
+                  {STANDING_FEE}
                 </span>
               </div>
               <p className="text-sm text-white/60">
-                The Launch package at standing price, plus {RETAINER_MONTHS} of
-                Studio management thrown in. Offered once, to the Founding
-                Fifteen.
+                {DISCOUNT_PCT} below our standing fee. Offered once, to the
+                Founding Fifteen &mdash; locked at this rate for life.
               </p>
             </div>
 
@@ -152,8 +155,7 @@ export default function FoundingPartnerSection() {
               </div>
               <p className="text-sm text-white/60">
                 {SLOTS_TAKEN} places taken. When the final slot is placed,
-                the programme closes and the {RETAINER_MONTHS} of free
-                Studio retainer disappears with it.
+                the programme closes and the rate returns to {STANDING_FEE}.
               </p>
               {/* Progress bar — honest visual of remaining slots. */}
               <div className="mt-4 h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
@@ -213,8 +215,8 @@ export default function FoundingPartnerSection() {
             </p>
             <p className="text-white/55 italic">
               Fifteen places. {SLOTS_TAKEN} taken. {SLOTS_LEFT} remain. When
-              they are filled, the programme closes and the free {RETAINER_MONTHS}
-              {" "}of Studio retainer goes with it. The archive stays permanent.
+              they are filled, the programme closes and the rate returns to
+              {" "}{STANDING_FEE}. The archive stays permanent.
             </p>
           </div>
         </motion.div>

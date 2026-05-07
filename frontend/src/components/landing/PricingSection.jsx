@@ -3,32 +3,33 @@ import { Button } from "@/components/ui/button";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import { Badge } from "@/components/ui/badge";
 
-// Comparison table — what's in each setup package. Most rows are ✓ across
-// all three because the launchpad system is shared. Differences sit in
-// scope (page count) and depth (custom design vs structured templates).
+// Comparison table for the three website tiers (Landing / Business /
+// Premium). Most launchpad components are baked into Business and
+// above; Landing Page stays the lean single-page entry point.
 const comparisonGroups = [
   {
-    title: "Every Launchpad",
+    title: "Every Website",
     rows: [
-      { label: "Custom website, mobile-ready", tiers: [true, true, true] },
+      { label: "Custom design tailored to your brand", tiers: [true, true, true] },
+      { label: "Mobile-optimised + fast loading", tiers: [true, true, true] },
       { label: "Domain + business email set up", tiers: [true, true, true] },
-      { label: "Google Business Profile created & verified", tiers: [true, true, true] },
-      { label: "Payment system (Stripe / PayPal) connected", tiers: [true, true, true] },
+      { label: "Contact form included", tiers: [true, true, true] },
       { label: "30 days of free refinement after launch", tiers: [true, true, true] },
       { label: "You own everything — code, hosting & domain", tiers: [true, true, true] },
     ],
   },
   {
-    title: "Launch & Pro",
+    title: "Business & Above",
     rows: [
-      { label: "Logo + brand identity included", tiers: [false, true, true] },
-      { label: "AI Assistant included free", tiers: [false, true, true] },
       { label: "Multi-page structure", tiers: [false, true, true] },
-      { label: "Booking system integrated", tiers: [false, true, true] },
+      { label: "Conversion-focused layout", tiers: [false, true, true] },
+      { label: "Google Business Profile set up", tiers: [false, true, true] },
+      { label: "AI Assistant included free", tiers: [false, true, true] },
+      { label: "Booking Integration included free", tiers: [false, true, true] },
     ],
   },
   {
-    title: "Pro Only",
+    title: "Premium Only",
     rows: [
       { label: "Full custom design from scratch", tiers: [false, false, true] },
       { label: "Up to 8 custom pages", tiers: [false, false, true] },
@@ -37,70 +38,103 @@ const comparisonGroups = [
   },
 ];
 
-// Three setup packages — Refresh for existing businesses, Launch for new
-// ones (the default), Pro for full-custom premium builds. Pro carries the
-// strikethrough founding price; Refresh and Launch are flat rates.
+// Three-column comparison — Landing Page as entry, Business as the
+// default (highlighted), Premium as the top tier. Redesign and Brand
+// Build sit on the cards above but don't appear in the comparison
+// because they're side products, not website tiers.
 const comparisonColumns = [
-  { title: "Refresh", price: "£500", highlighted: false },
+  { title: "Landing Page", price: "£750", highlighted: false },
   {
-    title: "Launch",
-    price: "£750",
+    title: "Business",
+    price: "£980",
+    originalPrice: "£1,400",
     highlighted: true,
   },
   {
-    title: "Pro",
+    title: "Premium",
     price: "£1,540",
     originalPrice: "£2,200",
     highlighted: false,
   },
 ];
 
-// Three setup packages, ordered low → high. Refresh is the entry point
-// for existing businesses with a messy setup; Launch is the default
-// (the full launchpad for new businesses); Pro is the bespoke premium
-// option for those serious about growth.
+// Five setup tiers — prices reverted to the original structure, but the
+// included items now reflect the launchpad system (AI Assistant, Booking
+// Integration, Google profile etc. baked into the higher tiers). Order
+// is kept ascending so customers scan from cheapest entry upward.
 const pricingPlans = [
   {
-    id: "refresh",
-    title: "The Refresh",
-    price: "£500",
-    category: "Existing Business",
-    description: "Modernise your messy online setup — fresh website, sorted email, professional Google profile",
+    id: "website-redesign",
+    title: "Website Redesign",
+    price: "£550",
+    category: "Refresh",
+    description: "Modernise your current website without starting from scratch — cleaner, faster, mobile-ready",
     image: "",
     features: [
-      "Website rebuild + content migrated",
-      "Email + domain sorted properly",
-      "Google Business Profile cleaned up",
+      "Complete modern redesign",
+      "Content migrated across",
+      "Email + domain checked & sorted",
       "Live in 5 days",
     ],
     highlighted: false,
   },
   {
-    id: "launch",
-    title: "The Launch",
+    id: "landing-page",
+    title: "Landing Page",
     price: "£750",
-    category: "Most Popular",
-    description: "The full launchpad — logo, website, email, Google, payments, the lot",
+    category: "Starter",
+    description: "A clean, professional single-page website that gets you online fast",
     image: "",
     features: [
-      "Logo + brand identity",
-      "Custom website + email + domain",
-      "Google profile + payments + booking",
-      "AI Assistant included · live in 7 days",
+      "1-page custom website",
+      "Domain + business email set up",
+      "Mobile responsive · fast loading",
+      "Live in 48 hours",
+    ],
+    highlighted: false,
+  },
+  {
+    id: "full-brand-build",
+    title: "Full Brand Build",
+    price: "£750",
+    category: "Branding",
+    description: "Everything your brand needs in one go — logo system, colours, type, and brand guidelines",
+    image: "",
+    features: [
+      "Logo system + 3 concepts",
+      "Colour palette + type system",
+      "10 social media templates",
+      "Brand guidelines PDF",
+    ],
+    highlighted: false,
+  },
+  {
+    id: "business",
+    title: "Business",
+    price: "£980",
+    originalPrice: "£1,400",
+    category: "Most Popular",
+    description: "The best choice for most small businesses — multi-page site built to bring in customers",
+    image: "",
+    features: [
+      "Up to 5 custom pages",
+      "AI Assistant included free",
+      "Booking Integration included free",
+      "Domain + email + Google profile",
     ],
     highlighted: true,
   },
   {
-    id: "pro",
-    title: "The Pro",
+    id: "premium",
+    title: "Premium",
     price: "£1,540",
     originalPrice: "£2,200",
     category: "Premium",
     description: "Full custom build for businesses serious about growth — everything bespoke from scratch",
     image: "",
     features: [
-      "Everything in The Launch",
       "Up to 8 custom pages",
+      "AI Assistant + Booking included free",
       "Full custom design from scratch",
       "Priority delivery & support",
     ],
@@ -157,16 +191,16 @@ const carePlans = [
   },
 ];
 
-// One-off add-ons. Kept to a blend of the most-asked-for upgrades so
-// the pricing page stays scannable. Booking and Business Setup are the
-// two most popular asks from existing-business clients; AI Assistant
-// is the differentiator; Logo-only and Extra-page handle the edge cases.
+// Four add-ons that sit outside the website tiers. Booking Integration
+// and AI Assistant are both bundled free into Business + Premium; they
+// only carry a price when added to Landing Page or Website Redesign.
+// Business Setup is the universal "get me online properly" add-on, and
+// Logo Only handles people who just want branding without a website.
 const addons = [
-  { name: "Booking Integration", price: "£150", note: "Customers can book directly from your site" },
+  { name: "Booking Integration", price: "£250", note: "Free with Business or Premium" },
   { name: "Business Setup", price: "£200", note: "Domain + business email + DNS configured" },
-  { name: "AI Assistant Setup", price: "£250", note: "Free with Launch or Pro" },
+  { name: "AI Assistant Setup", price: "£250", note: "Free with Business or Premium" },
   { name: "Logo only (no website)", price: "£250", note: "If you just need branding sorted" },
-  { name: "Extra page beyond package", price: "£100", note: "Add as many as you need" },
 ];
 
 export default function PricingSection() {

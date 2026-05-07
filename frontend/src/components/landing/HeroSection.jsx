@@ -166,7 +166,7 @@ export default function HeroSection() {
             >
               From idea to in-business in 7 days. Logo, website, email,
               payments, Google — set up properly, all in one launchpad.
-              From £450. Yours forever.
+              From £550. Yours forever.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center">
