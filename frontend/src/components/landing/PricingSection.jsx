@@ -228,7 +228,7 @@ export default function PricingSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block" style={{ fontFamily: "'Outfit', sans-serif" }}>
+          <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
             Investment
           </span>
           <SplitTextReveal
@@ -288,7 +288,7 @@ export default function PricingSection() {
                   )}
                 </div>
                 {plan.originalPrice && (
-                  <span className="inline-block mt-1.5 text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                  <span className="inline-block mt-1.5 text-[10px] tracking-[0.15em] uppercase font-semibold text-[#007bff]">
                     Founding Partner · 30% off
                   </span>
                 )}
@@ -371,7 +371,7 @@ export default function PricingSection() {
                     }`}
                   >
                     {col.highlighted && (
-                      <span className="inline-block text-[10px] md:text-[11px] tracking-[0.15em] uppercase font-semibold text-[#007bff] mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                      <span className="inline-block text-[10px] md:text-[11px] tracking-[0.15em] uppercase font-semibold text-[#007bff] mb-2">
                         Most Popular
                       </span>
                     )}
@@ -388,7 +388,7 @@ export default function PricingSection() {
               {comparisonGroups.map((group) => (
                 <div key={group.title} className="divide-y divide-white/10">
                   <div className="bg-[#007bff]/[0.06] px-4 md:px-7 py-3.5 md:py-4 border-y border-[#007bff]/15">
-                    <span className="text-xs md:text-sm tracking-[0.25em] uppercase font-bold text-[#007bff]" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                    <span className="text-xs md:text-sm tracking-[0.25em] uppercase font-bold text-[#007bff]">
                       {group.title}
                     </span>
                   </div>
@@ -432,7 +432,7 @@ export default function PricingSection() {
             highlighted middle tier — that's the one most clients pick. */}
         <div className="mt-24">
           <div className="text-center mb-10">
-            <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-3 block" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-3 block">
               Optional · Cancel any time
             </span>
             <h3 className="text-2xl md:text-3xl font-medium text-white mb-3">

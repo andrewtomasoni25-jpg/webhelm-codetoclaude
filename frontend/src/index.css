@@ -164,6 +164,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
 }
 
+/* Uppercase letterspaced labels — section kickers, badges, mini-tags.
+   They render as spans/divs (not h-tags) so they inherit the body
+   Manrope by default. This rule forces Outfit on anything with the
+   .uppercase utility so the kicker/heading pairing reads as one
+   consistent typographic system across every section of the site. */
+.uppercase {
+  font-family: 'Outfit', sans-serif;
+}
+
 /* Debug wrapper support */
 @layer base {
   [data-debug-wrapper="true"] {
