@@ -1,40 +1,36 @@
-import { Check, Bot, Plus, X } from "lucide-react";
+import { Check, Bot, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import { Badge } from "@/components/ui/badge";
 
-// Comparison table — written in plain English customers actually
-// understand. Brand Build sits as the leftmost column for people who
-// only need branding; Business and Premium add the website + system on
-// top. Rows are intentionally short so the table reads at a glance.
+// Comparison table — pure outcome language, zero tech jargon. Each row
+// answers "what does this actually do for me?" rather than naming a
+// feature. Brand Build is the leftmost column (branding only); Business
+// and Premium add the website + everything-online on top.
 const comparisonGroups = [
   {
-    title: "What You Get",
+    title: "For Your Brand",
     rows: [
-      { label: "A logo and brand built around your business", tiers: [true, true, true] },
-      { label: "Brand colours and typography that match", tiers: [true, true, true] },
-      { label: "Brand guidelines PDF + 10 social templates", tiers: [true, false, false] },
-      { label: "30 days of free changes after launch", tiers: [true, true, true] },
-      { label: "You own everything — no rented platforms", tiers: [true, true, true] },
+      { label: "A logo that makes you look professional from day one", tiers: [true, true, true] },
+      { label: "Brand colours and fonts that bring everything together", tiers: [true, true, true] },
+      { label: "Ready-to-share content for your social media", tiers: [true, false, false] },
     ],
   },
   {
-    title: "Your Website",
+    title: "For Your Website",
     rows: [
-      { label: "A custom website that looks great on every device", tiers: [false, true, true] },
-      { label: "Easy for customers to find you on Google", tiers: [false, true, true] },
-      { label: "Email and domain set up properly", tiers: [false, true, true] },
-      { label: "AI assistant that answers customers 24/7", tiers: [false, true, true] },
-      { label: "Online booking so customers schedule themselves", tiers: [false, true, true] },
-      { label: "Multiple pages, not just one", tiers: [false, true, true] },
+      { label: "Customers find you the moment they search Google", tiers: [false, true, true] },
+      { label: "Your business looks established at first glance", tiers: [false, true, true] },
+      { label: "An AI assistant answers customer questions for you", tiers: [false, true, true] },
+      { label: "People can contact you anytime, day or night", tiers: [false, true, true] },
     ],
   },
   {
-    title: "Premium Extras",
+    title: "Only With Premium",
     rows: [
-      { label: "Designed completely from scratch — no templates", tiers: [false, false, true] },
-      { label: "Up to 8 custom pages", tiers: [false, false, true] },
-      { label: "First in line if you need urgent changes", tiers: [false, false, true] },
+      { label: "A website that looks unlike anyone else's", tiers: [false, false, true] },
+      { label: "Plenty of room to tell your full story", tiers: [false, false, true] },
+      { label: "Same-day attention when you need a change", tiers: [false, false, true] },
     ],
   },
 ];
@@ -59,37 +55,27 @@ const comparisonColumns = [
   },
 ];
 
-// Five setup tiers — prices reverted to the original structure, but the
-// included items now reflect the launchpad system (AI Assistant, Booking
-// Integration, Google profile etc. baked into the higher tiers). Order
-// is kept ascending so customers scan from cheapest entry upward.
+// Five setup tiers, split by audience. "Starting" = new businesses
+// launching online (Landing, Brand Build, Business, Premium). "Trading"
+// = existing businesses who need an online refresh (Website Redesign).
+// AI Assistant is included free in every tier that has a website
+// (Refresh, Landing, Business, Premium); Brand Build is branding-only
+// so the AI Assistant doesn't apply. Booking is offered separately on
+// request — it's not bundled into any tier.
 const pricingPlans = [
-  {
-    id: "website-redesign",
-    title: "Website Redesign",
-    price: "£550",
-    category: "Refresh",
-    description: "Modernise your current website without starting from scratch — cleaner, faster, mobile-ready",
-    image: "",
-    features: [
-      "Complete modern redesign",
-      "Content migrated across",
-      "Email + domain checked & sorted",
-      "Live in 5 days",
-    ],
-    highlighted: false,
-  },
+  // ===== STARTING SOMETHING NEW =====
   {
     id: "landing-page",
     title: "Landing Page",
     price: "£750",
     category: "Starter",
-    description: "A clean, professional single-page website that gets you online fast",
+    audience: "starting",
+    description: "A clean, professional single-page website to get your business online fast",
     image: "",
     features: [
       "1-page custom website",
-      "Domain + business email set up",
-      "Mobile responsive · fast loading",
+      "AI Assistant included free",
+      "Email + domain set up properly",
       "Live in 48 hours",
     ],
     highlighted: false,
@@ -99,7 +85,8 @@ const pricingPlans = [
     title: "Full Brand Build",
     price: "£750",
     category: "Branding",
-    description: "Everything your brand needs in one go — logo system, colours, type, and brand guidelines",
+    audience: "starting",
+    description: "Everything your brand needs in one go — logo, colours, type, ready for day one",
     image: "",
     features: [
       "Logo system + 3 concepts",
@@ -115,13 +102,14 @@ const pricingPlans = [
     price: "£980",
     originalPrice: "£1,400",
     category: "Most Popular",
+    audience: "starting",
     description: "The best choice for most small businesses — multi-page site built to bring in customers",
     image: "",
     features: [
       "Up to 5 custom pages",
       "AI Assistant included free",
-      "Booking Integration included free",
-      "Domain + email + Google profile",
+      "Brand + email + Google profile",
+      "Live in 72 hours",
     ],
     highlighted: true,
   },
@@ -131,13 +119,31 @@ const pricingPlans = [
     price: "£1,540",
     originalPrice: "£2,200",
     category: "Premium",
+    audience: "starting",
     description: "Full custom build for businesses serious about growth — everything bespoke from scratch",
     image: "",
     features: [
       "Up to 8 custom pages",
-      "AI Assistant + Booking included free",
+      "AI Assistant included free",
       "Full custom design from scratch",
       "Priority delivery & support",
+    ],
+    highlighted: false,
+  },
+  // ===== ALREADY TRADING =====
+  {
+    id: "website-redesign",
+    title: "Website Refresh",
+    price: "£550",
+    category: "Refresh",
+    audience: "trading",
+    description: "For tradespeople and small businesses already running — we sort the online side properly",
+    image: "",
+    features: [
+      "Complete modern redesign",
+      "AI Assistant included free",
+      "Email + Google profile sorted",
+      "Live in 5 days",
     ],
     highlighted: false,
   },
@@ -192,17 +198,11 @@ const carePlans = [
   },
 ];
 
-// Four add-ons that sit outside the website tiers. Booking Integration
-// and AI Assistant are both bundled free into Business + Premium; they
-// only carry a price when added to Landing Page or Website Redesign.
-// Business Setup is the universal "get me online properly" add-on, and
-// Logo Only handles people who just want branding without a website.
-const addons = [
-  { name: "Booking Integration", price: "£250", note: "Free with Business or Premium" },
-  { name: "Business Setup", price: "£200", note: "Domain + business email + DNS configured" },
-  { name: "AI Assistant Setup", price: "£250", note: "Free with Business or Premium" },
-  { name: "Logo only (no website)", price: "£250", note: "If you just need branding sorted" },
-];
+// Add-ons section removed entirely. AI Assistant is now bundled free
+// into every website tier; Booking is offered separately on request
+// (not advertised as a paid add-on); Logo-only buyers can DM directly.
+// Keeping the pricing section focused on the five core tiers reduces
+// price-fatigue and makes the offer feel more confident.
 
 export default function PricingSection() {
   const scrollToContact = (e) => {
@@ -243,11 +243,25 @@ export default function PricingSection() {
           </p>
         </div>
 
-        {/* Static pricing grid — 5 packages laid out flush in a single
-            row on desktop so clients can scan them side-by-side without
-            dragging. Collapses to 1/2/3 cols on smaller breakpoints. */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
-          {pricingPlans.map((plan) => (
+        {/* Pricing grid split into two audience sections so visitors
+            can self-select instead of scanning all five tiers at once.
+            "Starting Something New" holds the four packages for new
+            businesses (Landing, Brand Build, Business, Premium).
+            "Already Trading" holds the Refresh tier for existing
+            businesses. Same card design across both sections so the
+            visual rhythm of the page stays consistent. */}
+
+        {/* Section 1 — for new businesses */}
+        <div className="text-center mb-8">
+          <span className="text-xs tracking-[0.25em] uppercase font-bold text-[#007bff] mb-2 block">
+            Starting Something New
+          </span>
+          <p className="text-white/50 text-sm">
+            For people launching a business or idea from scratch
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+          {pricingPlans.filter((plan) => plan.audience === "starting").map((plan) => (
             <div
               key={plan.id}
               data-testid={`pricing-card-${plan.id}`}
@@ -301,6 +315,62 @@ export default function PricingSection() {
                     ? "bg-[#007bff] hover:bg-[#0056b3] text-white"
                     : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
                 }`}
+              >
+                Get Started
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        {/* Section 2 — for existing businesses */}
+        <div className="text-center mb-8 mt-16">
+          <span className="text-xs tracking-[0.25em] uppercase font-bold text-[#007bff] mb-2 block">
+            Already Trading
+          </span>
+          <p className="text-white/50 text-sm">
+            For tradespeople and small businesses who need an online refresh
+          </p>
+        </div>
+        <div className="grid grid-cols-1 max-w-sm mx-auto gap-4 md:gap-5">
+          {pricingPlans.filter((plan) => plan.audience === "trading").map((plan) => (
+            <div
+              key={plan.id}
+              data-testid={`pricing-card-${plan.id}`}
+              className={`flex flex-col p-5 rounded-2xl bg-[#121212] border transition-colors ${
+                plan.highlighted
+                  ? "border-[#007bff] ring-1 ring-[#007bff]"
+                  : "border-white/10 hover:border-[#007bff]/40"
+              }`}
+            >
+              <Badge
+                className={`self-start text-[10px] px-2 py-0.5 mb-3 bg-white/10 text-white/80 border-white/10`}
+              >
+                {plan.category}
+              </Badge>
+              <h3 className="text-lg font-medium text-white leading-tight mb-1">
+                {plan.title}
+              </h3>
+              <div className="mb-4 leading-none">
+                <div className="flex items-baseline gap-2 flex-wrap">
+                  <span className="text-2xl font-light text-white">
+                    {plan.price}
+                  </span>
+                </div>
+              </div>
+              <p className="text-xs text-white/60 mb-3 leading-relaxed">
+                {plan.description}
+              </p>
+              <ul className="space-y-2 flex-1 mb-4">
+                {plan.features.slice(0, 4).map((f, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <Check className="w-3.5 h-3.5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
+                    <span className="text-xs text-white leading-snug">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                onClick={scrollToContact}
+                className="w-full rounded-full text-xs py-2 bg-white/5 hover:bg-white/10 text-white border border-white/10"
               >
                 Get Started
               </Button>
@@ -476,46 +546,6 @@ export default function PricingSection() {
                 >
                   Get Started
                 </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Add-ons — small extras that sit outside the main launchpad
-            packages. Kept tight (3 items) so the page stays scannable.
-            zoom: 0.88 makes them visually lighter than the plan cards. */}
-        <div className="mt-20" style={{ zoom: 0.88 }}>
-          <h3 className="text-center text-2xl md:text-3xl font-medium text-white mb-3">
-            Add-Ons
-          </h3>
-          <p className="text-center text-white/55 text-base mb-10 max-w-xl mx-auto">
-            Small extras you can bolt onto any launchpad package.
-          </p>
-          {/* Compact upgrade cards — name + note on the left, price on the
-              right. Padding stays tight so cards keep the smaller footprint
-              even with the price back in. */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            {addons.map((addon) => (
-              <div
-                key={addon.name}
-                className="flex items-start justify-between gap-3 p-3.5 md:p-4 rounded-xl bg-[#121212] border border-white/5 hover:border-[#007bff]/30 transition-colors"
-              >
-                <div className="flex items-start gap-3 min-w-0">
-                  <Plus className="w-5 h-5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
-                  <div className="min-w-0">
-                    <span className="text-base md:text-lg text-white font-medium block">
-                      {addon.name}
-                    </span>
-                    {addon.note && (
-                      <span className="text-sm text-white/60 block mt-1">
-                        {addon.note}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <span className="text-base md:text-lg font-medium text-[#f5f5dc] whitespace-nowrap shrink-0">
-                  {addon.price}
-                </span>
               </div>
             ))}
           </div>
