@@ -3,52 +3,61 @@ import { Button } from "@/components/ui/button";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import { Badge } from "@/components/ui/badge";
 
-// What's-included summary — three category cards rendered side by
-// side instead of a row-based comparison table. Each card lists pure
-// outcomes (zero tech jargon) and a small scope badge so visitors
-// know which tiers the items apply to. Easier to scan than a table,
-// and it mirrors the side-by-side rhythm of the pricing tiers above.
-const comparisonCategories = [
+// What's Included comparison table. Rows grouped by outcome category,
+// columns showing tier-by-tier coverage. Labels styled to match the
+// "Starting Something New / Already Trading" blue uppercase headers
+// from the pricing section above so the page reads as one rhythm.
+const comparisonGroups = [
   {
-    id: "brand",
     title: "For Your Brand",
-    scope: "Every Package",
-    items: [
-      "A brand that ties everything together so nothing looks mismatched",
-      "Polished branding that builds trust at first glance",
-      "Marketing materials ready to use the day you launch",
+    rows: [
+      { label: "A brand that ties everything together so nothing looks mismatched", tiers: [true, true, true] },
+      { label: "Polished branding that builds trust at first glance", tiers: [true, true, true] },
+      { label: "Marketing materials ready to use the day you launch", tiers: [true, true, true] },
     ],
   },
   {
-    id: "website",
     title: "For Your Website",
-    scope: "Business + Premium",
-    items: [
-      "An AI assistant answers customer questions for you",
-      "Email and domain that look professional, not personal",
-      "Owned outright — no platform holding you hostage",
-      "Captures leads even when you're sleeping",
-      "Stops customers going to a competitor instead",
+    rows: [
+      { label: "An AI assistant answers customer questions for you", tiers: [false, true, true] },
+      { label: "Email and domain that look professional, not personal", tiers: [false, true, true] },
+      { label: "Owned outright — no platform holding you hostage", tiers: [false, true, true] },
+      { label: "Captures leads even when you're sleeping", tiers: [false, true, true] },
+      { label: "Stops customers going to a competitor instead", tiers: [false, true, true] },
     ],
   },
   {
-    id: "premium",
     title: "Only With Premium",
-    scope: "Premium Tier",
-    items: [
-      "A website that looks unlike anyone else's",
-      "Built to last 5 years without needing a redesign",
-      "Direct line to the founder for any change you need",
-      "Looks like a £5,000 site at half the price",
-      "Same-day attention when you need a change",
+    rows: [
+      { label: "A website that looks unlike anyone else's", tiers: [false, false, true] },
+      { label: "Built to last 5 years without needing a redesign", tiers: [false, false, true] },
+      { label: "Direct line to the founder for any change you need", tiers: [false, false, true] },
+      { label: "Looks like a £5,000 site at half the price", tiers: [false, false, true] },
+      { label: "Same-day attention when you need a change", tiers: [false, false, true] },
     ],
   },
 ];
 
-// comparisonColumns retired — the new side-by-side category cards
-// don't need a tier-by-tier table header. The scope of each category
-// (Every Package / Business + Premium / Premium Tier) is shown as a
-// small badge inside the card itself.
+// Three-column comparison header — Full Brand Build (branding entry),
+// Business (the highlighted default), Premium (top tier). The Website
+// Refresh tier sits in its own section above ("Already Trading") and
+// doesn't need to appear in the comparison since most of its checks
+// would mirror Business anyway.
+const comparisonColumns = [
+  { title: "Full Brand Build", price: "£750", highlighted: false },
+  {
+    title: "Business",
+    price: "£980",
+    originalPrice: "£1,400",
+    highlighted: true,
+  },
+  {
+    title: "Premium",
+    price: "£1,540",
+    originalPrice: "£2,200",
+    highlighted: false,
+  },
+];
 
 // Five setup tiers, split by audience. "Starting" = new businesses
 // launching online (Landing, Brand Build, Business, Premium). "Trading"
@@ -393,53 +402,88 @@ export default function PricingSection() {
             </p>
           </div>
 
-          {/* Three side-by-side category cards instead of a comparison
-              table. Each card lists pure outcomes (zero tech jargon) and
-              a small scope badge so visitors know which tiers the items
-              apply to. The middle "For Your Website" card is highlighted
-              because it represents the default Business tier. Cards
-              stack vertically on mobile. */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-            {comparisonCategories.map((cat) => {
-              const isMiddle = cat.id === "website";
-              return (
-                <div
-                  key={cat.id}
-                  data-testid={`included-card-${cat.id}`}
-                  className={`flex flex-col p-6 rounded-2xl bg-[#121212] border transition-all duration-300 hover:-translate-y-1 ${
-                    isMiddle
-                      ? "border-[#007bff]/60 ring-1 ring-[#007bff]/40 shadow-[0_0_30px_rgba(0,123,255,0.15)]"
-                      : "border-white/10 hover:border-[#007bff]/40"
-                  }`}
-                >
-                  <Badge
-                    className={`self-start text-[10px] px-2 py-0.5 mb-4 ${
-                      isMiddle
-                        ? "bg-[#007bff] text-white border-none"
-                        : "bg-white/10 text-white/80 border-white/10"
+          {/* Comparison table — three tiers across the top, outcome
+              rows grouped by category below. Group labels styled with
+              the same blue uppercase letterspaced look as the pricing
+              section's "Starting Something New" / "Already Trading"
+              headers, so the whole page reads with one rhythm. */}
+          <div className="rounded-2xl border border-white/10 bg-[#0d0d0d]/90 overflow-x-auto">
+            <div className="min-w-[640px] md:min-w-0 divide-y divide-white/10">
+              {/* Column headers — tier names only, no prices. Prices
+                  live on the cards above so the table stays focused
+                  on what's included, not what it costs. */}
+              <div className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10">
+                <div className="p-4 md:p-7 flex items-center gap-2 md:gap-4">
+                  <img
+                    src="/hero-logo.webp"
+                    alt="WebHelm"
+                    className="h-8 md:h-12 w-auto shrink-0"
+                  />
+                  <span className="text-base md:text-2xl font-medium text-white leading-none">
+                    Features
+                  </span>
+                </div>
+                {comparisonColumns.map((col) => (
+                  <div
+                    key={col.title}
+                    className={`p-4 md:p-7 text-center ${
+                      col.highlighted ? "bg-[#007bff]/10" : ""
                     }`}
                   >
-                    {cat.scope}
-                  </Badge>
-                  <h4 className="text-xl font-medium text-white leading-tight mb-5">
-                    {cat.title}
-                  </h4>
-                  <ul className="space-y-3 flex-1">
-                    {cat.items.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="mt-0.5 w-5 h-5 flex-shrink-0 rounded-full bg-[#007bff]/15 flex items-center justify-center">
-                          <Check className="w-3 h-3 text-[#007bff]" strokeWidth={3} />
-                        </span>
-                        <span className="text-sm text-white/85 leading-relaxed">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                    {col.highlighted && (
+                      <span className="inline-block text-[10px] md:text-[11px] tracking-[0.15em] uppercase font-semibold text-[#007bff] mb-2">
+                        Most Popular
+                      </span>
+                    )}
+                    <h4 className="text-base md:text-2xl font-medium text-white leading-tight">
+                      {col.title}
+                    </h4>
+                  </div>
+                ))}
+              </div>
+
+              {/* Grouped feature rows — group labels styled to match
+                  the blue uppercase letterspaced headers from the
+                  pricing section above (Starting Something New / etc). */}
+              {comparisonGroups.map((group) => (
+                <div key={group.title} className="divide-y divide-white/10">
+                  <div className="bg-[#007bff]/[0.06] px-4 md:px-7 py-3.5 md:py-4 border-y border-[#007bff]/15">
+                    <span className="text-xs md:text-sm tracking-[0.25em] uppercase font-bold text-[#007bff]">
+                      {group.title}
+                    </span>
+                  </div>
+                  {group.rows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="grid grid-cols-[1.4fr_repeat(3,1fr)] md:grid-cols-[2fr_repeat(3,1fr)] divide-x divide-white/10"
+                    >
+                      <div className="px-4 md:px-7 py-3.5 md:py-4 text-sm md:text-base text-white leading-snug">
+                        {row.label}
+                      </div>
+                      {row.tiers.map((val, ti) => (
+                        <div
+                          key={ti}
+                          className={`py-3.5 md:py-4 flex items-center justify-center ${
+                            comparisonColumns[ti].highlighted ? "bg-[#007bff]/10" : ""
+                          }`}
+                        >
+                          {val === true ? (
+                            <Check className="w-5 h-5 md:w-6 md:h-6 text-[#007bff]" strokeWidth={2.5} />
+                          ) : (
+                            <span className="text-white/30 text-lg md:text-xl">·</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
+          {/* Subtle hint that the table scrolls horizontally on small screens */}
+          <p className="md:hidden text-center text-xs text-white/40 mt-3">
+            Swipe the table sideways to see all plans →
+          </p>
         </div>
 
         {/* Monthly Care plans — three retainer tiers under the setup
