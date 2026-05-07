@@ -2,6 +2,7 @@ import { Check, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import { Badge } from "@/components/ui/badge";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 // What's Included comparison table. Rows grouped by outcome category,
 // columns showing tier-by-tier coverage. Labels styled to match the
@@ -228,6 +229,45 @@ export default function PricingSection() {
       // zoom: 0.88 keeps the cards tight against the vortex backdrop.
       style={{ zoom: 0.88 }}
     >
+      {/* Background flourishes — three stacked atmospheric layers behind
+          the pricing content. They're absolutely positioned and z-0 so
+          they sit beneath the z-10 main container without affecting any
+          card layout. Pointer-events-none means they never intercept
+          clicks meant for buttons / cards above. */}
+
+      {/* 1. Subtle grid pattern at the top, faded toward the centre via
+            radial mask so it whispers rather than shouts. */}
+      <div className="pointer-events-none absolute top-0 left-0 right-0 h-96 z-0 overflow-hidden [mask-image:radial-gradient(50%_50%_at_50%_30%,black,transparent)]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff14_1px,transparent_1px),linear-gradient(to_bottom,#ffffff14_1px,transparent_1px)] bg-[size:70px_80px]" />
+      </div>
+
+      {/* 2. Soft white sparkles, low density so they read as atmosphere
+            rather than confetti. Limited to top half of the section. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] z-0 [mask-image:radial-gradient(50%_50%_at_50%_30%,black,transparent_80%)]">
+        <SparklesCore
+          id="pricing-sparkles"
+          background="transparent"
+          minSize={0.4}
+          maxSize={1.0}
+          particleDensity={28}
+          particleColor="#ffffff"
+          speed={0.6}
+          className="w-full h-full"
+        />
+      </div>
+
+      {/* 3. Large soft blue radial glow centred under the section, the
+            way the original reference uses it — gives the cards a
+            subtle "spotlight" feel without dominating. */}
+      <div
+        className="pointer-events-none absolute top-0 left-[10%] right-[10%] w-[80%] h-full z-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 50% 30%, rgba(0,123,255,0.18) 0%, transparent 60%)",
+          mixBlendMode: "screen",
+        }}
+      />
+
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
         {/* Header */}
         <div className="text-center mb-12">
