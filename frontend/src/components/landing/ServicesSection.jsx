@@ -1,10 +1,11 @@
 import { Monitor, Mail, Globe, MapPin, CreditCard, Calendar, Palette, Bot } from "lucide-react";
 import SplitTextReveal from "@/components/SplitTextReveal";
 
-// Eight components of the launchpad — every WebHelm package includes some
-// or all of these depending on tier. Displayed here as a unified system so
-// visitors understand "this is what we set up", not "these are services
-// you pick from". Pricing lives in PricingSection below.
+// Eight components of the launchpad — rendered as a numbered editorial
+// list (icon + number + title + description) instead of card tiles.
+// Each item sits on its own row, separated by a thin divider. Reads
+// like a magazine feature, not a SaaS pitch deck. Dramatically lighter
+// visually than 8 tiled cards.
 const services = [
   {
     id: "brand",
@@ -40,7 +41,6 @@ const services = [
     title: "Google Business Profile",
     description:
       "Set up, verified and optimised — so when someone searches for what you do, you actually appear in the local results.",
-    highlighted: true,
   },
   {
     id: "payments",
@@ -72,13 +72,7 @@ export default function ServicesSection() {
       data-testid="services-section"
       className="py-24 md:py-32 relative overflow-hidden"
     >
-      {/* The helm used to live here as a section-scoped ornament.
-          It has been promoted to a page-level <FloatingCompass />
-          (helm image) in WebHelmLanding, so it now drifts in a
-          fixed position and fades out cleanly as soon as you leave
-          the Services section. */}
-
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-4 block">
@@ -91,46 +85,45 @@ export default function ServicesSection() {
           >
             Everything you need, in one launchpad
           </SplitTextReveal>
-          <p className="text-white/50 max-w-xl mx-auto text-sm flex items-center justify-center gap-2">
+          <p className="text-white/75 max-w-xl mx-auto text-sm flex items-center justify-center gap-2">
             <Bot className="w-4 h-4 text-[#007bff]" />
             One launchpad. Eight components. Set up in a week. Yours forever.
           </p>
         </div>
 
-        {/* Services Grid — eight system components in a 4-col layout on
-            desktop (2 perfect rows of 4). Each tile is a piece of the
-            launchpad clients receive. The full grid reads as "this is
-            everything you'd otherwise have to set up alone, sorted in
-            one go". */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Editorial numbered list — each component as a single row with
+            an icon-rail on the left, number on the far left, title and
+            description in the body. Hairline divider between rows.
+            Massively lighter than 8 tiled cards. */}
+        <div className="divide-y divide-white/10">
           {services.map((service, index) => (
             <div
               key={service.id}
-              data-testid={`service-card-${service.id}`}
-              className={`group p-6 md:p-7 rounded-2xl bg-[#121212] border transition-all duration-300 hover:-translate-y-1 ${
-                service.highlighted
-                  ? "border-[#007bff]/40 hover:border-[#007bff]"
-                  : "border-white/5 hover:border-[#007bff]/50"
-              }`}
-              style={{ animationDelay: `${index * 80}ms` }}
+              data-testid={`service-row-${service.id}`}
+              className="group grid grid-cols-[auto_auto_1fr] gap-6 md:gap-8 items-start py-7 md:py-8 transition-colors hover:bg-white/[0.015]"
             >
-              {/* Prices removed — headline pricing lives in the PricingSection
-                  below; this section is now a pure "what we do" lineup. */}
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-xl bg-[#007bff]/10 flex items-center justify-center group-hover:bg-[#007bff]/20 transition-colors">
-                  <service.icon className="w-6 h-6 text-[#007bff]" />
-                </div>
+              {/* Number — small, monospace-feel, faded */}
+              <span className="text-xs md:text-sm font-medium text-white/30 tabular-nums pt-1 w-8">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              {/* Icon — small blue square, sits in its own column */}
+              <div className="w-10 h-10 md:w-11 md:h-11 rounded-lg bg-[#007bff]/10 flex items-center justify-center group-hover:bg-[#007bff]/20 transition-colors shrink-0">
+                <service.icon className="w-5 h-5 md:w-5 md:h-5 text-[#007bff]" />
               </div>
-              <h3 className="text-lg sm:text-xl font-medium text-white mb-2">
-                {service.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-white/60">
-                {service.description}
-              </p>
+
+              {/* Title + body — flex column so they stack tight */}
+              <div className="min-w-0">
+                <h3 className="text-lg md:text-xl font-medium text-white mb-1.5">
+                  {service.title}
+                </h3>
+                <p className="text-sm md:text-[15px] leading-relaxed text-white/65 max-w-2xl">
+                  {service.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );
