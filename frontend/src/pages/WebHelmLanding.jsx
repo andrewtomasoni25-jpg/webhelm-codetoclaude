@@ -122,8 +122,8 @@ export default function WebHelmLanding() {
         targetSelector="#services"
         mode="show-when-visible"
         rotationSeconds={240}
-        opacityMobile={0.09}
-        opacityDesktop={0.12}
+        opacityMobile={0.04}
+        opacityDesktop={0.06}
         sizeMobile="min(90vw, 700px)"
         sizeDesktop="min(65vw, 880px)"
         testId="floating-helm"

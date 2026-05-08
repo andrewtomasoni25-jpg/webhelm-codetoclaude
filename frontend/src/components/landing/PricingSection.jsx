@@ -166,7 +166,7 @@ const carePlans = [
     title: "Helm",
     price: "£29/mo",
     category: "Safety Net",
-    description: "Site monitored, edits when you need them, someone to call when things go wrong",
+    description: "We watch your site 24/7 and step in the moment something breaks. Need a phone number changed or a price updated? Text us and it's done within 48 hours.",
     features: [
       "24/7 site uptime monitoring",
       "Unlimited small text edits",
@@ -180,7 +180,7 @@ const carePlans = [
     title: "Studio",
     price: "£79/mo",
     category: "Most Popular",
-    description: "Active management — your reviews climb, your Google profile stays sharp, your numbers grow",
+    description: "Everything in Helm, plus active growth. Each month we run a Google review campaign so your stars climb, keep your Business Profile fresh, and send you a clear performance report.",
     features: [
       "Everything in Helm",
       "Monthly Google review campaign",
@@ -194,7 +194,7 @@ const carePlans = [
     title: "Captain",
     price: "£149/mo",
     category: "Full Service",
-    description: "Like having a part-time digital assistant — social posts, local SEO, full back-office",
+    description: "Everything in Studio, plus a part-time digital assistant on retainer. Ten branded social posts a month, local SEO pushed across UK directories, and a full annual rebuild so your site never goes stale.",
     features: [
       "Everything in Studio",
       "10 branded social posts per month",

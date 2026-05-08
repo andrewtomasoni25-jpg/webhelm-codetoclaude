@@ -85,7 +85,7 @@ export default function ServicesSection() {
           >
             Everything you need, in one launchpad
           </SplitTextReveal>
-          <p className="text-white/50 max-w-xl mx-auto text-sm flex items-center justify-center gap-2">
+          <p className="text-white/75 max-w-xl mx-auto text-sm flex items-center justify-center gap-2">
             <Bot className="w-4 h-4 text-[#007bff]" />
             One launchpad. Eight components. Set up in a week. Yours forever.
           </p>
