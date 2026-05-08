@@ -429,11 +429,12 @@ export default function PricingSection() {
           </p>
         </div>
 
-        {/* Monthly Care plans — three retainer tiers under the setup
-            packages above. Same card layout as pricingPlans so the
-            visual rhythm of the page stays consistent. Studio is the
-            highlighted middle tier — that's the one most clients pick. */}
-        <div className="mt-24">
+        {/* Monthly Care — compact editorial table format. Three rows
+            in a slim panel with a hairline divider, no card boxes. The
+            Studio tier (middle) gets a faint blue tint as the default
+            recommendation. Drops the section's visual weight by ~70%
+            compared to the previous three tiled cards. */}
+        <div className="mt-24 max-w-3xl mx-auto">
           <div className="text-center mb-10">
             <span className="text-xs tracking-[0.2em] uppercase font-bold text-[#f5f5dc] mb-3 block">
               Optional · Cancel any time
@@ -446,55 +447,54 @@ export default function PricingSection() {
               your Google profile fresh, and someone real to call when things change.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+
+          <div className="rounded-2xl border border-white/10 overflow-hidden divide-y divide-white/10">
             {carePlans.map((plan) => (
               <div
                 key={plan.id}
-                data-testid={`care-card-${plan.id}`}
-                className={`flex flex-col p-5 rounded-2xl bg-[#121212] border transition-colors ${
+                data-testid={`care-row-${plan.id}`}
+                className={`grid grid-cols-[1fr_auto] md:grid-cols-[auto_1fr_auto_auto] items-center gap-4 md:gap-6 p-5 md:p-6 transition-colors ${
                   plan.highlighted
-                    ? "border-[#007bff] ring-1 ring-[#007bff]"
-                    : "border-white/10 hover:border-[#007bff]/40"
+                    ? "bg-[#007bff]/[0.06]"
+                    : "hover:bg-white/[0.02]"
                 }`}
               >
-                <Badge
-                  className={`self-start text-[10px] px-2 py-0.5 mb-3 ${
-                    plan.highlighted
-                      ? "bg-[#007bff] text-white border-none"
-                      : "bg-white/10 text-white/80 border-white/10"
-                  }`}
-                >
-                  {plan.category}
-                </Badge>
-                <h3 className="text-lg font-medium text-white leading-tight mb-1">
-                  {plan.title}
-                </h3>
-                <div className="mb-4 leading-none">
-                  <span className="text-2xl font-light text-white">
-                    {plan.price}
+                {/* Tier name + price (mobile: combined) */}
+                <div className="flex items-baseline gap-3 md:contents">
+                  <h4 className="text-base md:text-lg font-medium text-white whitespace-nowrap md:w-32">
+                    {plan.title}
+                  </h4>
+                  <span className="md:hidden text-sm text-white/60">
+                    · {plan.price}
                   </span>
                 </div>
-                <p className="text-sm text-white/60 leading-relaxed mb-4">
+
+                {/* Description (md+ only — mobile shows it on the next row) */}
+                <p className="hidden md:block text-sm text-white/65 leading-relaxed">
                   {plan.description}
                 </p>
-                <ul className="space-y-2 flex-1 mb-4">
-                  {plan.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#007bff] mt-0.5 shrink-0" strokeWidth={2.5} />
-                      <span className="text-xs text-white leading-snug">{f}</span>
-                    </li>
-                  ))}
-                </ul>
+
+                {/* Price (md+ only) */}
+                <span className="hidden md:block text-base font-medium text-white whitespace-nowrap">
+                  {plan.price}
+                </span>
+
+                {/* CTA button — small, compact */}
                 <Button
                   onClick={scrollToContact}
-                  className={`w-full rounded-full text-xs py-2 ${
+                  className={`rounded-full text-xs px-4 py-1.5 h-auto whitespace-nowrap shrink-0 ${
                     plan.highlighted
                       ? "bg-[#007bff] hover:bg-[#0056b3] text-white"
                       : "bg-white/5 hover:bg-white/10 text-white border border-white/10"
                   }`}
                 >
-                  Get Started
+                  Choose
                 </Button>
+
+                {/* Mobile description — full-width row beneath title/price */}
+                <p className="md:hidden col-span-2 text-sm text-white/65 leading-relaxed -mt-2">
+                  {plan.description}
+                </p>
               </div>
             ))}
           </div>
